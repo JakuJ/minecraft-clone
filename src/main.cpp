@@ -1,6 +1,7 @@
 #include "window.hpp"
 #include "program.hpp"
 #include "buffer.hpp"
+#include "texture.hpp"
 #include "helpers.hpp"
 
 void initBuffers()
@@ -13,13 +14,12 @@ void initBuffers()
     // Create a Vertex Buffer Objects
 
     std::vector<float> vertices = {
-        0.5, 0.5, 0.0,
-        0.5, -0.5, 0.0,
         -0.5, -0.5, 0.0,
+        0.5, -0.5, 0.0,
+        0.5, 0.5, 0.0,
         -0.5, 0.5, 0.0};
 
-    VertexBuffer<float, 3> vbo1(0);
-    vbo1.bufferData(vertices);
+    VertexBuffer<float, 3> vbo1(0, vertices);
 
     std::vector<float> colors = {
         1, 1, 1,
@@ -27,8 +27,15 @@ void initBuffers()
         1, 0, 1,
         0, 1, 0};
 
-    VertexBuffer<float, 3> vbo2(1);
-    vbo2.bufferData(colors);
+    VertexBuffer<float, 3> vbo2(1, colors);
+
+    std::vector<float> texCoords = {
+        0, 0,
+        1, 0,
+        1, 1,
+        0, 1};
+
+    VertexBuffer<float, 2> vbo3(2, texCoords);
 
     // Create an Element Buffer Object
     unsigned int EBO;
@@ -37,11 +44,24 @@ void initBuffers()
 
     // Send data to the buffer
     std::vector<unsigned int> indices = {
-        // note that we start from 0!
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
+        0, 1, 2,
+        0, 2, 3};
     bufferVector(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
+}
+
+void initTextures(const Program& program)
+{
+    Texture texture1("textures/container.jpg", GL_TEXTURE0);
+    program.setUniform("box", 0);
+
+    Texture texture2("textures/awesomeface.png", GL_TEXTURE1, true);
+    program.setUniform("face", 1);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
 int main()
@@ -56,7 +76,9 @@ int main()
 
     Program program;
     program.use();
+    
     initBuffers();
+    initTextures(program);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 

@@ -14,8 +14,9 @@ find_package(glfw3 3.3 REQUIRED)
 include_directories("include")
 include_directories("headers")
 
+file(GLOB app_libs "lib/*.c")
 file(GLOB app_sources "src/*.cpp")
 
-add_executable(main lib/glad.c ${app_sources})
+add_executable(main ${app_libs} ${app_sources})
 
 target_link_libraries(main glfw)

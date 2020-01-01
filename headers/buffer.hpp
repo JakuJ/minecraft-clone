@@ -11,16 +11,18 @@ private:
     unsigned int location;
 
 public:
-    void bufferData(const std::vector<T> &data) const;
-    VertexBuffer(unsigned int location);
-};
+    VertexBuffer(unsigned int location)
+    {
+        glGenBuffers(1, &id);
+        this->location = location;
+    };
+    VertexBuffer(unsigned int location, const std::vector<T> &data) : VertexBuffer(location)
+    {
+        bufferData(data);
+    };
 
-template <typename T, unsigned int N>
-VertexBuffer<T, N>::VertexBuffer(unsigned int location)
-{
-    glGenBuffers(1, &id);
-    this->location = location;
-}
+    void bufferData(const std::vector<T> &data) const;
+};
 
 template <typename T, unsigned int N>
 void VertexBuffer<T, N>::bufferData(const std::vector<T> &data) const
