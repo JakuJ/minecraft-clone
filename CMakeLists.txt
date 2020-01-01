@@ -1,10 +1,21 @@
 cmake_minimum_required(VERSION 3.16)
-project(openGLTut)
+project(LearnOpenGL)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_compile_options(
+  "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
+  "-g" "-ggdb"
+)
 
 find_package(glfw3 3.3 REQUIRED)
 
 include_directories("include")
+include_directories("headers")
 
-add_executable(main main.cpp lib/glad.c)
+file(GLOB app_sources "src/*.cpp")
+
+add_executable(main lib/glad.c ${app_sources})
 
 target_link_libraries(main glfw)
