@@ -1,10 +1,10 @@
 #version 330 core
 
-in vec2 fTexCoord;
+in vec3 fTexCoord;
 
 out vec4 FragColor;
 
-uniform sampler2D dirt;
+uniform samplerCube dirt;
 
 void main()
 {

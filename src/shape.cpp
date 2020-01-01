@@ -19,25 +19,8 @@ Shape::Shape()
 
 Shape::Shape(const std::vector<float> &vertices, const std::vector<unsigned int> &indices, const std::vector<float> &texCoords) : vertices(vertices), indices(indices), texCoords(texCoords) {}
 
-Shape Shape::Quad(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 v4)
-{
-    std::vector<float> vertices;
-    push_vector(vertices, v1);
-    push_vector(vertices, v2);
-    push_vector(vertices, v3);
-    push_vector(vertices, v4);
-
-    std::vector<float> texCoords{0, 0, 1, 0, 1, 1, 0, 1};
-    std::vector<unsigned int> indices{0, 1, 2, 0, 2, 3};
-
-    std::cout << "Quad created" << std::endl;
-
-    return Shape(vertices, indices, texCoords);
-}
-
 Shape Shape::Box(glm::vec3 near, glm::vec3 far)
 {
-
     const auto &v1 = near;
     const auto &v7 = far;
 
@@ -51,12 +34,29 @@ Shape Shape::Box(glm::vec3 near, glm::vec3 far)
 
     std::cout << "Box created" << std::endl;
 
-    return Shape::Quad(v1, v2, v3, v4) + // front
-           Shape::Quad(v2, v6, v7, v3) + // right
-           Shape::Quad(v5, v1, v4, v8) + // left
-           Shape::Quad(v6, v5, v8, v7) + // back
-           Shape::Quad(v4, v3, v7, v8) + // top
-           Shape::Quad(v5, v6, v2, v1);  // bottom
+    std::vector<float> vertices;
+    for (auto x : {v1, v2, v3, v4, v5, v6, v7, v8})
+    {
+        push_vector(vertices, x);
+    }
+
+    std::vector<unsigned int> indices{0, 1, 2, 0, 2, 3,  // front
+                                      1, 5, 6, 1, 6, 2,  // right
+                                      4, 0, 3, 4, 3, 7,  // left
+                                      5, 4, 7, 5, 7, 6,  // back
+                                      3, 2, 6, 3, 6, 7,  // top
+                                      4, 5, 1, 4, 1, 0}; // bottom
+
+    std::vector<float> texCoords{-1, -1, -1,
+                                 1, -1, -1,
+                                 1, 1, -1,
+                                 -1, 1, -1,
+                                 -1, -1, 1,
+                                 1, -1, 1,
+                                 1, 1, 1,
+                                 -1, 1, 1};
+
+    return Shape(vertices, indices, texCoords);
 }
 
 void Shape::buffer(Buffers &b) const
@@ -102,7 +102,7 @@ Shape Shape::operator+(const Shape &other) const
 void Shape::operator+=(const Shape &other)
 {
     unsigned int offset = vertices.size() / 3;
-    
+
     // Copy vertices
     vertices.insert(vertices.end(), other.vertices.cbegin(), other.vertices.cend());
 
@@ -117,8 +117,8 @@ void Shape::operator+=(const Shape &other)
 std::ostream &operator<<(std::ostream &out, const Shape &sh)
 {
     out << "Shape with " << sh.vertices.size() / 3 << " vertices, " << sh.indices.size() << " indices and " << sh.texCoords.size() / 2 << " tex coords" << std::endl;
-    out << "Vertices: " << sh.vertices << std::endl;
-    out << "Indices: " << sh.indices << std::endl;
-    out << "TexCoords: " << sh.texCoords << std::endl;
+    // out << "Vertices: " << sh.vertices << std::endl;
+    // out << "Indices: " << sh.indices << std::endl;
+    // out << "TexCoords: " << sh.texCoords << std::endl;
     return out;
 }

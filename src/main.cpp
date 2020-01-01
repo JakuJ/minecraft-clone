@@ -25,14 +25,14 @@ void fix_render_on_mac(GLFWwindow *window)
 
 void initTextures(const Program &program)
 {
-    Texture texture1("textures/dirt/side.jpg", GL_TEXTURE0, true);
+    CubeTexture dirtTexture("textures/dirt", GL_TEXTURE0, false);
     program.setUniform("dirt", 0);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
 
 int main()
@@ -59,10 +59,13 @@ int main()
     // Create a world
     World world;
 
-    world.placeBlock(0, 0, 0, Cube::DIRT);
-    world.placeBlock(0, 0, 1, Cube::DIRT);
-    world.placeBlock(1, 0, 1, Cube::DIRT);
-    world.placeBlock(1, 0, 0, Cube::AIR);
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            world.placeBlock(i, 0, j, Cube::DIRT);
+        }
+    }
 
     // Render the world
     world.buffer(buffers);
@@ -74,6 +77,12 @@ int main()
     glEnable(GL_DEPTH_TEST);
     glFrontFace(GL_CW); // why?
 
+    glfwSwapInterval(1);
+
+    unsigned int frames = 0;
+    double lastTime = glfwGetTime();
+    double currentTime;
+
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
@@ -82,16 +91,27 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 mvp = glm::mat4(1);
+        mvp *= glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 1, 50);
+        mvp *= glm::lookAt(glm::vec3(0, 4, 5), glm::vec3(0), glm::vec3(0, 1, 0));
         mvp = glm::rotate(mvp, (float)glfwGetTime(), glm::vec3(0, 1, 0));
-        mvp = glm::lookAt(glm::vec3(0, 4, 4), glm::vec3(0), glm::vec3(0, 1, 0)) * mvp;
-        mvp = glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 1, 20) * mvp;
-        
+        mvp = glm::translate(mvp, glm::vec3(-5, 0, -5));
+
         program.setUniform("mvp", mvp);
 
         glDrawElements(GL_TRIANGLES, buffers.size, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
+
+        currentTime = glfwGetTime();
+        if (currentTime - lastTime >= 1.0)
+        {
+            std::cout << "FPS: " << frames << std::endl;
+            frames = 0;
+            lastTime = currentTime;
+        }
+        frames++;
+
         fix_render_on_mac(window);
     }
 

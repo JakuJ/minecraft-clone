@@ -15,5 +15,6 @@ void World::placeBlock(int x, int y, int z, Cube::Type t)
 void World::buffer(Buffers& buffers)
 {
     Shape sh = chunk.getGeometry();
+    std::cout << sh << std::endl;
     sh.buffer(buffers);
 }

@@ -6,7 +6,7 @@
 struct Buffers
 {
     VBO<float, 3> vertices;
-    VBO<float, 2> texCoords;
+    VBO<float, 3> texCoords;
     EBO indices;
 
 public:

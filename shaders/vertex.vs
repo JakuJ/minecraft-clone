@@ -1,10 +1,10 @@
 #version 330 core
 layout (location = 0) in vec3 aPosition;
-layout (location = 1) in vec2 aTexCoord;
+layout (location = 1) in vec3 aTexCoord;
 
 uniform mat4 mvp;
 
-out vec2 fTexCoord;
+out vec3 fTexCoord;
 
 void main()
 {

@@ -18,7 +18,6 @@ public:
     Shape(const std::vector<float> &vertices, const std::vector<unsigned int> &indices, const std::vector<float> &texCoords);
 
     // Static factories
-    static Shape Quad(glm::vec3, glm::vec3, glm::vec3, glm::vec3);
     static Shape Box(glm::vec3, glm::vec3);
 
     // Methods
