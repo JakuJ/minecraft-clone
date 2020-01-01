@@ -1,8 +1,26 @@
 #include "window.hpp"
 #include "program.hpp"
-#include "buffer.hpp"
 #include "texture.hpp"
-#include "helpers.hpp"
+#include "buffers/VBO.hpp"
+#include "buffers/EBO.hpp"
+#include "shape.hpp"
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
+void fix_render_on_mac(GLFWwindow *window)
+{
+#ifdef __APPLE__
+    static bool macMoved = false;
+    if (!macMoved)
+    {
+        int x, y;
+        glfwGetWindowPos(window, &x, &y);
+        glfwSetWindowPos(window, ++x, y);
+        macMoved = true;
+    }
+#endif
+}
 
 void initBuffers()
 {
@@ -11,45 +29,17 @@ void initBuffers()
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    // Create a Vertex Buffer Objects
+    // Create buffers
+    VBO<float, 3> vertices(0);
+    VBO<float, 2> texCoords(1);
+    EBO indices;
 
-    std::vector<float> vertices = {
-        -0.5, -0.5, 0.0,
-        0.5, -0.5, 0.0,
-        0.5, 0.5, 0.0,
-        -0.5, 0.5, 0.0};
-
-    VertexBuffer<float, 3> vbo1(0, vertices);
-
-    std::vector<float> colors = {
-        1, 1, 1,
-        0, 0, 0,
-        1, 0, 1,
-        0, 1, 0};
-
-    VertexBuffer<float, 3> vbo2(1, colors);
-
-    std::vector<float> texCoords = {
-        0, 0,
-        1, 0,
-        1, 1,
-        0, 1};
-
-    VertexBuffer<float, 2> vbo3(2, texCoords);
-
-    // Create an Element Buffer Object
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
-    // Send data to the buffer
-    std::vector<unsigned int> indices = {
-        0, 1, 2,
-        0, 2, 3};
-    bufferVector(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
+    // Define geometry
+    Shape box = Shape::Box(glm::vec3(-0.5, -0.5, -0.5), glm::vec3(0.5, 0.5, 0.5));
+    box.buffer(vertices, indices, texCoords);
 }
 
-void initTextures(const Program& program)
+void initTextures(const Program &program)
 {
     Texture texture1("textures/container.jpg", GL_TEXTURE0);
     program.setUniform("box", 0);
@@ -76,21 +66,26 @@ int main()
 
     Program program;
     program.use();
-    
+
     initBuffers();
     initTextures(program);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        program.setUniform("time", (float)glfwGetTime());
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glm::mat4 mvp = glm::mat4(1);
+        mvp = glm::rotate(mvp, (float)glfwGetTime(), glm::vec3(0.5, 1, 0));
+        program.setUniform("mvp", mvp);
+
+        glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

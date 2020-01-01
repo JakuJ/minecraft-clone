@@ -15,7 +15,7 @@ include_directories("include")
 include_directories("headers")
 
 file(GLOB app_libs "lib/*.c")
-file(GLOB app_sources "src/*.cpp")
+file(GLOB app_sources "src/*.cpp" "src/buffers/*.cpp" "src/shapes/*.cpp")
 
 add_executable(main ${app_libs} ${app_sources})
 
