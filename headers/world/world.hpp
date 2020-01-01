@@ -1,14 +1,15 @@
 #pragma once
 
 #include <vector>
+#include "buffers/buffers.hpp"
 #include "world/chunk.hpp"
 
 class World
 {
-    static const unsigned int RENDER_DISTANCE = 1;
-    Chunk chunks[World::RENDER_DISTANCE];
+    Chunk chunk;
 
 public:
     World();
     void placeBlock(int, int, int, Cube::Type);
+    void buffer(Buffers&);
 };

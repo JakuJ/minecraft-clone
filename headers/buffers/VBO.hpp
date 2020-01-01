@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 #include "buffers/helpers.hpp"
 
 template <typename T, unsigned int N>
@@ -18,6 +19,7 @@ public:
     {
         glGenBuffers(1, &id);
         data = std::vector<float>();
+        std::cout << "VBO created" << std::endl;
     };
     VBO(unsigned int location, const std::vector<T> &data) : VBO(location)
     {

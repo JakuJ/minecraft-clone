@@ -1,5 +1,7 @@
 #pragma once
 
+#include "shape.hpp"
+
 struct Cube
 {
     enum Type
@@ -12,4 +14,6 @@ struct Cube
 
     Cube();
     Cube(Type);
+
+    Shape getShape() const;
 };

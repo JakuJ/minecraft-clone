@@ -1,9 +1,11 @@
 #include "buffers/EBO.hpp"
+#include <iostream>
 
 EBO::EBO()
 {
     glGenBuffers(1, &id);
     indices = std::vector<unsigned int>();
+    std::cout << "EBO created" << std::endl;
 }
 
 EBO::EBO(const std::vector<unsigned int> &indices) : EBO()

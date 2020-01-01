@@ -2,8 +2,8 @@
 
 #include <vector>
 #include "glm/glm.hpp"
-#include "buffers/VBO.hpp"
-#include "buffers/EBO.hpp"
+#include "buffers/buffers.hpp"
+#include <iostream>
 
 class Shape
 {
@@ -22,10 +22,13 @@ public:
     static Shape Box(glm::vec3, glm::vec3);
 
     // Methods
-    void buffer(VBO<float, 3> &vertexBuffer, EBO &indexBuffer, VBO<float, 2> &texCoordBuffer) const;
+    void buffer(Buffers&) const;
+    void translate(float x, float y, float z);
 
     // Operators
     Shape operator+(const Shape &other) const;
+    void operator+=(const Shape &other);
+    friend std::ostream& operator<<(std::ostream& out, const Shape& sh);
 };
 
 void push_vector(std::vector<float> &vec, const glm::vec3 &v);

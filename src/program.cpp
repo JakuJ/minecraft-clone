@@ -66,6 +66,8 @@ Program::Program()
     // No longer needed after linking
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+
+    std::cout << "Program created" << std::endl;
 }
 
 void Program::use() const

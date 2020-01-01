@@ -1,9 +1,10 @@
 #include "window.hpp"
 #include "program.hpp"
 #include "texture.hpp"
-#include "buffers/VBO.hpp"
-#include "buffers/EBO.hpp"
+#include "buffers/buffers.hpp"
 #include "shape.hpp"
+#include "world/world.hpp"
+#include "world/player.hpp"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -22,30 +23,10 @@ void fix_render_on_mac(GLFWwindow *window)
 #endif
 }
 
-void initBuffers()
-{
-    // Create a Vertex Array Object
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-
-    // Create buffers
-    VBO<float, 3> vertices(0);
-    VBO<float, 2> texCoords(1);
-    EBO indices;
-
-    // Define geometry
-    Shape box = Shape::Box(glm::vec3(-0.5, -0.5, -0.5), glm::vec3(0.5, 0.5, 0.5));
-    box.buffer(vertices, indices, texCoords);
-}
-
 void initTextures(const Program &program)
 {
-    Texture texture1("textures/container.jpg", GL_TEXTURE0);
-    program.setUniform("box", 0);
-
-    Texture texture2("textures/awesomeface.png", GL_TEXTURE1, true);
-    program.setUniform("face", 1);
+    Texture texture1("textures/dirt/side.jpg", GL_TEXTURE0, true);
+    program.setUniform("dirt", 0);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -67,12 +48,31 @@ int main()
     Program program;
     program.use();
 
-    initBuffers();
+    // Create a Vertex Array Object
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    // Create buffers
+    Buffers buffers;
+
+    // Create a world
+    World world;
+
+    world.placeBlock(0, 0, 0, Cube::DIRT);
+    world.placeBlock(0, 0, 1, Cube::DIRT);
+    world.placeBlock(1, 0, 1, Cube::DIRT);
+    world.placeBlock(1, 0, 0, Cube::AIR);
+
+    // Render the world
+    world.buffer(buffers);
     initTextures(program);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glEnable(GL_DEPTH_TEST);
+    Player player;
+
     glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+    glFrontFace(GL_CW); // why?
 
     while (!glfwWindowShouldClose(window))
     {
@@ -82,10 +82,13 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 mvp = glm::mat4(1);
-        mvp = glm::rotate(mvp, (float)glfwGetTime(), glm::vec3(0.5, 1, 0));
+        mvp = glm::rotate(mvp, (float)glfwGetTime(), glm::vec3(0, 1, 0));
+        mvp = glm::lookAt(glm::vec3(0, 4, 4), glm::vec3(0), glm::vec3(0, 1, 0)) * mvp;
+        mvp = glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 1, 20) * mvp;
+        
         program.setUniform("mvp", mvp);
 
-        glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, buffers.size, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
