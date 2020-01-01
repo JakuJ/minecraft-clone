@@ -4,7 +4,16 @@
 #include "GLFW/glfw3.h"
 #include <vector>
 
-template <class T>
+template <typename T>
+struct BufferType
+{
+    static unsigned int const type;
+};
+
+template <>
+unsigned int const BufferType<float>::type = GL_FLOAT;
+
+template <typename T>
 inline void bufferVector(GLenum target, const std::vector<T> &v, GLenum usage)
 {
     glBufferData(target, v.size() * sizeof(T), &v.front(), usage);

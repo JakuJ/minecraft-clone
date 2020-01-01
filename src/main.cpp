@@ -1,5 +1,6 @@
 #include "window.hpp"
 #include "program.hpp"
+#include "buffer.hpp"
 #include "helpers.hpp"
 
 void initBuffers()
@@ -9,22 +10,25 @@ void initBuffers()
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    // Create a Vertex Buffer Object
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    // Create a Vertex Buffer Objects
 
-    // Send data to the buffer
     std::vector<float> vertices = {
-        0.5f, 0.5f, 0.0f,   // top right
-        0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f, // bottom left
-        -0.5f, 0.5f, 0.0f   // top left
-    };
+        0.5, 0.5, 0.0,
+        0.5, -0.5, 0.0,
+        -0.5, -0.5, 0.0,
+        -0.5, 0.5, 0.0};
 
-    bufferVector(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-    glEnableVertexAttribArray(0);
+    VertexBuffer<float, 3> vbo1(0);
+    vbo1.bufferData(vertices);
+
+    std::vector<float> colors = {
+        1, 1, 1,
+        0, 0, 0,
+        1, 0, 1,
+        0, 1, 0};
+
+    VertexBuffer<float, 3> vbo2(1);
+    vbo2.bufferData(colors);
 
     // Create an Element Buffer Object
     unsigned int EBO;
@@ -63,7 +67,7 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        program.setFloat("time", glfwGetTime());
+        program.setUniform("time", (float)glfwGetTime());
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
