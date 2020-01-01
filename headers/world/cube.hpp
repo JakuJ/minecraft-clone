@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include "shape.hpp"
 
 struct Cube
@@ -16,4 +17,6 @@ struct Cube
     Cube(Type);
 
     Shape getShape() const;
+
+    friend std::ostream& operator<<(std::ostream&, const Cube&);
 };

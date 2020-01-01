@@ -1,20 +1,19 @@
 #include "world/world.hpp"
 #include <iostream>
 
-World::World() : chunk(0, 0, 0)
+World::World() : tree(World::SIDE)
 {
     std::cout << "World created" << std::endl;
 }
 
 void World::placeBlock(int x, int y, int z, Cube::Type t)
 {
-    Cube *c = new Cube(t);
-    chunk.placeAt(x, y, z, c);
+    tree.insert(x, y, z, new Cube(t));
 }
 
-void World::buffer(Buffers& buffers)
+void World::buffer(Buffers &buffers)
 {
-    Shape sh = chunk.getGeometry();
+    Shape sh = tree.getShape();
     std::cout << sh << std::endl;
     sh.buffer(buffers);
 }

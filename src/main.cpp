@@ -59,13 +59,10 @@ int main()
     // Create a world
     World world;
 
-    for (int i = 0; i < 10; i++)
-    {
-        for (int j = 0; j < 10; j++)
-        {
-            world.placeBlock(i, 0, j, Cube::DIRT);
-        }
-    }
+    world.placeBlock(1, 0, 1, Cube::DIRT);
+    world.placeBlock(-1, 0, 1, Cube::DIRT);
+    world.placeBlock(1, 0, -1, Cube::DIRT);
+    world.placeBlock(-1, 0, -1, Cube::DIRT);
 
     // Render the world
     world.buffer(buffers);
@@ -87,14 +84,13 @@ int main()
     {
         processInput(window);
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.6, 0.8, 1, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 mvp = glm::mat4(1);
         mvp *= glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 1, 50);
         mvp *= glm::lookAt(glm::vec3(0, 4, 5), glm::vec3(0), glm::vec3(0, 1, 0));
         mvp = glm::rotate(mvp, (float)glfwGetTime(), glm::vec3(0, 1, 0));
-        mvp = glm::translate(mvp, glm::vec3(-5, 0, -5));
 
         program.setUniform("mvp", mvp);
 
