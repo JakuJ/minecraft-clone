@@ -16,7 +16,7 @@ GLFWwindow *setupWindow(int width, int height)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    GLFWwindow *window = glfwCreateWindow(width, height, "LearnOpenGL", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(width, height, "Minecraft clone", nullptr, nullptr);
     if (!window)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -64,7 +64,7 @@ void processInput(GLFWwindow *window, Camera &camera, float deltaTime)
     {
         camera.processKeyboard(Camera::UP, deltaTime);
     }
-    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
     {
         camera.processKeyboard(Camera::DOWN, deltaTime);
     }
@@ -78,6 +78,7 @@ void registerCamera(GLFWwindow *window, const Camera &camera)
 
     glfwSetCursorPosCallback(window, [](GLFWwindow *w, double xpos, double ypos) {
         auto &camera = *static_cast<Camera *>(glfwGetWindowUserPointer(w));
+
         static float lastX = xpos;
         static float lastY = ypos;
 

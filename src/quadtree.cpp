@@ -138,7 +138,7 @@ QuadTree::QuadTree(unsigned int depth) : root(depth)
 {
 }
 
-void QuadTree::insert(int x, int y, int z, Cube *cube)
+Leaf *QuadTree::leafAt(int x, int y, int z)
 {
     int extent = root.getExtent();
     if (x < -extent || x >= extent || z < -extent || z >= extent)
@@ -152,8 +152,19 @@ void QuadTree::insert(int x, int y, int z, Cube *cube)
         n = (Branch *)(n->descent(x, z));
     }
 
-    Leaf *leaf = (Leaf *)(n->descent(x, z));
+    return (Leaf *)(n->descent(x, z));
+}
+
+void QuadTree::insert(int x, int y, int z, Cube *cube)
+{
+    Leaf *leaf = leafAt(x, y, z);
     leaf->chunk.placeAt(x - leaf->x0, y, z - leaf->z0, cube);
+}
+
+void QuadTree::remove(int x, int y, int z)
+{
+    Leaf *leaf = leafAt(x, y, z);
+    leaf->chunk.removeAt(x - leaf->x0, y, z - leaf->z0);
 }
 
 Shape QuadTree::getShape() const

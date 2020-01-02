@@ -40,10 +40,12 @@ struct Leaf : public Node
 class QuadTree
 {
     Branch root;
+    Leaf *leafAt(int x, int y, int z);
 
 public:
     QuadTree(unsigned int depth);
 
     void insert(int x, int y, int z, Cube *cube);
+    void remove(int x, int y, int z);
     Shape getShape() const;
 };

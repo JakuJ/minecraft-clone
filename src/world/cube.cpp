@@ -1,14 +1,8 @@
 #include "world/cube.hpp"
 
-Cube::Cube() : type(Cube::AIR)
-{
-    std::cout << "Cube created" << std::endl;
-}
+Cube::Cube() : type(Cube::AIR) {}
 
-Cube::Cube(Cube::Type t) : type(t)
-{
-    std::cout << "Cube created from type" << std::endl;
-}
+Cube::Cube(Cube::Type t) : type(t) {}
 
 Shape Cube::getShape() const
 {

@@ -31,7 +31,14 @@ Chunk::~Chunk()
 
 void Chunk::placeAt(u_int x, u_int y, u_int z, Cube *c)
 {
+    removeAt(x, y, z);
     cubes[x][y][z] = c;
+}
+
+void Chunk::removeAt(u_int x, u_int y, u_int z)
+{
+    delete cubes[x][y][z];
+    cubes[x][y][z] = nullptr;
 }
 
 void Chunk::for_each(std::function<void(u_int, u_int, u_int, Cube *)> f) const
@@ -44,7 +51,6 @@ void Chunk::for_each(std::function<void(u_int, u_int, u_int, Cube *)> f) const
             {
                 if (cubes[i][j][k])
                 {
-                    std::cout << "Accessing cube" << std::endl;
                     f(i, j, k, cubes[i][j][k]);
                 }
             }
@@ -54,9 +60,6 @@ void Chunk::for_each(std::function<void(u_int, u_int, u_int, Cube *)> f) const
 
 Shape Chunk::getShape() const
 {
-    std::cout << "Getting shape for:" << std::endl;
-    std::cout << *this << std::endl;
-
     Shape result;
     for_each([&result](u_int x, u_int y, u_int z, Cube *c) {
         Shape sh = c->getShape();
@@ -70,7 +73,7 @@ Shape Chunk::getShape() const
 std::ostream &operator<<(std::ostream &out, const Chunk &chunk)
 {
     chunk.for_each([&out](u_int x, u_int y, u_int z, Cube *c) {
-        out << *c << std::endl;
+        out << *c << " at (" << x << ", " << y << ", " << z << ")" << std::endl;
     });
     return out;
 }

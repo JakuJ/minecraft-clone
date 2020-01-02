@@ -13,5 +13,6 @@ class World
 public:
     World();
     void placeBlock(int, int, int, Cube::Type);
-    void buffer(Buffers&);
+    void removeBlock(int, int, int);
+    void buffer(Buffers &);
 };

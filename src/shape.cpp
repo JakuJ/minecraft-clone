@@ -32,8 +32,6 @@ Shape Shape::Box(glm::vec3 near, glm::vec3 far)
     auto v6 = glm::vec3(far[0], near[1], far[2]);
     auto v8 = glm::vec3(near[0], far[1], far[2]);
 
-    std::cout << "Box created" << std::endl;
-
     std::vector<float> vertices;
     for (auto x : {v1, v2, v3, v4, v5, v6, v7, v8})
     {
@@ -117,8 +115,5 @@ void Shape::operator+=(const Shape &other)
 std::ostream &operator<<(std::ostream &out, const Shape &sh)
 {
     out << "Shape with " << sh.vertices.size() / 3 << " vertices, " << sh.indices.size() << " indices and " << sh.texCoords.size() / 2 << " tex coords" << std::endl;
-    // out << "Vertices: " << sh.vertices << std::endl;
-    // out << "Indices: " << sh.indices << std::endl;
-    // out << "TexCoords: " << sh.texCoords << std::endl;
     return out;
 }

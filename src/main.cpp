@@ -60,16 +60,37 @@ int main()
     // Create a world
     World world;
 
-    world.placeBlock(1, 0, 1, Cube::DIRT);
-    world.placeBlock(-1, 0, 1, Cube::DIRT);
-    world.placeBlock(1, 0, -1, Cube::DIRT);
-    world.placeBlock(-1, 0, -1, Cube::DIRT);
+    for (int i = -10; i <= 10; i++)
+    {
+        for (int j = -10; j <= 10; j++)
+        {
+            world.placeBlock(i, 0, j, Cube::DIRT);
+        }
+    }
+
+    world.placeBlock(-1, 1, -1, Cube::DIRT);
+    world.placeBlock(-1, 1, 0, Cube::DIRT);
+    world.placeBlock(-1, 1, 1, Cube::DIRT);
+
+    world.placeBlock(1, 1, -1, Cube::DIRT);
+    world.placeBlock(1, 1, 0, Cube::DIRT);
+    world.placeBlock(1, 1, 1, Cube::DIRT);
+
+    world.placeBlock(0, 1, 1, Cube::DIRT);
+    world.placeBlock(0, 1, -1, Cube::DIRT);
+
+    world.placeBlock(1, 2, -1, Cube::DIRT);
+    world.placeBlock(0, 2, -1, Cube::DIRT);
+
+    world.removeBlock(0, 0, 3);
+    world.removeBlock(1, 0, 3);
+    world.removeBlock(1, 0, 3);
 
     // Render the world
     world.buffer(buffers);
     initTextures(program);
 
-    Player player(0, 1, 3);
+    Player player(0, 2, 5);
 
     registerCamera(window, player.camera);
 
@@ -94,7 +115,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 mvp = glm::mat4(1);
-        mvp *= glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 0.5, Chunk::SIDE);
+        mvp *= glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 0.5, 2 * Chunk::SIDE);
         mvp *= player.camera.getViewMatrix();
 
         program.setUniform("mvp", mvp);
@@ -110,7 +131,7 @@ int main()
             frames = 0;
             lastSecond = currentTime;
         }
-        
+
         lastFrame = currentTime;
         frames++;
 
