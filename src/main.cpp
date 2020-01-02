@@ -43,27 +43,38 @@ int main()
     {
         for (int z = 0; z <= side; z++)
         {
-            world.placeBlock(x, 12, z, Block::ACACIA_LEAVES);
-            world.placeBlock(x, 10, z, Block::ACACIA_LOG);
-            world.placeBlock(x, 8, z, Block::COBBLESTONE);
-            world.placeBlock(x, 6, z, Block::GRASS);
-            world.placeBlock(x, 4, z, Block::DIRT);
-            world.placeBlock(x, 2, z, Block::STONE);
-            world.placeBlock(x, 0, z, Block::ACACIA_LEAVES);
+            world.placeBlock(x, 14, z, Block::ACACIA_LEAVES);
+            world.placeBlock(x, 12, z, Block::ACACIA_LOG);
+            world.placeBlock(x, 10, z, Block::COBBLESTONE);
+            world.placeBlock(x, 8, z, Block::GRASS);
+            world.placeBlock(x, 6, z, Block::DIRT);
+            world.placeBlock(x, 4, z, Block::STONE);
+            world.placeBlock(x, 2, z, Block::ACACIA_LEAVES);
+        }
+    }
+
+    const int floor = 20;
+    for (int x = -floor; x <= floor; x++)
+    {
+        for (int z = -floor; z <= floor; z++)
+        {
+            world.placeBlock(x, 0, z, Block::GRASS);
         }
     }
 
     // Render the world
     world.render(renderer);
 
-    Player player(0, 0, 6);
+    Player player(2, 5, 15);
 
     registerCamera(window, player.camera);
 
     glEnable(GL_DEPTH_TEST);
 
-    glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CW); // why?
+    // TODO: Find a way not to cull transparent blocks
+    // For now, face culling is disabled
+    // glEnable(GL_CULL_FACE);
+    // glFrontFace(GL_CW); // TODO: why is my winding order wrong?
 
     glfwSwapInterval(1);
 
