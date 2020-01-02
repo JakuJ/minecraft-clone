@@ -1,11 +1,11 @@
 #include "window.hpp"
-#include "program.hpp"
-#include "texture.hpp"
+#include "rendering/program.hpp"
+#include "rendering/texture.hpp"
 #include "buffers/buffers.hpp"
-#include "shape.hpp"
+#include "rendering/shape.hpp"
 #include "world/world.hpp"
-#include "world/player.hpp"
-#include "camera.hpp"
+#include "player/player.hpp"
+#include "player/camera.hpp"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -26,8 +26,8 @@ void fix_render_on_mac(GLFWwindow *window)
 
 void initTextures(const Program &program)
 {
-    CubeTexture dirtTexture("textures/dirt", GL_TEXTURE0, false);
-    program.setUniform("dirt", 0);
+    CubeTexture grass("textures/grass", GL_TEXTURE0, false);
+    program.setUniform("cubeMap", 0);
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -46,8 +46,9 @@ int main()
         return -1;
     }
 
-    Program program;
-    program.use();
+    Program program2D("shaders/cube2D.vert", "shaders/cube2D.frag");
+    Program program3D("shaders/cube3D.vert", "shaders/cube3D.frag");
+    program3D.use();
 
     // Create a Vertex Array Object
     unsigned int VAO;
@@ -64,31 +65,32 @@ int main()
     {
         for (int j = -10; j <= 10; j++)
         {
-            world.placeBlock(i, 0, j, Cube::DIRT);
+            world.placeBlock(i, 0, j, Block::DIRT);
         }
     }
 
-    world.placeBlock(-1, 1, -1, Cube::DIRT);
-    world.placeBlock(-1, 1, 0, Cube::DIRT);
-    world.placeBlock(-1, 1, 1, Cube::DIRT);
+    world.placeBlock(-1, 1, -1, Block::DIRT);
+    world.placeBlock(-1, 1, 0, Block::DIRT);
+    world.placeBlock(-1, 1, 1, Block::DIRT);
 
-    world.placeBlock(1, 1, -1, Cube::DIRT);
-    world.placeBlock(1, 1, 0, Cube::DIRT);
-    world.placeBlock(1, 1, 1, Cube::DIRT);
+    world.placeBlock(1, 1, -1, Block::DIRT);
+    world.placeBlock(1, 1, 0, Block::DIRT);
+    world.placeBlock(1, 1, 1, Block::DIRT);
 
-    world.placeBlock(0, 1, 1, Cube::DIRT);
-    world.placeBlock(0, 1, -1, Cube::DIRT);
+    world.placeBlock(0, 1, 1, Block::DIRT);
+    world.placeBlock(0, 1, -1, Block::DIRT);
 
-    world.placeBlock(1, 2, -1, Cube::DIRT);
-    world.placeBlock(0, 2, -1, Cube::DIRT);
+    world.placeBlock(1, 2, -1, Block::DIRT);
+    world.placeBlock(0, 2, -1, Block::DIRT);
 
     world.removeBlock(0, 0, 3);
     world.removeBlock(1, 0, 3);
     world.removeBlock(1, 0, 3);
+    world.removeBlock(1, 1, 1);
 
     // Render the world
     world.buffer(buffers);
-    initTextures(program);
+    initTextures(program3D);
 
     Player player(0, 2, 5);
 
@@ -118,7 +120,7 @@ int main()
         mvp *= glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 0.5, 2 * Chunk::SIDE);
         mvp *= player.camera.getViewMatrix();
 
-        program.setUniform("mvp", mvp);
+        program3D.setUniform("mvp", mvp);
 
         glDrawElements(GL_TRIANGLES, buffers.size, GL_UNSIGNED_INT, 0);
 

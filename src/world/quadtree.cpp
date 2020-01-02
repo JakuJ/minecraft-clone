@@ -1,4 +1,4 @@
-#include "quadtree.hpp"
+#include "world/quadtree.hpp"
 #include <math.h>
 
 #pragma region Node
@@ -138,7 +138,7 @@ QuadTree::QuadTree(unsigned int depth) : root(depth)
 {
 }
 
-Leaf *QuadTree::leafAt(int x, int y, int z)
+Leaf *QuadTree::leafAt(int x, int z)
 {
     int extent = root.getExtent();
     if (x < -extent || x >= extent || z < -extent || z >= extent)
@@ -155,15 +155,15 @@ Leaf *QuadTree::leafAt(int x, int y, int z)
     return (Leaf *)(n->descent(x, z));
 }
 
-void QuadTree::insert(int x, int y, int z, Cube *cube)
+void QuadTree::insert(int x, int y, int z, Block *block)
 {
-    Leaf *leaf = leafAt(x, y, z);
-    leaf->chunk.placeAt(x - leaf->x0, y, z - leaf->z0, cube);
+    Leaf *leaf = leafAt(x, z);
+    leaf->chunk.placeAt(x - leaf->x0, y, z - leaf->z0, block);
 }
 
 void QuadTree::remove(int x, int y, int z)
 {
-    Leaf *leaf = leafAt(x, y, z);
+    Leaf *leaf = leafAt(x, z);
     leaf->chunk.removeAt(x - leaf->x0, y, z - leaf->z0);
 }
 

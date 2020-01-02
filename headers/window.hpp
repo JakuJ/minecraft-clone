@@ -3,7 +3,7 @@
 #include <iostream>
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include "camera.hpp"
+#include "player/camera.hpp"
 
 GLFWwindow *setupWindow(int width, int height);
 void processInput(GLFWwindow *window, Camera &camera, float deltaTime);

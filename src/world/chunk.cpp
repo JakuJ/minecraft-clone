@@ -2,14 +2,14 @@
 
 Chunk::Chunk()
 {
-    cubes = new Cube ***[Chunk::SIDE];
+    blocks = new Block ***[Chunk::SIDE];
 
     for (size_t i = 0; i < Chunk::SIDE; i++)
     {
-        cubes[i] = new Cube **[Chunk::HEIGHT];
+        blocks[i] = new Block **[Chunk::HEIGHT];
         for (size_t j = 0; j < Chunk::HEIGHT; j++)
         {
-            cubes[i][j] = new Cube *[Chunk::SIDE] { nullptr };
+            blocks[i][j] = new Block *[Chunk::SIDE] { nullptr };
         }
     }
 
@@ -22,26 +22,26 @@ Chunk::~Chunk()
     {
         for (size_t j = 0; j < Chunk::HEIGHT; j++)
         {
-            delete[] cubes[i][j];
+            delete[] blocks[i][j];
         }
-        delete[] cubes[i];
+        delete[] blocks[i];
     }
-    delete[] cubes;
+    delete[] blocks;
 }
 
-void Chunk::placeAt(u_int x, u_int y, u_int z, Cube *c)
+void Chunk::placeAt(u_int x, u_int y, u_int z, Block *c)
 {
     removeAt(x, y, z);
-    cubes[x][y][z] = c;
+    blocks[x][y][z] = c;
 }
 
 void Chunk::removeAt(u_int x, u_int y, u_int z)
 {
-    delete cubes[x][y][z];
-    cubes[x][y][z] = nullptr;
+    delete blocks[x][y][z];
+    blocks[x][y][z] = nullptr;
 }
 
-void Chunk::for_each(std::function<void(u_int, u_int, u_int, Cube *)> f) const
+void Chunk::for_each(std::function<void(u_int, u_int, u_int, Block *)> f) const
 {
     for (u_int i = 0; i < Chunk::SIDE; i++)
     {
@@ -49,9 +49,9 @@ void Chunk::for_each(std::function<void(u_int, u_int, u_int, Cube *)> f) const
         {
             for (u_int k = 0; k < Chunk::SIDE; k++)
             {
-                if (cubes[i][j][k])
+                if (blocks[i][j][k])
                 {
-                    f(i, j, k, cubes[i][j][k]);
+                    f(i, j, k, blocks[i][j][k]);
                 }
             }
         }
@@ -61,8 +61,8 @@ void Chunk::for_each(std::function<void(u_int, u_int, u_int, Cube *)> f) const
 Shape Chunk::getShape() const
 {
     Shape result;
-    for_each([&result](u_int x, u_int y, u_int z, Cube *c) {
-        Shape sh = c->getShape();
+    for_each([&result](u_int x, u_int y, u_int z, Block *block) {
+        Shape sh = block->getShape();
         sh.translate(x, y, z);
         result += sh;
     });
@@ -72,8 +72,8 @@ Shape Chunk::getShape() const
 
 std::ostream &operator<<(std::ostream &out, const Chunk &chunk)
 {
-    chunk.for_each([&out](u_int x, u_int y, u_int z, Cube *c) {
-        out << *c << " at (" << x << ", " << y << ", " << z << ")" << std::endl;
+    chunk.for_each([&out](u_int x, u_int y, u_int z, Block *block) {
+        out << *block << " at (" << x << ", " << y << ", " << z << ")" << std::endl;
     });
     return out;
 }

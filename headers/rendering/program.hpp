@@ -23,5 +23,5 @@ public:
     void setUniform(const std::string &name, int value) const;
     void setUniform(const std::string &name, const glm::mat4 &value) const;
 
-    Program();
+    Program(const std::string &, const std::string &);
 };

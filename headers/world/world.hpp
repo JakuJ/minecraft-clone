@@ -12,7 +12,7 @@ class World
 
 public:
     World();
-    void placeBlock(int, int, int, Cube::Type);
+    void placeBlock(int, int, int, Block::Type);
     void removeBlock(int, int, int);
     void buffer(Buffers &);
 };

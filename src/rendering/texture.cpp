@@ -1,9 +1,11 @@
 #include <iostream>
 #include <vector>
 #include "stb/stb_image.h"
-#include "texture.hpp"
+#include "rendering/texture.hpp"
 
-Texture::Texture(const std::string &path, unsigned int target, bool flip)
+Texture::Texture(unsigned int target) : target(target) {}
+
+Texture2D::Texture2D(const std::string &path, unsigned int target, bool flip) : Texture(target)
 {
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(flip);
@@ -25,7 +27,13 @@ Texture::Texture(const std::string &path, unsigned int target, bool flip)
     stbi_image_free(data);
 }
 
-CubeTexture::CubeTexture(const std::string &directory, unsigned int target, bool flip)
+void Texture2D::use() const
+{
+    glActiveTexture(target);
+    glBindTexture(GL_TEXTURE_2D, id);
+}
+
+CubeTexture::CubeTexture(const std::string &directory, unsigned int target, bool flip) : Texture(target)
 {
 
     stbi_set_flip_vertically_on_load(flip);
@@ -56,6 +64,10 @@ CubeTexture::CubeTexture(const std::string &directory, unsigned int target, bool
 
         stbi_image_free(data);
     }
+}
 
-    
+void CubeTexture::use() const
+{
+    glActiveTexture(target);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, id);
 }

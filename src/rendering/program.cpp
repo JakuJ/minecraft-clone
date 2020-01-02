@@ -3,7 +3,7 @@
 #include <vector>
 #include "glm/gtc/type_ptr.hpp"
 
-#include "program.hpp"
+#include "rendering/program.hpp"
 
 unsigned int Program::loadShader(const std::string &path, int type)
 {
@@ -43,10 +43,10 @@ unsigned int Program::loadShader(const std::string &path, int type)
     return shader;
 }
 
-Program::Program()
+Program::Program(const std::string &vertPath, const std::string &fragPath)
 {
-    vertexShader = Program::loadShader("shaders/vertex.vs", GL_VERTEX_SHADER);
-    fragmentShader = Program::loadShader("shaders/fragment.fs", GL_FRAGMENT_SHADER);
+    vertexShader = Program::loadShader(vertPath, GL_VERTEX_SHADER);
+    fragmentShader = Program::loadShader(fragPath, GL_FRAGMENT_SHADER);
     id = glCreateProgram();
 
     glAttachShader(id, vertexShader);
@@ -90,7 +90,7 @@ void Program::setUniform(const std::string &name, int value) const
     glUniform1i(glGetUniformLocation(id, name.c_str()), value);
 }
 
-void Program::setUniform(const std::string &name, const glm::mat4& value) const
+void Program::setUniform(const std::string &name, const glm::mat4 &value) const
 {
     auto location = glGetUniformLocation(id, name.c_str());
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));

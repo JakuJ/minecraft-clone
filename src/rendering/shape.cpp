@@ -1,5 +1,5 @@
-#include "shape.hpp"
 #include <iostream>
+#include "rendering/shape.hpp"
 #include "buffers/helpers.hpp"
 
 void push_vector(std::vector<float> &vec, const glm::vec3 &v)

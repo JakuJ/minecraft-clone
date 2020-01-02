@@ -1,5 +1,5 @@
-#include "camera.hpp"
 #include <iostream>
+#include "player/camera.hpp"
 
 Camera::Camera(float x, float y, float z, float yaw, float pitch) : MovementSpeed(2.5), MouseSensitivity(0.2)
 {
