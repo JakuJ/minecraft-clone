@@ -5,6 +5,7 @@
 
 struct Block
 {
+public:
     enum Face
     {
         UP = 0,
@@ -21,9 +22,13 @@ struct Block
     {
         DIRT = 0,
         GRASS,
+        COBBLESTONE,
+        STONE,
+        ACACIA_LOG,
+        ACACIA_LEAVES
     };
 
-    static const u_int TYPES = 2;
+    static const u_int TYPES = 6;
 
     Type type;
 

@@ -23,3 +23,7 @@ void World::render(QuadRenderer &renderer) const
 
     renderer.bufferMesh(mesh);
 }
+
+void update(const Player &player)
+{
+}

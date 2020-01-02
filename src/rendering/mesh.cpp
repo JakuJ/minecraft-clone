@@ -15,7 +15,6 @@ void Mesh::buffer(QuadBuffers &b) const
 void Mesh::addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face faceId)
 {
     u_int offset = vertices.size() / 3;
-    std::cout << "Offset: " << offset << std::endl;
     
     vertices.insert(vertices.end(), vs.cbegin(), vs.cend());
 

@@ -6,7 +6,7 @@
 #include "rendering/mesh.hpp"
 class Chunk
 {
-    static const u_int HEIGHT = 8;
+    static const u_int HEIGHT = 16;
     Block ****blocks;
 
     void for_each(std::function<void(int, int, int, Block *)>) const;

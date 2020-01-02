@@ -81,8 +81,10 @@ Mesh Chunk::getMesh() const
 
         Block *faces[]{up, down, north, south, east, west};
 
+        // Only render visible faces
         for (u_int i = 0; i < Block::FACES; i++)
         {
+            // temporary hack for transparent blocks
             if (!faces[i])
             {
                 Block::Face face = (Block::Face)i;

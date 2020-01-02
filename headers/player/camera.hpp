@@ -10,6 +10,17 @@
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
 class Camera
 {
+    glm::vec3 front;
+    glm::vec3 up;
+    glm::vec3 right;
+    glm::vec3 worldUp;
+    // Euler Angles
+    float yaw;
+    float pitch;
+    // Camera options
+    float movementSpeed;
+    float mouseSensitivity;
+
 public:
     // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
     enum Movement
@@ -22,18 +33,7 @@ public:
         DOWN
     };
 
-    // Camera Attributes
-    glm::vec3 Position;
-    glm::vec3 Front;
-    glm::vec3 Up;
-    glm::vec3 Right;
-    glm::vec3 WorldUp;
-    // Euler Angles
-    float Yaw;
-    float Pitch;
-    // Camera options
-    float MovementSpeed;
-    float MouseSensitivity;
+    glm::vec3 position;
 
     // Constructor with vectors
     Camera(float x, float y, float z, float yaw = -90, float pitch = 0);

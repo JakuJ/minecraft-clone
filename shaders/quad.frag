@@ -8,6 +8,10 @@ uniform sampler2D cubes;
 
 void main()
 {
-    vec4 color = texture(cubes, fTexCoord);
-    FragColor = vec4(color.xyz, 1.0);
+    vec4 texColor = texture(cubes, fTexCoord);
+    if(texColor.a < 0.1)
+    {
+        discard;
+    }
+    FragColor = texColor;
 }

@@ -5,10 +5,11 @@
 #include "world/chunk.hpp"
 #include "quadtree.hpp"
 #include "rendering/renderer.hpp"
+#include "player/player.hpp"
 
 class World
 {
-    static const unsigned int SIDE = 1;
+    static const unsigned int SIDE = 5;
     QuadTree tree;
 
 public:
@@ -16,4 +17,5 @@ public:
     void placeBlock(int, int, int, Block::Type);
     void removeBlock(int, int, int);
     void render(QuadRenderer &) const;
+    void update(const Player &);
 };

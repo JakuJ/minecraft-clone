@@ -5,6 +5,7 @@
 #include "world/world.hpp"
 #include "player/player.hpp"
 #include "player/camera.hpp"
+#include <random>
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -35,31 +36,32 @@ int main()
 
     World world;
     QuadRenderer renderer;
-    
-    for (int x = -6; x <= 6; x++)
+
+    const int side = 3;
+
+    for (int x = 0; x <= side; x++)
     {
-        for (int z = -6; z <= 6; z++)
+        for (int z = 0; z <= side; z++)
         {
-            world.placeBlock(x, 0, z, Block::GRASS);
+            world.placeBlock(x, 12, z, Block::ACACIA_LEAVES);
+            world.placeBlock(x, 10, z, Block::ACACIA_LOG);
+            world.placeBlock(x, 8, z, Block::COBBLESTONE);
+            world.placeBlock(x, 6, z, Block::GRASS);
+            world.placeBlock(x, 4, z, Block::DIRT);
+            world.placeBlock(x, 2, z, Block::STONE);
+            world.placeBlock(x, 0, z, Block::ACACIA_LEAVES);
         }
     }
-
-    world.placeBlock(-6, 2, -6, Block::DIRT);
-    world.placeBlock(-6, 2, 6, Block::DIRT);
-    world.placeBlock(6, 2, -6, Block::DIRT);
-    world.placeBlock(6, 2, 6, Block::DIRT);
-
-    world.placeBlock(0, 2, 0, Block::DIRT);
 
     // Render the world
     world.render(renderer);
 
-    Player player(0, 2, 0);
+    Player player(0, 0, 6);
 
     registerCamera(window, player.camera);
 
     glEnable(GL_DEPTH_TEST);
-    
+
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW); // why?
 
