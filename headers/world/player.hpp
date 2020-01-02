@@ -1,10 +1,11 @@
 #pragma once
 
+#include "camera.hpp"
+
 class Player
 {
-    float x, y, z;
-    float pitch, yaw;
-
 public:
-    Player();
+    Camera camera;
+
+    Player(float, float, float);
 };

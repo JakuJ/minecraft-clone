@@ -5,6 +5,7 @@
 #include "shape.hpp"
 #include "world/world.hpp"
 #include "world/player.hpp"
+#include "camera.hpp"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -68,7 +69,9 @@ int main()
     world.buffer(buffers);
     initTextures(program);
 
-    Player player;
+    Player player(0, 1, 3);
+
+    registerCamera(window, player.camera);
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -77,20 +80,22 @@ int main()
     glfwSwapInterval(1);
 
     unsigned int frames = 0;
-    double lastTime = glfwGetTime();
-    double currentTime;
+    double lastSecond = glfwGetTime();
+    double lastFrame = lastSecond;
+    double currentTime = lastSecond;
 
     while (!glfwWindowShouldClose(window))
     {
-        processInput(window);
+        // pre-frame logic
+        currentTime = glfwGetTime();
+        processInput(window, player.camera, currentTime - lastFrame);
 
         glClearColor(0.6, 0.8, 1, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 mvp = glm::mat4(1);
-        mvp *= glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 1, 50);
-        mvp *= glm::lookAt(glm::vec3(0, 4, 5), glm::vec3(0), glm::vec3(0, 1, 0));
-        mvp = glm::rotate(mvp, (float)glfwGetTime(), glm::vec3(0, 1, 0));
+        mvp *= glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 0.5, Chunk::SIDE);
+        mvp *= player.camera.getViewMatrix();
 
         program.setUniform("mvp", mvp);
 
@@ -99,13 +104,14 @@ int main()
         glfwSwapBuffers(window);
         glfwPollEvents();
 
-        currentTime = glfwGetTime();
-        if (currentTime - lastTime >= 1.0)
+        if (currentTime - lastSecond >= 1.0)
         {
             std::cout << "FPS: " << frames << std::endl;
             frames = 0;
-            lastTime = currentTime;
+            lastSecond = currentTime;
         }
+        
+        lastFrame = currentTime;
         frames++;
 
         fix_render_on_mac(window);
