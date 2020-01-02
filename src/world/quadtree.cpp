@@ -92,25 +92,18 @@ Node *Branch::descent(int x, int z)
     }
 }
 
-Shape Branch::getShape() const
+Mesh Branch::getMesh() const
 {
-    Shape result;
-    if (q1)
+    Mesh result;
+
+    for (Node *q : {q1, q2, q3, q4})
     {
-        result += q1->getShape();
+        if (q)
+        {
+            result += q->getMesh();
+        }
     }
-    if (q2)
-    {
-        result += q2->getShape();
-    }
-    if (q3)
-    {
-        result += q3->getShape();
-    }
-    if (q4)
-    {
-        result += q4->getShape();
-    }
+
     return result;
 }
 
@@ -123,11 +116,11 @@ Leaf::Leaf(int x0, int z0) : Node(0, x0, z0)
     std::cout << "Leaf spanning from (" << x0 << ", " << z0 << ") created" << std::endl;
 }
 
-Shape Leaf::getShape() const
+Mesh Leaf::getMesh() const
 {
-    Shape sh = chunk.getShape();
-    sh.translate(x0, 0, z0);
-    return sh;
+    Mesh mesh = chunk.getMesh();
+    mesh.translate(x0, 0, z0);
+    return mesh;
 }
 
 #pragma endregion Leaf
@@ -140,7 +133,8 @@ QuadTree::QuadTree(unsigned int depth) : root(depth)
 
 Leaf *QuadTree::leafAt(int x, int z)
 {
-    int extent = root.getExtent();
+    int extent = root.getExtent() / 2;
+
     if (x < -extent || x >= extent || z < -extent || z >= extent)
     {
         throw "Looking outside of the world bounds";
@@ -167,9 +161,9 @@ void QuadTree::remove(int x, int y, int z)
     leaf->chunk.removeAt(x - leaf->x0, y, z - leaf->z0);
 }
 
-Shape QuadTree::getShape() const
+Mesh QuadTree::getMesh() const
 {
-    return root.getShape();
+    return root.getMesh();
 }
 
 #pragma endregion QuadTree

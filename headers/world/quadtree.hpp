@@ -12,7 +12,7 @@ struct Node
     virtual ~Node() = 0;
 
     unsigned int getExtent() const;
-    virtual Shape getShape() const = 0;
+    virtual Mesh getMesh() const = 0;
 };
 
 struct Branch : public Node
@@ -26,7 +26,7 @@ struct Branch : public Node
     Node *makeChild(int x, int z);
     Node *descent(int x, int z);
 
-    Shape getShape() const override;
+    Mesh getMesh() const override;
 };
 
 struct Leaf : public Node
@@ -34,7 +34,7 @@ struct Leaf : public Node
     Chunk chunk;
     Leaf(int x0, int z0);
 
-    Shape getShape() const override;
+    Mesh getMesh() const override;
 };
 
 class QuadTree
@@ -47,5 +47,5 @@ public:
 
     void insert(int x, int y, int z, Block *);
     void remove(int x, int y, int z);
-    Shape getShape() const;
+    Mesh getMesh() const;
 };

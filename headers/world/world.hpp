@@ -4,6 +4,7 @@
 #include "buffers/buffers.hpp"
 #include "world/chunk.hpp"
 #include "quadtree.hpp"
+#include "rendering/renderer.hpp"
 
 class World
 {
@@ -14,5 +15,5 @@ public:
     World();
     void placeBlock(int, int, int, Block::Type);
     void removeBlock(int, int, int);
-    void buffer(Buffers &);
+    void render(QuadRenderer &) const;
 };

@@ -16,9 +16,10 @@ void World::removeBlock(int x, int y, int z)
     tree.remove(x, y, z);
 }
 
-void World::buffer(Buffers &buffers)
+void World::render(QuadRenderer &renderer) const
 {
-    Shape sh = tree.getShape();
-    std::cout << sh << std::endl;
-    sh.buffer(buffers);
+    Mesh mesh = tree.getMesh();
+    std::cout << mesh << std::endl;
+
+    renderer.bufferMesh(mesh);
 }

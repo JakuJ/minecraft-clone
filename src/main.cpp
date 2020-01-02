@@ -2,7 +2,6 @@
 #include "rendering/program.hpp"
 #include "rendering/texture.hpp"
 #include "buffers/buffers.hpp"
-#include "rendering/shape.hpp"
 #include "world/world.hpp"
 #include "player/player.hpp"
 #include "player/camera.hpp"
@@ -24,18 +23,6 @@ void fix_render_on_mac(GLFWwindow *window)
 #endif
 }
 
-void initTextures(const Program &program)
-{
-    CubeTexture grass("textures/grass", GL_TEXTURE0, false);
-    program.setUniform("cubeMap", 0);
-
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-}
-
 int main()
 {
     GLFWwindow *window = setupWindow(800, 600);
@@ -46,58 +33,34 @@ int main()
         return -1;
     }
 
-    Program program2D("shaders/cube2D.vert", "shaders/cube2D.frag");
-    Program program3D("shaders/cube3D.vert", "shaders/cube3D.frag");
-    program3D.use();
-
-    // Create a Vertex Array Object
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-
-    // Create buffers
-    Buffers buffers;
-
-    // Create a world
     World world;
-
-    for (int i = -10; i <= 10; i++)
+    QuadRenderer renderer;
+    
+    for (int x = -6; x <= 6; x++)
     {
-        for (int j = -10; j <= 10; j++)
+        for (int z = -6; z <= 6; z++)
         {
-            world.placeBlock(i, 0, j, Block::DIRT);
+            world.placeBlock(x, 0, z, Block::GRASS);
         }
     }
 
-    world.placeBlock(-1, 1, -1, Block::DIRT);
-    world.placeBlock(-1, 1, 0, Block::DIRT);
-    world.placeBlock(-1, 1, 1, Block::DIRT);
+    world.placeBlock(-6, 2, -6, Block::DIRT);
+    world.placeBlock(-6, 2, 6, Block::DIRT);
+    world.placeBlock(6, 2, -6, Block::DIRT);
+    world.placeBlock(6, 2, 6, Block::DIRT);
 
-    world.placeBlock(1, 1, -1, Block::DIRT);
-    world.placeBlock(1, 1, 0, Block::DIRT);
-    world.placeBlock(1, 1, 1, Block::DIRT);
-
-    world.placeBlock(0, 1, 1, Block::DIRT);
-    world.placeBlock(0, 1, -1, Block::DIRT);
-
-    world.placeBlock(1, 2, -1, Block::DIRT);
-    world.placeBlock(0, 2, -1, Block::DIRT);
-
-    world.removeBlock(0, 0, 3);
-    world.removeBlock(1, 0, 3);
-    world.removeBlock(1, 0, 3);
-    world.removeBlock(1, 1, 1);
+    world.placeBlock(0, 2, 0, Block::DIRT);
 
     // Render the world
-    world.buffer(buffers);
-    initTextures(program3D);
+    world.render(renderer);
 
-    Player player(0, 2, 5);
+    Player player(0, 2, 0);
 
     registerCamera(window, player.camera);
 
-    glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
+    
+    glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW); // why?
 
     glfwSwapInterval(1);
@@ -120,9 +83,9 @@ int main()
         mvp *= glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 0.5, 2 * Chunk::SIDE);
         mvp *= player.camera.getViewMatrix();
 
-        program3D.setUniform("mvp", mvp);
+        renderer.program.setUniform("mvp", mvp);
 
-        glDrawElements(GL_TRIANGLES, buffers.size, GL_UNSIGNED_INT, 0);
+        renderer.render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

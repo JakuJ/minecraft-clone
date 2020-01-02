@@ -38,9 +38,9 @@ CubeTexture::CubeTexture(const std::string &directory, unsigned int target, bool
 
     stbi_set_flip_vertically_on_load(flip);
 
-    std::string side = directory + "/side.jpg";
-    std::string top = directory + "/top.jpg";
-    std::string bottom = directory + "/bottom.jpg";
+    std::string side = directory + "/side.png";
+    std::string top = directory + "/top.png";
+    std::string bottom = directory + "/bottom.png";
 
     std::vector<std::string> faces{side, side, top, bottom, side, side};
 

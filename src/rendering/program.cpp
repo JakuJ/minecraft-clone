@@ -21,6 +21,7 @@ unsigned int Program::loadShader(const std::string &path, int type)
     {
         std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
         std::cout << e.what() << std::endl;
+        throw "Shader exception";
     }
 
     const char *source = content.c_str();
@@ -38,6 +39,7 @@ unsigned int Program::loadShader(const std::string &path, int type)
         glGetShaderInfoLog(shader, 512, nullptr, infoLog);
         std::cout << "ERROR::SHADER::COMPILATION_FAILED" << std::endl;
         std::cout << infoLog << std::endl;
+        throw "Shader exception";
     }
 
     return shader;
@@ -61,6 +63,7 @@ Program::Program(const std::string &vertPath, const std::string &fragPath)
         glGetProgramInfoLog(id, 512, nullptr, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED" << std::endl;
         std::cout << infoLog << std::endl;
+        throw "Program exception";
     }
 
     // No longer needed after linking

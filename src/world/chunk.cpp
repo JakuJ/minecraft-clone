@@ -41,7 +41,7 @@ void Chunk::removeAt(u_int x, u_int y, u_int z)
     blocks[x][y][z] = nullptr;
 }
 
-void Chunk::for_each(std::function<void(u_int, u_int, u_int, Block *)> f) const
+void Chunk::for_each(std::function<void(int, int, int, Block *)> f) const
 {
     for (u_int i = 0; i < Chunk::SIDE; i++)
     {
@@ -58,16 +58,49 @@ void Chunk::for_each(std::function<void(u_int, u_int, u_int, Block *)> f) const
     }
 }
 
-Shape Chunk::getShape() const
+Block *Chunk::getAt(int x, int y, int z) const
 {
-    Shape result;
-    for_each([&result](u_int x, u_int y, u_int z, Block *block) {
-        Shape sh = block->getShape();
-        sh.translate(x, y, z);
-        result += sh;
+    if (x < 0 || y < 0 || z < 0 || x >= (int)SIDE || y >= (int)HEIGHT || z >= (int)SIDE)
+    {
+        return nullptr;
+    }
+    return blocks[x][y][z];
+}
+
+Mesh Chunk::getMesh() const
+{
+    Mesh mesh;
+
+    for_each([&](int x, int y, int z, Block *block) {
+        Block *up = getAt(x, y + 1, z);
+        Block *down = getAt(x, y - 1, z);
+        Block *north = getAt(x, y, z + 1);
+        Block *south = getAt(x, y, z - 1);
+        Block *east = getAt(x + 1, y, z);
+        Block *west = getAt(x - 1, y, z);
+
+        Block *faces[]{up, down, north, south, east, west};
+
+        for (u_int i = 0; i < Block::FACES; i++)
+        {
+            if (!faces[i])
+            {
+                Block::Face face = (Block::Face)i;
+
+                std::vector<float> vecs = block->getFace(face);
+                for (u_int j = 0; j <= 9; j += 3)
+                {
+                    vecs[j] += x;
+                    vecs[j + 1] += y;
+                    vecs[j + 2] += z;
+                }
+
+                mesh.addQuad(vecs, block->type, face);
+            }
+        }
     });
 
-    return result;
+    return mesh;
 }
 
 std::ostream &operator<<(std::ostream &out, const Chunk &chunk)
