@@ -58,9 +58,9 @@ int main()
     glEnable(GL_DEPTH_TEST);
 
     // TODO: Find a way not to cull transparent blocks
-    // For now, face culling is disabled
-    // glEnable(GL_CULL_FACE);
-    // glFrontFace(GL_CW); // TODO: why is my winding order wrong?
+    // For now, only the front-facing side of a transparent block is rendered
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CW); // TODO: why is my winding order like this?
 
     glfwSwapInterval(1);
 

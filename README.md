@@ -6,7 +6,9 @@ An attempt to recreate a subset of the popular game Minecraft, learning OpenGL a
 
 * Creating and removing blocks in code
 * Chunks (naive, really just 3D arrays of pointers to Blocks)
-* A quad tree for storing and lazy creation of chunks
+* A quad tree for querying chunk data
+* Lazy noise-based chunk generation
+* Only rendering chunks around the player
 * A free-floating camera
 * Multiple block types and textures
 * Transparent blocks (leaves)

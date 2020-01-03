@@ -114,11 +114,19 @@ Mesh Chunk::getMesh() const
 
 void Chunk::generate(int seed)
 {
+    std::mt19937 gen(seed); //Standard seeded mersenne_twister_engine 
+    std::uniform_int_distribution<> dis(-1, 1);
+
     for(u_int x = 0; x < SIDE; x++)
     {
         for(u_int z = 0; z < SIDE; z++)
         {
-            placeAt(x, 128, z, new Block(Block::GRASS));
+            int height = 128 + dis(gen);
+            for(int y = 0; y < height; y++)
+            {
+                placeAt(x, y, z, new Block(Block::STONE));    
+            }
+            placeAt(x, height, z, new Block(Block::GRASS));
         }
     }
 }
