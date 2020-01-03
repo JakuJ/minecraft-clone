@@ -25,7 +25,7 @@ public:
     void removeAt(u_int, u_int, u_int);
 
     Block *getAt(int x, int y, int z) const;
-    Mesh getMesh() const;
+    Mesh getMesh(float x_off, float z_off) const;
 
     void generate(int seed);
 

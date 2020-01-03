@@ -35,16 +35,6 @@ void Mesh::addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face 
     }
 }
 
-void Mesh::translate(float x, float y, float z)
-{
-    for (size_t i = 0; i < vertices.size(); i += 3)
-    {
-        vertices[i] += x;
-        vertices[i + 1] += y;
-        vertices[i + 2] += z;
-    }
-}
-
 void Mesh::operator+=(const Mesh &other)
 {
     u_int offset = vertices.size() / 3;

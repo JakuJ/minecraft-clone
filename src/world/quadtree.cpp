@@ -118,8 +118,7 @@ Leaf::Leaf(int x0, int z0) : Node(0, x0, z0)
 
 Mesh Leaf::getMesh() const
 {
-    Mesh mesh = chunk.getMesh();
-    mesh.translate(x0, 0, z0);
+    Mesh mesh = chunk.getMesh(x0, z0);
     return mesh;
 }
 

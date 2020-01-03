@@ -75,7 +75,7 @@ Block *Chunk::getAt(int x, int y, int z) const
     return blocks[x][y][z];
 }
 
-Mesh Chunk::getMesh() const
+Mesh Chunk::getMesh(float x_off, float z_off) const
 {
     Mesh mesh;
 
@@ -99,9 +99,9 @@ Mesh Chunk::getMesh() const
                 std::vector<float> vecs = block->getFace(face);
                 for (u_int j = 0; j <= 9; j += 3)
                 {
-                    vecs[j] += x;
+                    vecs[j] += x + x_off;
                     vecs[j + 1] += y;
-                    vecs[j + 2] += z;
+                    vecs[j + 2] += z + z_off;
                 }
 
                 mesh.addQuad(vecs, block->type, face);
