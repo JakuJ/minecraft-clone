@@ -25,7 +25,9 @@ void fix_render_on_mac(GLFWwindow *window)
 
 int main()
 {
-    GLFWwindow *window = setupWindow(800, 600);
+    const bool fullscreen = false;
+
+    GLFWwindow* window = fullscreen ? setupWindow(2560, 1600, true) : setupWindow(800, 600);
 
     if (!window)
     {

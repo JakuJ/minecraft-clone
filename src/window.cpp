@@ -5,7 +5,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-GLFWwindow *setupWindow(int width, int height)
+GLFWwindow *setupWindow(int width, int height, bool fullScreen)
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -16,7 +16,8 @@ GLFWwindow *setupWindow(int width, int height)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    GLFWwindow *window = glfwCreateWindow(width, height, "Minecraft clone", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(width, height, "Minecraft clone", fullScreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
+
     if (!window)
     {
         std::cout << "Failed to create GLFW window" << std::endl;

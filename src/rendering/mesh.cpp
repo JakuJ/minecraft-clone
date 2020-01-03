@@ -62,6 +62,6 @@ void Mesh::operator+=(const Mesh &other)
 
 std::ostream &operator<<(std::ostream &out, const Mesh &mesh)
 {
-    out << "Mesh with " << mesh.vertices.size() / 3 << " vertices, " << mesh.indices.size() << " indices and " << mesh.texCoords.size() / 2 << " tex coords" << std::endl;
+    out << "Mesh with " << mesh.vertices.size() / 3 << " vertices, " << mesh.indices.size() << " indices and " << mesh.texCoords.size() / 2 << " tex coords";
     return out;
 }

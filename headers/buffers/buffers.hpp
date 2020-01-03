@@ -9,6 +9,9 @@ struct Buffers
 
 public:
     Buffers();
+    
+    u_int size() const;
+    
     virtual void clear() = 0;
 };
 
@@ -19,5 +22,7 @@ struct QuadBuffers : public Buffers
 
 public:
     QuadBuffers();
+    
+    void bufferData() const;
     void clear() override;
 };

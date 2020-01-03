@@ -9,12 +9,13 @@ private:
     unsigned int id;
     std::vector<unsigned int> indices;
 
-    void bufferData() const;
-
 public:
     EBO();
     EBO(const std::vector<unsigned int> &indices);
 
+    u_int size() const;
+    
     void append(const std::vector<unsigned int> &vec);
     void clear();
+    void bufferData() const;
 };

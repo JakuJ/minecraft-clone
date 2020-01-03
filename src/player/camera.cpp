@@ -1,7 +1,7 @@
 #include <iostream>
 #include "player/camera.hpp"
 
-Camera::Camera(float x, float y, float z, float yaw, float pitch) : yaw(yaw), pitch(pitch), movementSpeed(5), mouseSensitivity(0.2)
+Camera::Camera(float x, float y, float z, float yaw, float pitch) : yaw(yaw), pitch(pitch), movementSpeed(10), mouseSensitivity(0.2)
 {
     position = glm::vec3(x, y, z);
     worldUp = glm::vec3(0.0f, 1.0f, 0.0f);

@@ -9,7 +9,7 @@
 
 class World
 {
-    static const unsigned int SIDE = 20;
+    static const unsigned int SIDE = 10;
     QuadTree tree;
     QuadRenderer renderer;
 

@@ -1,5 +1,8 @@
-#include "world/world.hpp"
 #include <iostream>
+#include <thread>
+#include <atomic>
+
+#include "world/world.hpp"
 
 World::World() : tree(World::SIDE)
 {
@@ -21,23 +24,40 @@ void World::sendData(float x, float z)
     Mesh mesh = tree.getSurrounding(x, z, 1);
     std::cout << mesh << std::endl;
 
-    renderer.bufferMesh(mesh);
+    renderer.setMesh(mesh);
 }
 
 void World::update(Player &player)
 {
-    float x = player.camera.position[0];
-    float z = player.camera.position[2];
+    static std::atomic<bool> newData = false;
+    static std::mutex mutex;
 
-    int currentID = tree.chunkIDAt(x, z);
-    
-    if(player.chunkID != currentID)
+    float px = player.camera.position[0];
+    float pz = player.camera.position[2];
+
+    int currentID = tree.chunkIDAt(px, pz);
+
+    if (player.chunkID != currentID)
     {
-        std::cout << "Moving from chunk " << currentID << " to " << player.chunkID << std::endl;
+        std::cout << "Moving from chunk " << player.chunkID << " to " << currentID << std::endl;
         player.chunkID = currentID;
-        sendData(x, z);
+
+        std::thread thread([this](float x, float z) {
+            std::lock_guard<std::mutex> guard(mutex);
+            sendData(x, z);
+            newData = true;
+        },
+                           px, pz);
+
+        thread.detach();
     }
-    
+
+    if (newData)
+    {
+        renderer.bufferMesh();
+        newData = false;
+    }
+
     renderer.program.setUniform("mvp", player.camera.getViewMatrix());
     renderer.render();
 }

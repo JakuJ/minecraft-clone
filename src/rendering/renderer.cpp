@@ -23,13 +23,17 @@ void QuadRenderer::render()
     program.use();
     texture.use();
 
-    glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, buffered_size, GL_UNSIGNED_INT, 0);
 }
 
-void QuadRenderer::bufferMesh(const Mesh &mesh)
+void QuadRenderer::setMesh(const Mesh &mesh)
 {
     buffers.clear();
-    
-    size = mesh.indices.size();
     mesh.buffer(buffers);
+}
+
+void QuadRenderer::bufferMesh()
+{
+    buffers.bufferData();
+    buffered_size = buffers.size();
 }

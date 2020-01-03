@@ -18,12 +18,13 @@ class QuadRenderer : public Renderer
 {
     Texture2D texture;
     QuadBuffers buffers;
-    u_int size;
+    u_int buffered_size;
 
 public:
     Program program;
     
     QuadRenderer();
-    void bufferMesh(const Mesh &);
+    void setMesh(const Mesh &);
+    void bufferMesh();
     void render() override;
 };

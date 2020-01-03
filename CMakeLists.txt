@@ -4,9 +4,12 @@ project(LearnOpenGL)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS_DEBUG  "-g")
+set(CMAKE_BUILD_TYPE Debug)
+
 add_compile_options(
   "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
-  "-g" "-ggdb"
+  "--debug" "-g" "-ggdb"
 )
 
 find_package(glfw3 3.3 REQUIRED)
