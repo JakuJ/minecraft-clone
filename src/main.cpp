@@ -41,26 +41,17 @@ int main()
     {
         for (int z = -side; z <= side; z++)
         {
-            world.placeBlock(x, 14, z, Block::ACACIA_LEAVES);
-            world.placeBlock(x, 12, z, Block::ACACIA_LOG);
-            world.placeBlock(x, 10, z, Block::COBBLESTONE);
-            world.placeBlock(x, 8, z, Block::GRASS);
-            world.placeBlock(x, 6, z, Block::DIRT);
-            world.placeBlock(x, 4, z, Block::STONE);
-            world.placeBlock(x, 2, z, Block::ACACIA_LEAVES);
+            world.placeBlock(x, 142, z, Block::ACACIA_LEAVES);
+            world.placeBlock(x, 140, z, Block::ACACIA_LOG);
+            world.placeBlock(x, 138, z, Block::COBBLESTONE);
+            world.placeBlock(x, 136, z, Block::GRASS);
+            world.placeBlock(x, 134, z, Block::DIRT);
+            world.placeBlock(x, 132, z, Block::STONE);
+            world.placeBlock(x, 130, z, Block::ACACIA_LEAVES);
         }
     }
 
-    const int floor = 100;
-    for (int x = -floor; x <= floor; x++)
-    {
-        for (int z = -floor; z <= floor; z++)
-        {
-            world.placeBlock(x, 0, z, Block::GRASS);
-        }
-    }
-
-    Player player(2, 5, 15);
+    Player player(2, 130, 15);
 
     registerCamera(window, player.camera);
 

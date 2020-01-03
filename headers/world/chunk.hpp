@@ -6,7 +6,7 @@
 #include "rendering/mesh.hpp"
 class Chunk
 {
-    static const u_int HEIGHT = 16;
+    static const u_int HEIGHT = 256;
     static u_int NEXT_ID;
     
     Block ****blocks;
@@ -26,6 +26,8 @@ public:
 
     Block *getAt(int x, int y, int z) const;
     Mesh getMesh() const;
+
+    void generate(int seed);
 
     friend std::ostream &operator<<(std::ostream &, const Chunk &);
 };

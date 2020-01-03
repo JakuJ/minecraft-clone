@@ -1,9 +1,12 @@
 #include "world/chunk.hpp"
+#include "world/block.hpp"
+#include <random>
 
 u_int Chunk::NEXT_ID = 0;
 
-Chunk::Chunk() : id(Chunk::NEXT_ID)
+Chunk::Chunk() : id(Chunk::NEXT_ID++)
 {
+    // allocate memory
     blocks = new Block ***[Chunk::SIDE];
 
     for (size_t i = 0; i < Chunk::SIDE; i++)
@@ -15,8 +18,10 @@ Chunk::Chunk() : id(Chunk::NEXT_ID)
         }
     }
 
+    // generate chunk
+    generate(0);
+
     std::cout << "Chunk " << id << " created" << std::endl;
-    Chunk::NEXT_ID++;
 }
 
 Chunk::~Chunk()
@@ -87,7 +92,6 @@ Mesh Chunk::getMesh() const
         // Only render visible faces
         for (u_int i = 0; i < Block::FACES; i++)
         {
-            // temporary hack for transparent blocks
             if (!faces[i])
             {
                 Block::Face face = (Block::Face)i;
@@ -106,6 +110,17 @@ Mesh Chunk::getMesh() const
     });
 
     return mesh;
+}
+
+void Chunk::generate(int seed)
+{
+    for(u_int x = 0; x < SIDE; x++)
+    {
+        for(u_int z = 0; z < SIDE; z++)
+        {
+            placeAt(x, 128, z, new Block(Block::GRASS));
+        }
+    }
 }
 
 std::ostream &operator<<(std::ostream &out, const Chunk &chunk)

@@ -92,30 +92,6 @@ Node *Branch::descent(int x, int z)
     }
 }
 
-Node *Branch::descent(int x, int z) const
-{
-    int width = getExtent() / 2;
-    int midX = x0 + width;
-    int midZ = z0 + width;
-
-    if (x >= midX && z >= midZ)
-    {
-        return q1;
-    }
-    else if (x >= midX && z < midZ)
-    {
-        return q4;
-    }
-    else if (x < midX && z >= midZ)
-    {
-        return q2;
-    }
-    else
-    {
-        return q3;
-    }
-}
-
 Mesh Branch::getMesh() const
 {
     Mesh result;
@@ -173,29 +149,6 @@ Leaf *QuadTree::leafAt(int x, int z)
     return (Leaf *)(n->descent(x, z));
 }
 
-const Leaf *QuadTree::leafAt(int x, int z) const
-{
-    int extent = root.getExtent() / 2;
-
-    if (x < -extent || x >= extent || z < -extent || z >= extent)
-    {
-        return nullptr;
-    }
-
-    const Branch *n = &root;
-    while (n && n->level > 1)
-    {
-        n = (Branch *)(n->descent(x, z));
-    }
-
-    if (n)
-    {
-        return (Leaf *)(n->descent(x, z));
-    }
-
-    return nullptr;
-}
-
 void QuadTree::insert(int x, int y, int z, Block *block)
 {
     Leaf *leaf = leafAt(x, z);
@@ -214,12 +167,7 @@ void QuadTree::remove(int x, int y, int z)
     }
 }
 
-Mesh QuadTree::getMesh() const
-{
-    return root.getMesh();
-}
-
-Mesh QuadTree::getSurrounding(int x, int z, int radius) const
+Mesh QuadTree::getSurrounding(int x, int z, int radius)
 {
     Mesh mesh;
     for (int i = -radius; i <= radius; i++)
@@ -229,7 +177,7 @@ Mesh QuadTree::getSurrounding(int x, int z, int radius) const
             float leaf_x = x + (int)Chunk::SIDE * i;
             float leaf_z = z + (int)Chunk::SIDE * j;
 
-            const Leaf *leaf = leafAt(leaf_x, leaf_z);
+            Leaf *leaf = leafAt(leaf_x, leaf_z);
             if (leaf)
             {
                 mesh += leaf->getMesh();
@@ -239,9 +187,9 @@ Mesh QuadTree::getSurrounding(int x, int z, int radius) const
     return mesh;
 }
 
-int QuadTree::chunkIDAt(int x, int z) const
+int QuadTree::chunkIDAt(int x, int z)
 {
-    const Leaf *leaf = leafAt(x, z);
+    Leaf *leaf = leafAt(x, z);
     
     if (leaf)
     {
