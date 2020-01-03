@@ -11,11 +11,15 @@ class World
 {
     static const unsigned int SIDE = 5;
     QuadTree tree;
+    QuadRenderer renderer;
+
+    void sendData(float x, float z);
 
 public:
     World();
     void placeBlock(int, int, int, Block::Type);
     void removeBlock(int, int, int);
-    void render(QuadRenderer &) const;
-    void update(const Player &);
+    
+    // rendering
+    void update(Player &);
 };

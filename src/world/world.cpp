@@ -16,14 +16,28 @@ void World::removeBlock(int x, int y, int z)
     tree.remove(x, y, z);
 }
 
-void World::render(QuadRenderer &renderer) const
+void World::sendData(float x, float z)
 {
-    Mesh mesh = tree.getMesh();
+    Mesh mesh = tree.getSurrounding(x, z, 1);
     std::cout << mesh << std::endl;
 
     renderer.bufferMesh(mesh);
 }
 
-void update(const Player &player)
+void World::update(Player &player)
 {
+    float x = player.camera.position[0];
+    float z = player.camera.position[2];
+
+    int currentID = tree.chunkIDAt(x, z);
+    
+    if(player.chunkID != currentID)
+    {
+        std::cout << "Moving from chunk " << currentID << " to " << player.chunkID << std::endl;
+        player.chunkID = currentID;
+        sendData(x, z);
+    }
+    
+    renderer.program.setUniform("mvp", player.camera.getViewMatrix());
+    renderer.render();
 }

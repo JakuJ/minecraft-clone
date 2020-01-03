@@ -7,12 +7,16 @@
 class Chunk
 {
     static const u_int HEIGHT = 16;
+    static u_int NEXT_ID;
+    
     Block ****blocks;
 
     void for_each(std::function<void(int, int, int, Block *)>) const;
 
 public:
     static const u_int SIDE = 16;
+
+    u_int id;
 
     Chunk();
     ~Chunk();

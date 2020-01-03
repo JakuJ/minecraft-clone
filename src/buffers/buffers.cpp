@@ -10,3 +10,10 @@ QuadBuffers::QuadBuffers() : vertices(0), texCoords(1)
 {
     std::cout << "CubeBuffers created" << std::endl;
 }
+
+void QuadBuffers::clear()
+{
+    vertices.clear();
+    indices.clear();
+    texCoords.clear();
+}

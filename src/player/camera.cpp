@@ -11,7 +11,10 @@ Camera::Camera(float x, float y, float z, float yaw, float pitch) : yaw(yaw), pi
 
 glm::mat4 Camera::getViewMatrix() const
 {
-    return glm::lookAt(position, position + front, up);
+    glm::mat4 mvp = glm::mat4(1);
+    mvp *= glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 0.5, 1000);
+    mvp *= glm::lookAt(position, position + front, up);
+    return mvp;
 }
 
 void Camera::processKeyboard(Camera::Movement direction, float deltaTime)

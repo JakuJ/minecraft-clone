@@ -28,6 +28,8 @@ void QuadRenderer::render()
 
 void QuadRenderer::bufferMesh(const Mesh &mesh)
 {
+    buffers.clear();
+    
     size = mesh.indices.size();
     mesh.buffer(buffers);
 }

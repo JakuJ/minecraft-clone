@@ -1,6 +1,8 @@
 #include "world/chunk.hpp"
 
-Chunk::Chunk()
+u_int Chunk::NEXT_ID = 0;
+
+Chunk::Chunk() : id(Chunk::NEXT_ID)
 {
     blocks = new Block ***[Chunk::SIDE];
 
@@ -13,7 +15,8 @@ Chunk::Chunk()
         }
     }
 
-    std::cout << "Chunk created" << std::endl;
+    std::cout << "Chunk " << id << " created" << std::endl;
+    Chunk::NEXT_ID++;
 }
 
 Chunk::~Chunk()

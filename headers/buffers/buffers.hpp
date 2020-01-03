@@ -9,6 +9,7 @@ struct Buffers
 
 public:
     Buffers();
+    virtual void clear() = 0;
 };
 
 struct QuadBuffers : public Buffers
@@ -18,4 +19,5 @@ struct QuadBuffers : public Buffers
 
 public:
     QuadBuffers();
+    void clear() override;
 };

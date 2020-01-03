@@ -24,3 +24,9 @@ void EBO::append(const std::vector<unsigned int> &vec)
     indices.insert(indices.end(), vec.cbegin(), vec.cend());
     bufferData();
 }
+
+void EBO::clear()
+{
+    indices.clear();
+    bufferData();
+}

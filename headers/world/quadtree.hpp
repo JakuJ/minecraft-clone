@@ -25,6 +25,7 @@ struct Branch : public Node
 
     Node *makeChild(int x, int z);
     Node *descent(int x, int z);
+    Node *descent(int x, int z) const;
 
     Mesh getMesh() const override;
 };
@@ -41,11 +42,16 @@ class QuadTree
 {
     Branch root;
     Leaf *leafAt(int x, int z);
+    const Leaf *leafAt(int x, int z) const;
 
 public:
     QuadTree(unsigned int depth);
 
     void insert(int x, int y, int z, Block *);
     void remove(int x, int y, int z);
+    int chunkIDAt(int x, int z) const;
+
+    // Mesh generation
     Mesh getMesh() const;
+    Mesh getSurrounding(int x, int z, int radius) const;
 };

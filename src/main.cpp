@@ -5,7 +5,6 @@
 #include "world/world.hpp"
 #include "player/player.hpp"
 #include "player/camera.hpp"
-#include <random>
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -35,13 +34,12 @@ int main()
     }
 
     World world;
-    QuadRenderer renderer;
 
-    const int side = 3;
+    const int side = 2;
 
-    for (int x = 0; x <= side; x++)
+    for (int x = -side; x <= side; x++)
     {
-        for (int z = 0; z <= side; z++)
+        for (int z = -side; z <= side; z++)
         {
             world.placeBlock(x, 14, z, Block::ACACIA_LEAVES);
             world.placeBlock(x, 12, z, Block::ACACIA_LOG);
@@ -53,7 +51,7 @@ int main()
         }
     }
 
-    const int floor = 20;
+    const int floor = 100;
     for (int x = -floor; x <= floor; x++)
     {
         for (int z = -floor; z <= floor; z++)
@@ -61,9 +59,6 @@ int main()
             world.placeBlock(x, 0, z, Block::GRASS);
         }
     }
-
-    // Render the world
-    world.render(renderer);
 
     Player player(2, 5, 15);
 
@@ -87,22 +82,23 @@ int main()
     {
         // pre-frame logic
         currentTime = glfwGetTime();
+        
+        // update player
         processInput(window, player.camera, currentTime - lastFrame);
 
+        // render to screen
         glClearColor(0.6, 0.8, 1, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glm::mat4 mvp = glm::mat4(1);
-        mvp *= glm::perspective<float>(glm::radians(60.0), 800.0 / 600.0, 0.5, 2 * Chunk::SIDE);
-        mvp *= player.camera.getViewMatrix();
-
-        renderer.program.setUniform("mvp", mvp);
-
-        renderer.render();
+        
+        // update world
+        world.update(player);
 
         glfwSwapBuffers(window);
+        
+        // poll awaiting events
         glfwPollEvents();
 
+        // print FPS to stdout
         if (currentTime - lastSecond >= 1.0)
         {
             std::cout << "FPS: " << frames << std::endl;
@@ -113,6 +109,7 @@ int main()
         lastFrame = currentTime;
         frames++;
 
+        // fix rendering if on Mac OS
         fix_render_on_mac(window);
     }
 

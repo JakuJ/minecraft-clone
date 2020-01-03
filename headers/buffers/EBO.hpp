@@ -16,4 +16,5 @@ public:
     EBO(const std::vector<unsigned int> &indices);
 
     void append(const std::vector<unsigned int> &vec);
+    void clear();
 };

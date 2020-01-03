@@ -27,6 +27,7 @@ public:
     };
 
     void append(const std::vector<T> &vec);
+    void clear();
 };
 
 template <typename T, unsigned int N>
@@ -42,5 +43,12 @@ template <typename T, unsigned int N>
 void VBO<T, N>::append(const std::vector<T> &vec)
 {
     data.insert(data.end(), vec.cbegin(), vec.cend());
+    bufferData();
+}
+
+template <typename T, unsigned int N>
+void VBO<T, N>::clear()
+{
+    data.clear();
     bufferData();
 }
