@@ -24,6 +24,11 @@ public:
         append(data);
     };
 
+    size_t size() const
+    {
+        return data.size();
+    };
+
     void append(const std::vector<T> &vec);
     void clear();
     void bufferData() const;

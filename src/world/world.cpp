@@ -24,7 +24,7 @@ void World::sendData(float x, float z)
     Mesh mesh = tree.getSurrounding(x, z, 4);
     std::cout << mesh << std::endl;
 
-    renderer.setMesh(mesh);
+    renderer.preloadMesh(mesh);
 }
 
 void World::update(Player &player)

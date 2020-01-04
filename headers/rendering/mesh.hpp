@@ -1,17 +1,17 @@
 #pragma once
 
 #include <vector>
-#include "buffers/buffers.hpp"
 #include "world/block.hpp"
 
 struct Mesh
 {
     std::vector<float> vertices;
     std::vector<u_int> indices;
+    std::vector<float> offsets;
     std::vector<float> texCoords;
 
     void addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face faceId);
-    void buffer(QuadBuffers &) const;
+    void addCube(float x, float y, float z, Block::Type texId);
 
     // Operators
     void operator+=(const Mesh &other);

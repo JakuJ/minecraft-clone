@@ -10,21 +10,41 @@
 
 class Renderer
 {
+protected:
+    size_t buffered_size;
+
+    Renderer(const std::string&, const std::string&);
+
 public:
+    Texture2D texture;
+    Program program;
+
     virtual void render() = 0;
+    virtual void preloadMesh(const Mesh&) = 0;
+    virtual void bufferMesh() = 0;
 };
 
 class QuadRenderer : public Renderer
 {
-    Texture2D texture;
     QuadBuffers buffers;
-    u_int buffered_size;
+    
+public:
+    QuadRenderer();
+
+    void preloadMesh(const Mesh &) override;
+    void bufferMesh() override;
+    void render() override;
+};
+
+class InstanceRenderer : public Renderer
+{
+    InstanceBuffers buffers;
+    size_t buffered_instances;
 
 public:
-    Program program;
-    
-    QuadRenderer();
-    void setMesh(const Mesh &);
-    void bufferMesh();
+    InstanceRenderer();
+
+    void preloadMesh(const Mesh &) override;
+    void bufferMesh() override;
     void render() override;
 };

@@ -1,16 +1,9 @@
 #include "rendering/mesh.hpp"
 
-void Mesh::buffer(QuadBuffers &b) const
-{
-    b.vertices.append(vertices);
-    b.indices.append(indices);
-    b.texCoords.append(texCoords);
-}
-
 void Mesh::addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face faceId)
 {
     u_int offset = vertices.size() / 3;
-    
+
     vertices.insert(vertices.end(), vs.cbegin(), vs.cend());
 
     for (u_int k : {0, 1, 2, 0, 2, 3})
@@ -30,16 +23,24 @@ void Mesh::addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face 
     }
 }
 
+void Mesh::addCube(float x, float y, float z, Block::Type texId)
+{
+    const float offs[] = {x, y, z, (float)texId / (float)Block::TYPES};
+
+    offsets.reserve(offsets.size() + 4);
+    offsets.insert(offsets.end(), offs, std::end(offs));
+}
+
 void Mesh::operator+=(const Mesh &other)
 {
     u_int offset = vertices.size() / 3;
-    
+
     // Copy vertices
     vertices.insert(vertices.end(), other.vertices.cbegin(), other.vertices.cend());
 
     // Copy texture coordinates
     texCoords.insert(texCoords.end(), other.texCoords.cbegin(), other.texCoords.cend());
-    
+
     std::transform(other.indices.cbegin(), other.indices.cend(), std::back_inserter(indices), [&offset](unsigned int ix) {
         return ix + offset;
     });

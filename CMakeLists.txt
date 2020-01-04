@@ -17,7 +17,7 @@ include_directories("headers")
 # Main executable
 add_compile_options(
   "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
-  "-O3"
+  "-O3" "-flto"
 )
 
 file(GLOB app_sources "src/*.cpp" "src/*/*.cpp")

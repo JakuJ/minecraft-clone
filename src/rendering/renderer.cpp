@@ -1,7 +1,6 @@
 #include "rendering/renderer.hpp"
 
-QuadRenderer::QuadRenderer()
-    : texture("data/textures/blocks.png", GL_TEXTURE0, true), program("data/shaders/quad.vert", "data/shaders/quad.frag")
+Renderer::Renderer(const std::string &vPath, const std::string &fPath) : texture("data/textures/blocks.png", GL_TEXTURE0, true), program(vPath, fPath)
 {
     // Create a Vertex Array Object
     unsigned int VAO;
@@ -18,6 +17,8 @@ QuadRenderer::QuadRenderer()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
+QuadRenderer::QuadRenderer() : Renderer("data/shaders/quad.vert", "data/shaders/quad.frag") {}
+
 void QuadRenderer::render()
 {
     program.use();
@@ -26,14 +27,37 @@ void QuadRenderer::render()
     glDrawElements(GL_TRIANGLES, buffered_size, GL_UNSIGNED_INT, 0);
 }
 
-void QuadRenderer::setMesh(const Mesh &mesh)
+void QuadRenderer::preloadMesh(const Mesh &mesh)
 {
     buffers.clear();
-    mesh.buffer(buffers);
+    buffers.bufferMesh(mesh);
 }
 
 void QuadRenderer::bufferMesh()
 {
     buffers.bufferData();
     buffered_size = buffers.size();
+}
+
+InstanceRenderer::InstanceRenderer() : Renderer("data/shaders/instance.vert", "data/shaders/instance.frag") {}
+
+void InstanceRenderer::render()
+{
+    program.use();
+    texture.use();
+
+    glDrawElementsInstanced(GL_TRIANGLE_STRIP, buffered_size, GL_UNSIGNED_INT, 0, buffered_instances);
+}
+
+void InstanceRenderer::preloadMesh(const Mesh &mesh)
+{
+    buffers.clear();
+    buffers.bufferMesh(mesh);
+}
+
+void InstanceRenderer::bufferMesh()
+{
+    buffers.bufferData();
+    buffered_size = buffers.size();
+    buffered_instances = buffers.instances();
 }
