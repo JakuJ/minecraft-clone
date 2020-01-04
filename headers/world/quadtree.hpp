@@ -1,6 +1,7 @@
 #pragma once
 
 #include "world/chunk.hpp"
+#include <functional>
 
 struct Node
 {
@@ -12,7 +13,6 @@ struct Node
     virtual ~Node() = 0;
 
     unsigned int getExtent() const;
-    virtual std::pair<QuadMesh, QuadMesh> getMeshes() const = 0;
 };
 
 struct Branch : public Node
@@ -25,8 +25,6 @@ struct Branch : public Node
 
     Node *makeChild(int x, int z);
     Node *descent(int x, int z);
-
-    std::pair<QuadMesh, QuadMesh> getMeshes() const override;
 };
 
 struct Leaf : public Node
@@ -34,8 +32,15 @@ struct Leaf : public Node
     Chunk chunk;
     Leaf(int x0, int z0);
 
-    std::pair<QuadMesh, QuadMesh> getMeshes() const override;
+    template <typename T>
+    T getBy(std::function<T(const Chunk &)>) const;
 };
+
+template <typename T>
+T Leaf::getBy(std::function<T(const Chunk &)> f) const
+{
+    return f(chunk);
+}
 
 class QuadTree
 {

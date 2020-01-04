@@ -1,5 +1,6 @@
 #include "world/quadtree.hpp"
 #include <math.h>
+#include <chrono>
 
 #pragma region Node
 
@@ -92,23 +93,6 @@ Node *Branch::descent(int x, int z)
     }
 }
 
-std::pair<QuadMesh, QuadMesh> Branch::getMeshes() const
-{
-    QuadMesh m1, m2;
-
-    for (Node *q : {q1, q2, q3, q4})
-    {
-        if (q)
-        {
-            auto meshes = q->getMeshes();
-            m1 += meshes.first;
-            m2 += meshes.second;
-        }
-    }
-
-    return std::make_pair(m1, m2);
-}
-
 #pragma endregion Branch
 
 #pragma region Leaf
@@ -116,11 +100,6 @@ std::pair<QuadMesh, QuadMesh> Branch::getMeshes() const
 Leaf::Leaf(int x0, int z0) : Node(0, x0, z0), chunk(x0, z0)
 {
     std::cout << "Leaf spanning from (" << x0 << ", " << z0 << ") created" << std::endl;
-}
-
-std::pair<QuadMesh, QuadMesh> Leaf::getMeshes() const
-{
-    return chunk.getMeshes(x0, z0);
 }
 
 #pragma endregion Leaf
@@ -169,6 +148,8 @@ void QuadTree::remove(int x, int y, int z)
 
 QuadMesh QuadTree::getSurrounding(int x, int z, int radius)
 {
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
     QuadMesh m1, m2;
 
     for (int i = -radius; i <= radius; i++)
@@ -181,14 +162,21 @@ QuadMesh QuadTree::getSurrounding(int x, int z, int radius)
             Leaf *leaf = leafAt(leaf_x, leaf_z);
             if (leaf)
             {
-                auto meshes = leaf->getMeshes();
+                auto meshes = leaf->getBy<std::pair<QuadMesh, QuadMesh>>([&leaf](const Chunk &chunk) {
+                    return chunk.getMeshes(leaf->x0, leaf->z0);
+                });
+
                 m1 += meshes.first;
                 m2 += meshes.second;
             }
         }
     }
-    
+
     m1 += m2;
+
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
     return m1;
 }
 
