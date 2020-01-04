@@ -4,15 +4,15 @@ An attempt to recreate a subset of the popular game Minecraft, learning OpenGL a
 
 ## What works
 
-* Creating and removing blocks in code
-* Chunks (naive, really just 3D arrays of pointers to Blocks)
-* A quad tree for querying chunk data
-* Lazy noise-based chunk generation
-* Only rendering chunks around the player
-* A free-floating camera
-* Multiple block types and textures
-* Transparent blocks (leaves)
+* A controllable free-floating camera
+* A quad tree for efficient querying of chunk info
+* Chunks only generated when first seen
+* Only rendering chunks in a radius around the player
+* Chunk geometry loaded on a separate thread 
+* Transparent and semi-transparent blocks (leaves, water)
+* Seeded terrain generation based on simplex noise
 
 ## Screenshots
 
-![A screenshot of the current state](images/screenshot.png)
+![A screenshot of the current state](docs/screenshot.png)
+![A screenshot of the current state](docs/screenshot2.png)

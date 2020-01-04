@@ -1,10 +1,5 @@
 #include "rendering/mesh.hpp"
 
-Mesh::Mesh()
-{
-    std::cout << "Mesh created" << std::endl;
-}
-
 void Mesh::buffer(QuadBuffers &b) const
 {
     b.vertices.append(vertices);

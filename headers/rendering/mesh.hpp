@@ -10,8 +10,6 @@ struct Mesh
     std::vector<u_int> indices;
     std::vector<float> texCoords;
 
-    Mesh();
-
     void addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face faceId);
     void buffer(QuadBuffers &) const;
 
