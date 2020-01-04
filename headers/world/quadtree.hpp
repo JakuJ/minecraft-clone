@@ -12,7 +12,7 @@ struct Node
     virtual ~Node() = 0;
 
     unsigned int getExtent() const;
-    virtual std::pair<Mesh, Mesh> getMeshes() const = 0;
+    virtual std::pair<QuadMesh, QuadMesh> getMeshes() const = 0;
 };
 
 struct Branch : public Node
@@ -26,7 +26,7 @@ struct Branch : public Node
     Node *makeChild(int x, int z);
     Node *descent(int x, int z);
 
-    std::pair<Mesh, Mesh> getMeshes() const override;
+    std::pair<QuadMesh, QuadMesh> getMeshes() const override;
 };
 
 struct Leaf : public Node
@@ -34,7 +34,7 @@ struct Leaf : public Node
     Chunk chunk;
     Leaf(int x0, int z0);
 
-    std::pair<Mesh, Mesh> getMeshes() const override;
+    std::pair<QuadMesh, QuadMesh> getMeshes() const override;
 };
 
 class QuadTree
@@ -49,6 +49,6 @@ public:
     void remove(int x, int y, int z);
     int chunkIDAt(int x, int z);
 
-    // Mesh generation
-    Mesh getSurrounding(int x, int z, int radius);
+    // QuadMesh generation
+    QuadMesh getSurrounding(int x, int z, int radius);
 };

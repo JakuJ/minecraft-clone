@@ -92,9 +92,9 @@ Node *Branch::descent(int x, int z)
     }
 }
 
-std::pair<Mesh, Mesh> Branch::getMeshes() const
+std::pair<QuadMesh, QuadMesh> Branch::getMeshes() const
 {
-    Mesh m1, m2;
+    QuadMesh m1, m2;
 
     for (Node *q : {q1, q2, q3, q4})
     {
@@ -118,7 +118,7 @@ Leaf::Leaf(int x0, int z0) : Node(0, x0, z0), chunk(x0, z0)
     std::cout << "Leaf spanning from (" << x0 << ", " << z0 << ") created" << std::endl;
 }
 
-std::pair<Mesh, Mesh> Leaf::getMeshes() const
+std::pair<QuadMesh, QuadMesh> Leaf::getMeshes() const
 {
     return chunk.getMeshes(x0, z0);
 }
@@ -167,9 +167,9 @@ void QuadTree::remove(int x, int y, int z)
     }
 }
 
-Mesh QuadTree::getSurrounding(int x, int z, int radius)
+QuadMesh QuadTree::getSurrounding(int x, int z, int radius)
 {
-    Mesh m1, m2;
+    QuadMesh m1, m2;
 
     for (int i = -radius; i <= radius; i++)
     {

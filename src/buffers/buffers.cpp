@@ -27,7 +27,7 @@ QuadBuffers::QuadBuffers()
     std::cout << "QuadBuffers created" << std::endl;
 }
 
-void QuadBuffers::bufferMesh(const Mesh &mesh)
+void QuadBuffers::bufferMesh(const QuadMesh &mesh)
 {
     vertices.append(mesh.vertices);
     indices.append(mesh.indices);
@@ -80,7 +80,6 @@ size_t InstanceBuffers::instances() const
 
 void InstanceBuffers::clear()
 {
-    texCoords.clear();
     offsets.clear();
 }
 
@@ -90,8 +89,7 @@ void InstanceBuffers::bufferData() const
     offsets.bufferData();
 }
 
-void InstanceBuffers::bufferMesh(const Mesh &mesh)
+void InstanceBuffers::bufferMesh(const InstanceMesh &mesh)
 {
     offsets.append(mesh.offsets);
-    texCoords.append(mesh.texCoords);
 }

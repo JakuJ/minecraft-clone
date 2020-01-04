@@ -27,7 +27,7 @@ void QuadRenderer::render()
     glDrawElements(GL_TRIANGLES, buffered_size, GL_UNSIGNED_INT, 0);
 }
 
-void QuadRenderer::preloadMesh(const Mesh &mesh)
+void QuadRenderer::preloadMesh(const QuadMesh &mesh)
 {
     buffers.clear();
     buffers.bufferMesh(mesh);
@@ -49,7 +49,7 @@ void InstanceRenderer::render()
     glDrawElementsInstanced(GL_TRIANGLE_STRIP, buffered_size, GL_UNSIGNED_INT, 0, buffered_instances);
 }
 
-void InstanceRenderer::preloadMesh(const Mesh &mesh)
+void InstanceRenderer::preloadMesh(const InstanceMesh &mesh)
 {
     buffers.clear();
     buffers.bufferMesh(mesh);

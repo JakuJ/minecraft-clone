@@ -76,10 +76,10 @@ Block *Chunk::getAt(int x, int y, int z) const
     return blocks[x][y][z];
 }
 
-std::pair<Mesh, Mesh> Chunk::getMeshes(float x_off, float z_off) const
+std::pair<QuadMesh, QuadMesh> Chunk::getMeshes(float x_off, float z_off) const
 {
-    Mesh non_transparent;
-    Mesh transparent;
+    QuadMesh non_transparent;
+    QuadMesh transparent;
 
     for_each([&](int x, int y, int z, Block *block) {
         Block *up = getAt(x, y + 1, z);

@@ -18,7 +18,6 @@ public:
     
     virtual void clear();
     virtual void bufferData() const;
-    virtual void bufferMesh(const Mesh&) = 0;
 };
 
 class QuadBuffers : public Buffers
@@ -26,7 +25,7 @@ class QuadBuffers : public Buffers
 public:
     QuadBuffers();
     
-    virtual void bufferMesh(const Mesh&) override;
+    void bufferMesh(const QuadMesh&);
 };
 
 class InstanceBuffers : public Buffers
@@ -40,5 +39,5 @@ public:
 
     void clear() override;
     void bufferData() const override;
-    virtual void bufferMesh(const Mesh&) override;
+    void bufferMesh(const InstanceMesh&);
 };

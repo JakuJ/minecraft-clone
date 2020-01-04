@@ -1,6 +1,8 @@
 #include "rendering/mesh.hpp"
 
-void Mesh::addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face faceId)
+#pragma region QuadMesh
+
+void QuadMesh::addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face faceId)
 {
     u_int offset = vertices.size() / 3;
 
@@ -23,15 +25,7 @@ void Mesh::addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face 
     }
 }
 
-void Mesh::addCube(float x, float y, float z, Block::Type texId)
-{
-    const float offs[] = {x, y, z, (float)texId / (float)Block::TYPES};
-
-    offsets.reserve(offsets.size() + 4);
-    offsets.insert(offsets.end(), offs, std::end(offs));
-}
-
-void Mesh::operator+=(const Mesh &other)
+void QuadMesh::operator+=(const QuadMesh &other)
 {
     u_int offset = vertices.size() / 3;
 
@@ -46,8 +40,32 @@ void Mesh::operator+=(const Mesh &other)
     });
 }
 
-std::ostream &operator<<(std::ostream &out, const Mesh &mesh)
+std::ostream &operator<<(std::ostream &out, const QuadMesh &mesh)
 {
-    out << "Mesh with " << mesh.vertices.size() / 3 << " vertices, " << mesh.indices.size() << " indices and " << mesh.texCoords.size() / 2 << " tex coords";
+    out << "Quad Mesh with " << mesh.vertices.size() / 3 << " vertices, " << mesh.indices.size() << " indices and " << mesh.texCoords.size() / 2 << " tex coords";
     return out;
 }
+
+#pragma endregion
+#pragma region InstanceMesh
+
+void InstanceMesh::addCube(float x, float y, float z, Block::Type texId)
+{
+    const float offs[] = {x, y, z, (float)texId / (float)Block::TYPES};
+
+    offsets.reserve(offsets.size() + 4);
+    offsets.insert(offsets.end(), offs, std::end(offs));
+}
+
+void InstanceMesh::operator+=(const InstanceMesh &other)
+{
+    // Copy offsets
+    offsets.insert(offsets.end(), other.offsets.cbegin(), other.offsets.cend());
+}
+
+std::ostream &operator<<(std::ostream &out, const InstanceMesh &mesh)
+{
+    return out << "Instance Mesh with " << mesh.offsets.size() / 4 << " instances";
+}
+
+#pragma endregion

@@ -28,7 +28,7 @@ public:
     void removeAt(u_int, u_int, u_int);
 
     Block *getAt(int x, int y, int z) const;
-    std::pair<Mesh, Mesh> getMeshes(float x_off, float z_off) const;
+    std::pair<QuadMesh, QuadMesh> getMeshes(float x_off, float z_off) const;
 
     void generate(int seed);
 

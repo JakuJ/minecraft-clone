@@ -20,7 +20,6 @@ public:
     Program program;
 
     virtual void render() = 0;
-    virtual void preloadMesh(const Mesh&) = 0;
     virtual void bufferMesh() = 0;
 };
 
@@ -31,7 +30,7 @@ class QuadRenderer : public Renderer
 public:
     QuadRenderer();
 
-    void preloadMesh(const Mesh &) override;
+    void preloadMesh(const QuadMesh &);
     void bufferMesh() override;
     void render() override;
 };
@@ -44,7 +43,7 @@ class InstanceRenderer : public Renderer
 public:
     InstanceRenderer();
 
-    void preloadMesh(const Mesh &) override;
+    void preloadMesh(const InstanceMesh &);
     void bufferMesh() override;
     void render() override;
 };
