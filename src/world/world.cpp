@@ -21,7 +21,7 @@ void World::removeBlock(int x, int y, int z)
 
 void World::sendData(float x, float z)
 {
-    Mesh mesh = tree.getSurrounding(x, z, 3);
+    Mesh mesh = tree.getSurrounding(x, z, 4);
     std::cout << mesh << std::endl;
 
     renderer.setMesh(mesh);

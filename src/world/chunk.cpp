@@ -76,9 +76,10 @@ Block *Chunk::getAt(int x, int y, int z) const
     return blocks[x][y][z];
 }
 
-Mesh Chunk::getMesh(float x_off, float z_off) const
+std::pair<Mesh, Mesh> Chunk::getMeshes(float x_off, float z_off) const
 {
-    Mesh mesh;
+    Mesh non_transparent;
+    Mesh transparent;
 
     for_each([&](int x, int y, int z, Block *block) {
         Block *up = getAt(x, y + 1, z);
@@ -91,12 +92,10 @@ Mesh Chunk::getMesh(float x_off, float z_off) const
         Block *faces[]{up, down, north, south, east, west};
 
         // Only render visible faces
-        for (u_int i = 0; i < Block::FACES; i++)
+        for (Block::Face face = (Block::Face)0; face < Block::FACES; face++)
         {
-            if (!faces[i] || (faces[i]->type != block->type && Block::transparency_table[faces[i]->type]))
+            if (!faces[face] || (faces[face]->type != block->type && Block::transparency_table[faces[face]->type]))
             {
-                Block::Face face = (Block::Face)i;
-
                 std::vector<float> vecs = block->getFace(face);
                 for (int j = 0; j <= 9; j += 3)
                 {
@@ -105,12 +104,19 @@ Mesh Chunk::getMesh(float x_off, float z_off) const
                     vecs[j + 2] += z + z_off;
                 }
 
-                mesh.addQuad(vecs, block->type, face);
+                if (Block::transparency_table[block->type])
+                {
+                    transparent.addQuad(vecs, block->type, face);
+                }
+                else 
+                {
+                    non_transparent.addQuad(vecs, block->type, face);
+                }
             }
         }
     });
 
-    return mesh;
+    return std::make_pair(non_transparent, transparent);
 }
 
 void Chunk::generate(int seed)
@@ -171,7 +177,6 @@ void Chunk::generate(int seed)
             {
                 placeAt(x, groundLevel, z, new Block(Block::GRASS));
             }
-            placeAt(x, 90, z, new Block(Block::ACACIA_LEAVES));
         }
     }
 

@@ -4,6 +4,7 @@
 #include <functional>
 #include "world/block.hpp"
 #include "rendering/mesh.hpp"
+#include <utility>
 class Chunk
 {
     static const u_int HEIGHT = 256;
@@ -27,7 +28,7 @@ public:
     void removeAt(u_int, u_int, u_int);
 
     Block *getAt(int x, int y, int z) const;
-    Mesh getMesh(float x_off, float z_off) const;
+    std::pair<Mesh, Mesh> getMeshes(float x_off, float z_off) const;
 
     void generate(int seed);
 

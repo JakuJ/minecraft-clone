@@ -92,19 +92,21 @@ Node *Branch::descent(int x, int z)
     }
 }
 
-Mesh Branch::getMesh() const
+std::pair<Mesh, Mesh> Branch::getMeshes() const
 {
-    Mesh result;
+    Mesh m1, m2;
 
     for (Node *q : {q1, q2, q3, q4})
     {
         if (q)
         {
-            result += q->getMesh();
+            auto meshes = q->getMeshes();
+            m1 += meshes.first;
+            m2 += meshes.second;
         }
     }
 
-    return result;
+    return std::make_pair(m1, m2);
 }
 
 #pragma endregion Branch
@@ -116,10 +118,9 @@ Leaf::Leaf(int x0, int z0) : Node(0, x0, z0), chunk(x0, z0)
     std::cout << "Leaf spanning from (" << x0 << ", " << z0 << ") created" << std::endl;
 }
 
-Mesh Leaf::getMesh() const
+std::pair<Mesh, Mesh> Leaf::getMeshes() const
 {
-    Mesh mesh = chunk.getMesh(x0, z0);
-    return mesh;
+    return chunk.getMeshes(x0, z0);
 }
 
 #pragma endregion Leaf
@@ -168,7 +169,8 @@ void QuadTree::remove(int x, int y, int z)
 
 Mesh QuadTree::getSurrounding(int x, int z, int radius)
 {
-    Mesh mesh;
+    Mesh m1, m2;
+
     for (int i = -radius; i <= radius; i++)
     {
         for (int j = -radius; j <= radius; j++)
@@ -179,11 +181,15 @@ Mesh QuadTree::getSurrounding(int x, int z, int radius)
             Leaf *leaf = leafAt(leaf_x, leaf_z);
             if (leaf)
             {
-                mesh += leaf->getMesh();
+                auto meshes = leaf->getMeshes();
+                m1 += meshes.first;
+                m2 += meshes.second;
             }
         }
     }
-    return mesh;
+    
+    m1 += m2;
+    return m1;
 }
 
 int QuadTree::chunkIDAt(int x, int z)
