@@ -1,7 +1,7 @@
 #include "rendering/renderer.hpp"
 
 QuadRenderer::QuadRenderer()
-    : texture("textures/blocks.png", GL_TEXTURE0, true), program("shaders/quad.vert", "shaders/quad.frag")
+    : texture("data/textures/blocks.png", GL_TEXTURE0, true), program("data/shaders/quad.vert", "data/shaders/quad.frag")
 {
     // Create a Vertex Array Object
     unsigned int VAO;

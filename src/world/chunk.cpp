@@ -1,6 +1,6 @@
 #include "world/chunk.hpp"
 #include "world/block.hpp"
-#include <random>
+#include "FastNoiseSIMD/FastNoiseSIMD.h"
 
 u_int Chunk::NEXT_ID = 0;
 
@@ -114,19 +114,19 @@ Mesh Chunk::getMesh(float x_off, float z_off) const
 
 void Chunk::generate(int seed)
 {
-    std::mt19937 gen(seed); //Standard seeded mersenne_twister_engine 
-    std::uniform_int_distribution<> dis(-1, 1);
-
-    for(u_int x = 0; x < SIDE; x++)
+    for (u_int x = 0; x < SIDE; x++)
     {
-        for(u_int z = 0; z < SIDE; z++)
+        for (u_int z = 0; z < SIDE; z++)
         {
-            int height = 128 + dis(gen);
-            for(int y = 0; y < height; y++)
+            for (int y = 0; y < BEDROCK_LEVEL; y++)
             {
-                placeAt(x, y, z, new Block(Block::STONE));    
+                placeAt(x, y, z, new Block(Block::BEDROCK));
             }
-            placeAt(x, height, z, new Block(Block::GRASS));
+            for (int y = BEDROCK_LEVEL; y < SEA_LEVEL; y++)
+            {
+                placeAt(x, y, z, new Block(Block::STONE));
+            }
+            placeAt(x, SEA_LEVEL, z, new Block(Block::GRASS));
         }
     }
 }

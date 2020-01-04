@@ -7,6 +7,7 @@
 class Chunk
 {
     static const u_int HEIGHT = 256;
+    static const u_int BEDROCK_LEVEL = 5;
     static u_int NEXT_ID;
     
     Block ****blocks;
@@ -15,6 +16,7 @@ class Chunk
 
 public:
     static const u_int SIDE = 16;
+    static const u_int SEA_LEVEL = 64;
 
     u_int id;
 

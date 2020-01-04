@@ -22,7 +22,7 @@ public:
     {
         DIRT = 0,
         GRASS,
-        COBBLESTONE,
+        BEDROCK,
         STONE,
         ACACIA_LOG,
         ACACIA_LEAVES
