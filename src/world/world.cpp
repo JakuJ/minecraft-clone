@@ -19,14 +19,6 @@ void World::removeBlock(int x, int y, int z)
     tree.remove(x, y, z);
 }
 
-void World::sendData(float x, float z)
-{
-    QuadMesh mesh = tree.getSurrounding(x, z, 4);
-    std::cout << mesh << std::endl;
-
-    renderer.preloadMesh(mesh);
-}
-
 void World::update(Player &player)
 {
     static std::atomic<bool> newData = false;
@@ -44,7 +36,11 @@ void World::update(Player &player)
 
         std::thread thread([this](float x, float z) {
             std::lock_guard<std::mutex> guard(mutex);
-            sendData(x, z);
+            
+            QuadMesh mesh = tree.getSurrounding(x, z, 4);
+            std::cout << mesh << std::endl;
+            renderer.preloadMesh(mesh);
+            
             newData = true;
         },
                            px, pz);

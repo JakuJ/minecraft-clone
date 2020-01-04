@@ -13,8 +13,6 @@ class World
     QuadTree tree;
     QuadRenderer renderer;
 
-    void sendData(float x, float z);
-
 public:
     World();
     void placeBlock(int, int, int, Block::Type);
