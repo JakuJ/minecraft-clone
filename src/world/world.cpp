@@ -3,6 +3,7 @@
 #include <atomic>
 
 #include "world/world.hpp"
+#include "utility/timing.hpp"
 
 World::World() : tree(World::SIDE)
 {
@@ -36,11 +37,11 @@ void World::update(Player &player)
 
         std::thread thread([this](float x, float z) {
             std::lock_guard<std::mutex> guard(mutex);
-            
-            QuadMesh mesh = tree.getSurrounding(x, z, 4);
+
+            QuadMesh mesh = tree.getSurrounding<QuadMesh>(x, z, 4);
             std::cout << mesh << std::endl;
             renderer.preloadMesh(mesh);
-            
+
             newData = true;
         },
                            px, pz);
@@ -50,6 +51,7 @@ void World::update(Player &player)
 
     if (newData)
     {
+        ScopeTimer("Buffering to GPU");
         renderer.bufferMesh();
         newData = false;
     }

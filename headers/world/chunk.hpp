@@ -9,7 +9,7 @@ class Chunk
 {
     static const u_int HEIGHT = 256;
     static u_int NEXT_ID;
-    
+
     Block ****blocks;
 
     const int x0, z0;
@@ -28,9 +28,10 @@ public:
     void removeAt(u_int, u_int, u_int);
 
     Block *getAt(int x, int y, int z) const;
-    std::pair<QuadMesh, QuadMesh> getMeshes(float x_off, float z_off) const;
-
     void generate(int seed);
+
+    template <typename T>
+    std::pair<T, T> getMeshes(float x_off, float z_off) const;
 
     friend std::ostream &operator<<(std::ostream &, const Chunk &);
 };

@@ -15,7 +15,7 @@ void Buffers::clear()
     texCoords.clear();
 }
 
-void Buffers::bufferData() const
+void Buffers::bufferData()
 {
     vertices.bufferData();
     indices.bufferData();
@@ -83,7 +83,7 @@ void InstanceBuffers::clear()
     offsets.clear();
 }
 
-void InstanceBuffers::bufferData() const
+void InstanceBuffers::bufferData()
 {
     Buffers::bufferData();
     offsets.bufferData();

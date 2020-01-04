@@ -1,5 +1,7 @@
-#include "buffers/EBO.hpp"
-#include <iostream>
+#include "buffers/BufferObjects.hpp"
+
+template <>
+unsigned int const BufferType<float>::Type = GL_FLOAT;
 
 EBO::EBO()
 {
@@ -8,18 +10,13 @@ EBO::EBO()
     std::cout << "EBO created" << std::endl;
 }
 
-EBO::EBO(const std::vector<unsigned int> &indices) : EBO()
-{
-    append(indices);
-}
-
-void EBO::bufferData() const
+void EBO::bufferData()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-    bufferVector(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
+    bufferVector(indices, GL_ELEMENT_ARRAY_BUFFER);
 }
 
-u_int EBO::size() const
+size_t EBO::size() const
 {
     return indices.size();
 }

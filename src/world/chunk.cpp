@@ -20,9 +20,7 @@ Chunk::Chunk(int x0, int z0) : x0(x0), z0(z0), id(Chunk::NEXT_ID++)
     }
 
     // generate chunk
-    generate(0);
-
-    std::cout << "Chunk " << id << " created" << std::endl;
+    generate(1337);
 }
 
 Chunk::~Chunk()
@@ -74,49 +72,6 @@ Block *Chunk::getAt(int x, int y, int z) const
         return nullptr;
     }
     return blocks[x][y][z];
-}
-
-std::pair<QuadMesh, QuadMesh> Chunk::getMeshes(float x_off, float z_off) const
-{
-    QuadMesh non_transparent;
-    QuadMesh transparent;
-
-    for_each([&](int x, int y, int z, Block *block) {
-        Block *up = getAt(x, y + 1, z);
-        Block *down = getAt(x, y - 1, z);
-        Block *north = getAt(x, y, z + 1);
-        Block *south = getAt(x, y, z - 1);
-        Block *east = getAt(x + 1, y, z);
-        Block *west = getAt(x - 1, y, z);
-
-        Block *faces[]{up, down, north, south, east, west};
-
-        // Only render visible faces
-        for (Block::Face face = (Block::Face)0; face < Block::FACES; face++)
-        {
-            if (!faces[face] || (faces[face]->type != block->type && Block::transparency_table[faces[face]->type]))
-            {
-                std::vector<float> vecs = block->getFace(face);
-                for (int j = 0; j <= 9; j += 3)
-                {
-                    vecs[j] += x + x_off;
-                    vecs[j + 1] += y;
-                    vecs[j + 2] += z + z_off;
-                }
-
-                if (Block::transparency_table[block->type])
-                {
-                    transparent.addQuad(vecs, block->type, face);
-                }
-                else 
-                {
-                    non_transparent.addQuad(vecs, block->type, face);
-                }
-            }
-        }
-    });
-
-    return std::make_pair(non_transparent, transparent);
 }
 
 void Chunk::generate(int seed)
@@ -181,6 +136,71 @@ void Chunk::generate(int seed)
     }
 
     FastNoiseSIMD::FreeNoiseSet(noiseSet);
+}
+
+template <>
+std::pair<QuadMesh, QuadMesh> Chunk::getMeshes<QuadMesh>(float x_off, float z_off) const
+{
+    QuadMesh non_transparent;
+    QuadMesh transparent;
+
+    for_each([&](int x, int y, int z, Block *block) {
+        Block *up = getAt(x, y + 1, z);
+        Block *down = getAt(x, y - 1, z);
+        Block *north = getAt(x, y, z + 1);
+        Block *south = getAt(x, y, z - 1);
+        Block *east = getAt(x + 1, y, z);
+        Block *west = getAt(x - 1, y, z);
+
+        Block *faces[]{up, down, north, south, east, west};
+
+        // Only render visible faces
+        for (Block::Face face = (Block::Face)0; face < Block::FACES; face++)
+        {
+            if (!faces[face] || (faces[face]->type != block->type && Block::transparency_table[faces[face]->type]))
+            {
+                std::vector<float> vecs = block->getFace(face);
+                for (int j = 0; j <= 9; j += 3)
+                {
+                    vecs[j] += x + x_off;
+                    vecs[j + 1] += y;
+                    vecs[j + 2] += z + z_off;
+                }
+
+                if (Block::transparency_table[block->type])
+                {
+                    transparent.addQuad(vecs, block->type, face);
+                }
+                else
+                {
+                    non_transparent.addQuad(vecs, block->type, face);
+                }
+            }
+        }
+    });
+
+    return std::make_pair(non_transparent, transparent);
+}
+
+template <>
+std::pair<InstanceMesh, InstanceMesh> Chunk::getMeshes<InstanceMesh>(float x_off, float z_off) const
+{
+    InstanceMesh non_transparent;
+    InstanceMesh transparent;
+
+    for_each([&](int x, int y, int z, Block *block) {
+        // Render all faces
+        if (Block::transparency_table[block->type])
+        {
+            transparent.addCube(x + x_off, y, z + z_off, block->type);
+        }
+        else
+        {
+            non_transparent.addCube(x + x_off, y, z + z_off, block->type);
+        }
+    });
+
+    return std::make_pair(non_transparent, transparent);
 }
 
 std::ostream &operator<<(std::ostream &out, const Chunk &chunk)

@@ -1,6 +1,5 @@
 #include "world/quadtree.hpp"
 #include <math.h>
-#include <chrono>
 
 #pragma region Node
 
@@ -27,13 +26,11 @@ unsigned int Node::getExtent() const
 Branch::Branch(unsigned int level) : Node(level)
 {
     q1 = q2 = q3 = q4 = nullptr;
-    std::cout << "Branch spanning from (" << x0 << ", " << z0 << ") created" << std::endl;
 }
 
 Branch::Branch(unsigned int level, int x0, int z0) : Node(level, x0, z0)
 {
     q1 = q2 = q3 = q4 = nullptr;
-    std::cout << "Branch spanning from (" << x0 << ", " << z0 << ") created" << std::endl;
 }
 
 Branch::~Branch()
@@ -97,10 +94,7 @@ Node *Branch::descent(int x, int z)
 
 #pragma region Leaf
 
-Leaf::Leaf(int x0, int z0) : Node(0, x0, z0), chunk(x0, z0)
-{
-    std::cout << "Leaf spanning from (" << x0 << ", " << z0 << ") created" << std::endl;
-}
+Leaf::Leaf(int x0, int z0) : Node(0, x0, z0), chunk(x0, z0) {}
 
 #pragma endregion Leaf
 
@@ -144,40 +138,6 @@ void QuadTree::remove(int x, int y, int z)
     {
         leaf->chunk.removeAt(x - leaf->x0, y, z - leaf->z0);
     }
-}
-
-QuadMesh QuadTree::getSurrounding(int x, int z, int radius)
-{
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-
-    QuadMesh m1, m2;
-
-    for (int i = -radius; i <= radius; i++)
-    {
-        for (int j = -radius; j <= radius; j++)
-        {
-            float leaf_x = x + (int)Chunk::SIDE * i;
-            float leaf_z = z + (int)Chunk::SIDE * j;
-
-            Leaf *leaf = leafAt(leaf_x, leaf_z);
-            if (leaf)
-            {
-                auto meshes = leaf->getBy<std::pair<QuadMesh, QuadMesh>>([&leaf](const Chunk &chunk) {
-                    return chunk.getMeshes(leaf->x0, leaf->z0);
-                });
-
-                m1 += meshes.first;
-                m2 += meshes.second;
-            }
-        }
-    }
-
-    m1 += m2;
-
-    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
-
-    return m1;
 }
 
 int QuadTree::chunkIDAt(int x, int z)

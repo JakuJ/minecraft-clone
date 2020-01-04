@@ -1,8 +1,7 @@
 #pragma once
 
+#include "buffers/BufferObjects.hpp"
 #include "rendering/mesh.hpp"
-#include "buffers/VBO.hpp"
-#include "buffers/EBO.hpp"
 
 class Buffers
 {
@@ -15,17 +14,17 @@ protected:
 
 public:
     size_t size() const;
-    
+
     virtual void clear();
-    virtual void bufferData() const;
+    virtual void bufferData();
 };
 
 class QuadBuffers : public Buffers
 {
 public:
     QuadBuffers();
-    
-    void bufferMesh(const QuadMesh&);
+
+    void bufferMesh(const QuadMesh &);
 };
 
 class InstanceBuffers : public Buffers
@@ -34,10 +33,10 @@ class InstanceBuffers : public Buffers
 
 public:
     InstanceBuffers();
-    
+
     size_t instances() const;
 
     void clear() override;
-    void bufferData() const override;
-    void bufferMesh(const InstanceMesh&);
+    void bufferData() override;
+    void bufferMesh(const InstanceMesh &);
 };
