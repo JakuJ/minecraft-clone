@@ -1,13 +1,7 @@
 #include "window.hpp"
-#include "rendering/program.hpp"
-#include "rendering/texture.hpp"
-#include "buffers/buffers.hpp"
 #include "world/world.hpp"
 #include "player/player.hpp"
-#include "player/camera.hpp"
-
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include "utility/timing.hpp"
 
 void fix_render_on_mac(GLFWwindow *window)
 {

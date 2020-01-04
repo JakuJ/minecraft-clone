@@ -63,7 +63,7 @@ public:
 template <typename T>
 T QuadTree::getSurrounding(int x, int z, int radius)
 {
-    ScopeTimer("Querying surroundings");
+    ScopedTimer("Querying surroundings");
     T m1, m2;
 
     for (int i = -radius; i <= radius; i++)

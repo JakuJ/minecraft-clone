@@ -38,7 +38,8 @@ void World::update(Player &player)
         std::thread thread([this](float x, float z) {
             std::lock_guard<std::mutex> guard(mutex);
 
-            QuadMesh mesh = tree.getSurrounding<QuadMesh>(x, z, 4);
+            MeanScopedTimer("Mesh preloading", 0);
+            QuadMesh mesh = tree.getSurrounding<QuadMesh>(x, z, 6);
             std::cout << mesh << std::endl;
             renderer.preloadMesh(mesh);
 
@@ -51,7 +52,7 @@ void World::update(Player &player)
 
     if (newData)
     {
-        ScopeTimer("Buffering to GPU");
+        MeanScopedTimer("Buffering to GPU", 1);
         renderer.bufferMesh();
         newData = false;
     }

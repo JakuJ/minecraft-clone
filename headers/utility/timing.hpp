@@ -4,20 +4,35 @@
 #include <string>
 #include <chrono>
 
-class ScopeTimer
+typedef std::chrono::nanoseconds unit;
+
+class Timer
 {
-    std::chrono::high_resolution_clock::time_point start;
+protected:
+    std::chrono::steady_clock::time_point start;
     std::string message;
 
 public:
-    ScopeTimer(const std::string &message) : message(message)
-    {
-        start = std::chrono::high_resolution_clock::now();
-    };
+    Timer(const std::string &message);
+};
 
-    ~ScopeTimer()
-    {
-        std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
-        std::cout << message << " [" << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << " ns]" << std::endl;
-    }
+class ScopedTimer : Timer
+{
+public:
+    ScopedTimer(const std::string &message);
+    ~ScopedTimer();
+};
+
+class MeanScopedTimer : Timer
+{
+    static const size_t TIMERS = 8;
+
+    static long long times[TIMERS];
+    static int samples[TIMERS];
+
+    u_int index;
+
+public:
+    MeanScopedTimer(const std::string &message, u_int index);
+    ~MeanScopedTimer();
 };
