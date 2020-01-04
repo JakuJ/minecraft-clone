@@ -7,20 +7,20 @@
 class Chunk
 {
     static const u_int HEIGHT = 256;
-    static const u_int BEDROCK_LEVEL = 5;
     static u_int NEXT_ID;
     
     Block ****blocks;
+
+    const int x0, z0;
 
     void for_each(std::function<void(int, int, int, Block *)>) const;
 
 public:
     static const u_int SIDE = 16;
-    static const u_int SEA_LEVEL = 64;
 
     u_int id;
 
-    Chunk();
+    Chunk(int x0, int z0);
     ~Chunk();
 
     void placeAt(u_int, u_int, u_int, Block *);

@@ -1,5 +1,7 @@
 #include "world/block.hpp"
 
+const bool Block::transparency_table[] = {0, 0, 0, 0, 0, 1, 1, 0};
+
 Block::Block(Block::Type t) : type(t) {}
 
 std::vector<float> Block::getFace(Block::Face face) const

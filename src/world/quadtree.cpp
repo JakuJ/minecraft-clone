@@ -111,7 +111,7 @@ Mesh Branch::getMesh() const
 
 #pragma region Leaf
 
-Leaf::Leaf(int x0, int z0) : Node(0, x0, z0)
+Leaf::Leaf(int x0, int z0) : Node(0, x0, z0), chunk(x0, z0)
 {
     std::cout << "Leaf spanning from (" << x0 << ", " << z0 << ") created" << std::endl;
 }
@@ -189,7 +189,7 @@ Mesh QuadTree::getSurrounding(int x, int z, int radius)
 int QuadTree::chunkIDAt(int x, int z)
 {
     Leaf *leaf = leafAt(x, z);
-    
+
     if (leaf)
     {
         return (leaf->chunk).id;

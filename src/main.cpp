@@ -37,29 +37,14 @@ int main()
 
     World world;
 
-    // make an acacia tree
-    const int tree_height = 5;
-    for (int y = 0; y < tree_height; y++)
-    {
-        world.placeBlock(0, Chunk::SEA_LEVEL + 1 + y, 0, Block::ACACIA_LOG);
-    }
-
-    for (int x = 0; x < tree_height; x++)
-    {
-        for (int y = 0; y < tree_height; y++)
-        {
-            for (int z = 0; z < tree_height; z++)
-            {
-                world.placeBlock(x - tree_height / 2, Chunk::SEA_LEVEL + 1 + y + tree_height, z - tree_height / 2, Block::ACACIA_LEAVES);
-            }
-        }
-    }
-
-    Player player(0, Chunk::SEA_LEVEL + 2, 10);
+    Player player(0, 80, 0);
 
     registerCamera(window, player.camera);
 
     glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // For now, only the front-facing side of a transparent block is rendered
     glEnable(GL_CULL_FACE);

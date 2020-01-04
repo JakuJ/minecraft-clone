@@ -13,22 +13,24 @@ public:
         NORTH,
         SOUTH,
         EAST,
-        WEST
+        WEST,
+        FACES // enum size
     };
-
-    static const u_int FACES = 6;
 
     enum Type
     {
-        DIRT = 0,
-        GRASS,
-        BEDROCK,
+        BEDROCK = 0,
         STONE,
+        DIRT,
+        GRASS,
         ACACIA_LOG,
-        ACACIA_LEAVES
+        ACACIA_LEAVES,
+        WATER,
+        SAND,
+        TYPES // enum size
     };
 
-    static const u_int TYPES = 6;
+    static const bool transparency_table[TYPES];
 
     Type type;
 

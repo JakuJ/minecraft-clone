@@ -1,10 +1,11 @@
 #include "world/chunk.hpp"
 #include "world/block.hpp"
 #include "FastNoiseSIMD/FastNoiseSIMD.h"
+#include <math.h>
 
 u_int Chunk::NEXT_ID = 0;
 
-Chunk::Chunk() : id(Chunk::NEXT_ID++)
+Chunk::Chunk(int x0, int z0) : x0(x0), z0(z0), id(Chunk::NEXT_ID++)
 {
     // allocate memory
     blocks = new Block ***[Chunk::SIDE];
@@ -92,12 +93,12 @@ Mesh Chunk::getMesh(float x_off, float z_off) const
         // Only render visible faces
         for (u_int i = 0; i < Block::FACES; i++)
         {
-            if (!faces[i])
+            if (!faces[i] || (faces[i]->type != block->type && Block::transparency_table[faces[i]->type]))
             {
                 Block::Face face = (Block::Face)i;
 
                 std::vector<float> vecs = block->getFace(face);
-                for (u_int j = 0; j <= 9; j += 3)
+                for (int j = 0; j <= 9; j += 3)
                 {
                     vecs[j] += x + x_off;
                     vecs[j + 1] += y;
@@ -114,21 +115,67 @@ Mesh Chunk::getMesh(float x_off, float z_off) const
 
 void Chunk::generate(int seed)
 {
+    static const int BEDROCK_LEVEL = 5;
+    static const int STONE_LEVEL = 40;
+    static const int SEA_LEVEL = 64;
+    static const int SEA_BOTTOM = 50;
+    static const int HILL_PEAKS = 80;
+
+    static const int noise_sd = (HILL_PEAKS - SEA_BOTTOM) / 2;
+    static const int noise_mean = (HILL_PEAKS + SEA_BOTTOM) / 2;
+    static const float noise_scale = 2.0;
+
+    // Noise-based terrain
+    FastNoiseSIMD *myNoise = FastNoiseSIMD::NewFastNoiseSIMD(seed);
+    myNoise->SetAxisScales(noise_scale, 1.0, noise_scale);
+
+    float *noiseSet = myNoise->GetSimplexSet(x0, 0, z0, SIDE, 1, SIDE);
+
+    u_int index = 0;
     for (u_int x = 0; x < SIDE; x++)
     {
         for (u_int z = 0; z < SIDE; z++)
         {
-            for (int y = 0; y < BEDROCK_LEVEL; y++)
+            // Noise-based variation in terrain height
+            int groundLevel = floorf(noise_mean + noise_sd * noiseSet[index++]);
+
+            // BEDROCK
+            for (int y = 0; y < BEDROCK_LEVEL && y < groundLevel; y++)
             {
                 placeAt(x, y, z, new Block(Block::BEDROCK));
             }
-            for (int y = BEDROCK_LEVEL; y < SEA_LEVEL; y++)
+
+            // STONE
+            for (int y = BEDROCK_LEVEL; y < STONE_LEVEL && y < groundLevel; y++)
             {
                 placeAt(x, y, z, new Block(Block::STONE));
             }
-            placeAt(x, SEA_LEVEL, z, new Block(Block::GRASS));
+
+            bool sea = groundLevel < SEA_LEVEL;
+
+            // DIRT or SAND
+            for (int y = STONE_LEVEL; y < groundLevel; y++)
+            {
+                placeAt(x, y, z, new Block(sea ? Block::SAND : Block::DIRT));
+            }
+
+            if (sea)
+            {
+                // WATER
+                for (int y = groundLevel; y < SEA_LEVEL; y++)
+                {
+                    placeAt(x, y, z, new Block(Block::WATER));
+                }
+            }
+            else
+            {
+                placeAt(x, groundLevel, z, new Block(Block::GRASS));
+            }
+            placeAt(x, 90, z, new Block(Block::ACACIA_LEAVES));
         }
     }
+
+    FastNoiseSIMD::FreeNoiseSet(noiseSet);
 }
 
 std::ostream &operator<<(std::ostream &out, const Chunk &chunk)
