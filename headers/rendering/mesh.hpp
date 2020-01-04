@@ -21,4 +21,6 @@ struct InstanceMesh
 
     virtual void operator+=(const InstanceMesh &other);
     void addCube(float x, float y, float z, Block::Type texId);
+
+    friend std::ostream &operator<<(std::ostream &out, const InstanceMesh &mesh);
 };

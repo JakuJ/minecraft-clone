@@ -13,20 +13,22 @@ ScopedTimer::~ScopedTimer()
     std::cout << message << " [" << std::chrono::duration_cast<unit>(end - start).count() << " ns]" << std::endl;
 }
 
-long long MeanScopedTimer::times[] = {0};
-int MeanScopedTimer::samples[] = {0};
+std::map<std::string, std::pair<long long, long long>> MeanScopedTimer::times;
 
-MeanScopedTimer::MeanScopedTimer(const std::string &message, u_int index) : Timer(message), index(index) {}
+MeanScopedTimer::MeanScopedTimer(const std::string &message) : Timer(message)
+{
+    times.try_emplace(message, std::make_pair(0, 0));
+}
 
 MeanScopedTimer::~MeanScopedTimer()
 {
     auto end = std::chrono::steady_clock::now();
     long long elapsed = std::chrono::duration_cast<unit>(end - start).count();
 
-    times[index] += elapsed;
-    samples[index]++;
+    times[message].first += elapsed;
+    times[message].second++;
 
-    auto mean = times[index] / samples[index];
+    auto mean = times[message].first/ times[message].second;
 
     std::cout << message << " [" << elapsed << " ns]" << std::endl;
     std::cout << "Mean: [" << mean << " ns]" << std::endl;

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <map>
+#include <utility>
 
 typedef std::chrono::nanoseconds unit;
 
@@ -25,14 +27,9 @@ public:
 
 class MeanScopedTimer : Timer
 {
-    static const size_t TIMERS = 8;
-
-    static long long times[TIMERS];
-    static int samples[TIMERS];
-
-    u_int index;
+    static std::map<std::string, std::pair<long long, long long>> times;
 
 public:
-    MeanScopedTimer(const std::string &message, u_int index);
+    MeanScopedTimer(const std::string &message);
     ~MeanScopedTimer();
 };

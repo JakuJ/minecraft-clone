@@ -2,6 +2,7 @@
 #include "world/world.hpp"
 #include "player/player.hpp"
 #include "utility/timing.hpp"
+#include "rendering/renderer.hpp"
 
 void fix_render_on_mac(GLFWwindow *window)
 {
@@ -30,7 +31,6 @@ int main()
     }
 
     World world;
-
     Player player(0, 80, 0);
 
     registerCamera(window, player.camera);
@@ -52,6 +52,8 @@ int main()
     double lastFrame = lastSecond;
     double currentTime = lastSecond;
 
+    QuadRenderer renderer;
+
     while (!glfwWindowShouldClose(window))
     {
         // pre-frame logic
@@ -64,8 +66,7 @@ int main()
         glClearColor(0.6, 0.8, 1, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // update world
-        world.update(player);
+        renderer.render(world, player);
 
         glfwSwapBuffers(window);
 
