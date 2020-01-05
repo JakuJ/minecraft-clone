@@ -1,12 +1,12 @@
 #pragma once
 
-#include <iostream>
-#include <string>
 #include <chrono>
+#include <iostream>
 #include <map>
+#include <string>
 #include <utility>
 
-typedef std::chrono::nanoseconds unit;
+typedef std::milli unit;
 
 class Timer
 {
@@ -27,7 +27,7 @@ public:
 
 class MeanScopedTimer : Timer
 {
-    static std::map<std::string, std::pair<long long, long long>> times;
+    static std::map<std::string, std::pair<double, double>> times;
 
 public:
     MeanScopedTimer(const std::string &message);

@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <vector>
-#include "enums.hpp"
+#include "utility/enums.hpp"
 
 struct Block
 {
@@ -42,5 +42,4 @@ public:
     friend std::ostream &operator<<(std::ostream &, const Block &);
 };
 
-GENERATE_ENUM_OPERATORS(Block::Type)
 GENERATE_ENUM_OPERATORS(Block::Face)

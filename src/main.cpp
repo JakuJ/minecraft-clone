@@ -1,8 +1,8 @@
+#include "player/player.hpp"
+#include "rendering/renderer.hpp"
+#include "utility/timing.hpp"
 #include "window.hpp"
 #include "world/world.hpp"
-#include "player/player.hpp"
-#include "utility/timing.hpp"
-#include "rendering/renderer.hpp"
 
 void fix_render_on_mac(GLFWwindow *window)
 {
@@ -52,6 +52,7 @@ int main()
     double currentTime = lastSecond;
 
     QuadRenderer renderer;
+    // InstanceRenderer renderer;
 
     while (!glfwWindowShouldClose(window))
     {

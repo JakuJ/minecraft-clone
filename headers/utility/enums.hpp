@@ -1,3 +1,5 @@
+#pragma once
+
 #define GENERATE_ENUM_OPERATORS(eEnumType) \
 inline void operator++(eEnumType& eVal) \
 { \

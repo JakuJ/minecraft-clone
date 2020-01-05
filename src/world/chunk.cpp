@@ -1,6 +1,7 @@
 #include "world/chunk.hpp"
-#include "world/block.hpp"
 #include "FastNoiseSIMD/FastNoiseSIMD.h"
+#include "utility/timing.hpp"
+#include "world/block.hpp"
 #include <math.h>
 
 u_int Chunk::NEXT_ID = 0;
@@ -86,6 +87,8 @@ void Chunk::generate(int seed)
     static const int noise_mean = (HILL_PEAKS + SEA_BOTTOM) / 2;
     static const float noise_scale = 2.0;
 
+    MeanScopedTimer timer("Chunk::generate");
+
     // Noise-based terrain
     FastNoiseSIMD *myNoise = FastNoiseSIMD::NewFastNoiseSIMD(seed);
     myNoise->SetAxisScales(noise_scale, 1.0, noise_scale);
@@ -136,95 +139,6 @@ void Chunk::generate(int seed)
     }
 
     FastNoiseSIMD::FreeNoiseSet(noiseSet);
-}
-
-template <>
-std::pair<QuadMesh, QuadMesh> Chunk::getMeshes<QuadMesh>(float x_off, float z_off) const
-{
-    QuadMesh non_transparent;
-    QuadMesh transparent;
-
-    for_each([&](int x, int y, int z, Block *block) {
-        Block *up = getAt(x, y + 1, z);
-        Block *down = getAt(x, y - 1, z);
-        Block *north = getAt(x, y, z + 1);
-        Block *south = getAt(x, y, z - 1);
-        Block *east = getAt(x + 1, y, z);
-        Block *west = getAt(x - 1, y, z);
-
-        Block *faces[]{up, down, north, south, east, west};
-
-        // Only render visible faces
-        for (Block::Face face = (Block::Face)0; face < Block::FACES; face++)
-        {
-            if (!faces[face] || (faces[face]->type != block->type && Block::transparency_table[faces[face]->type]))
-            {
-                std::vector<float> vecs = block->getFace(face);
-                for (int j = 0; j <= 9; j += 3)
-                {
-                    vecs[j] += x + x_off;
-                    vecs[j + 1] += y;
-                    vecs[j + 2] += z + z_off;
-                }
-
-                if (Block::transparency_table[block->type])
-                {
-                    transparent.addQuad(vecs, block->type, face);
-                }
-                else
-                {
-                    non_transparent.addQuad(vecs, block->type, face);
-                }
-            }
-        }
-    });
-
-    return std::make_pair(non_transparent, transparent);
-}
-
-template <>
-std::pair<InstanceMesh, InstanceMesh> Chunk::getMeshes<InstanceMesh>(float x_off, float z_off) const
-{
-    InstanceMesh non_transparent;
-    InstanceMesh transparent;
-
-    for_each([&](int x, int y, int z, Block *block) {
-        // Render complete block if any face is visible
-
-        Block *up = getAt(x, y + 1, z);
-        Block *down = getAt(x, y - 1, z);
-        Block *north = getAt(x, y, z + 1);
-        Block *south = getAt(x, y, z - 1);
-        Block *east = getAt(x + 1, y, z);
-        Block *west = getAt(x - 1, y, z);
-
-        Block *faces[]{up, down, north, south, east, west};
-
-        bool any = false;
-        for (Block *face : faces)
-        {
-            if (!face || (face->type != block->type && Block::transparency_table[face->type]))
-            {
-                any = true;
-                break;
-            }
-        }
-
-        if (any)
-        {
-
-            if (Block::transparency_table[block->type])
-            {
-                transparent.addCube(x + x_off, y, z + z_off, block->type);
-            }
-            else
-            {
-                non_transparent.addCube(x + x_off, y, z + z_off, block->type);
-            }
-        }
-    });
-
-    return std::make_pair(non_transparent, transparent);
 }
 
 std::ostream &operator<<(std::ostream &out, const Chunk &chunk)

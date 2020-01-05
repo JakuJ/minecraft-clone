@@ -10,10 +10,10 @@ ScopedTimer::ScopedTimer(const std::string &message) : Timer(message) {}
 ScopedTimer::~ScopedTimer()
 {
     auto end = std::chrono::steady_clock::now();
-    std::cout << message << " [" << std::chrono::duration_cast<unit>(end - start).count() << " ns]" << std::endl;
+    std::cout << message << "\t[" << std::chrono::duration<double, unit>(end - start).count() << " ms]" << std::endl;
 }
 
-std::map<std::string, std::pair<long long, long long>> MeanScopedTimer::times;
+std::map<std::string, std::pair<double, double>> MeanScopedTimer::times;
 
 MeanScopedTimer::MeanScopedTimer(const std::string &message) : Timer(message)
 {
@@ -23,13 +23,12 @@ MeanScopedTimer::MeanScopedTimer(const std::string &message) : Timer(message)
 MeanScopedTimer::~MeanScopedTimer()
 {
     auto end = std::chrono::steady_clock::now();
-    long long elapsed = std::chrono::duration_cast<unit>(end - start).count();
+    auto elapsed = std::chrono::duration<double, unit>(end - start).count();
 
     times[message].first += elapsed;
     times[message].second++;
 
-    auto mean = times[message].first/ times[message].second;
+    auto mean = times[message].first / times[message].second;
 
-    std::cout << message << " [" << elapsed << " ns]" << std::endl;
-    std::cout << "Mean: [" << mean << " ns]" << std::endl;
+    std::cout << message << "\t[" << elapsed << " ms]\tMean: [" << mean << " ms]" << std::endl;
 }

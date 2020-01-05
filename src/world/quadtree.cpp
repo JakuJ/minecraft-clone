@@ -92,11 +92,9 @@ Node *Branch::descent(int x, int z)
 
 #pragma endregion Branch
 
-#pragma region Leaf
-
-Leaf::Leaf(int x0, int z0) : Node(0, x0, z0), chunk(x0, z0) {}
-
-#pragma endregion Leaf
+Leaf::Leaf(int x0, int z0) : Node(0, x0, z0), chunk(x0, z0)
+{
+}
 
 #pragma region QuadTree
 
@@ -146,10 +144,37 @@ int QuadTree::chunkIDAt(int x, int z)
 
     if (leaf)
     {
-        return (leaf->chunk).id;
+        return leaf->chunk.id;
     }
 
     return -1;
+}
+
+ChunkSector QuadTree::getSurrounding(int x, int z, int radius)
+{
+    MeanScopedTimer timer("QuadTree::getSurrounding");
+
+    const int side = (2 * radius + 1);
+
+    Chunk ***chunks = new Chunk **[side];
+
+    for (int i = -radius; i <= radius; i++)
+    {
+        int cx = i + radius;
+        chunks[cx] = new Chunk *[side];
+
+        for (int j = -radius; j <= radius; j++)
+        {
+            int cz = j + radius;
+
+            float leaf_x = x + (int)Chunk::SIDE * i;
+            float leaf_z = z + (int)Chunk::SIDE * j;
+
+            chunks[cx][cz] = &leafAt(leaf_x, leaf_z)->chunk;
+        }
+    }
+
+    return ChunkSector(chunks, side);
 }
 
 #pragma endregion QuadTree

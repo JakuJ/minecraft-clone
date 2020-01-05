@@ -1,6 +1,7 @@
 #pragma once
 
 #include "world/chunk.hpp"
+#include "world/chunk_sector.hpp"
 #include <functional>
 #include "utility/timing.hpp"
 
@@ -56,37 +57,5 @@ public:
     int chunkIDAt(int x, int z);
 
     // Mesh generation
-    template <typename T>
-    T getSurrounding(int x, int z, int radius);
+    ChunkSector getSurrounding(int x, int z, int radius);
 };
-
-template <typename T>
-T QuadTree::getSurrounding(int x, int z, int radius)
-{
-    MeanScopedTimer("Querying surroundings");
-    T m1, m2;
-
-    for (int i = -radius; i <= radius; i++)
-    {
-        for (int j = -radius; j <= radius; j++)
-        {
-            float leaf_x = x + (int)Chunk::SIDE * i;
-            float leaf_z = z + (int)Chunk::SIDE * j;
-
-            Leaf *leaf = leafAt(leaf_x, leaf_z);
-            if (leaf)
-            {
-                auto meshes = leaf->getBy<std::pair<T, T>>([&leaf](const Chunk &chunk) {
-                    return chunk.getMeshes<T>(leaf->x0, leaf->z0);
-                });
-
-                m1 += meshes.first;
-                m2 += meshes.second;
-            }
-        }
-    }
-
-    m1 += m2;
-
-    return m1;
-}

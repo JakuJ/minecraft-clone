@@ -14,3 +14,8 @@ bin/
 
 # symbolic link to bin/main
 main
+
+# gnu global-based intellisense
+GPATH
+GRTAGS
+GTAGS

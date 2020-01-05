@@ -30,8 +30,6 @@ public:
     Block *getAt(int x, int y, int z) const;
     void generate(int seed);
 
-    template <typename T>
-    std::pair<T, T> getMeshes(float x_off, float z_off) const;
-
+    friend class ChunkSector;
     friend std::ostream &operator<<(std::ostream &, const Chunk &);
 };

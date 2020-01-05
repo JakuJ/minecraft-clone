@@ -1,4 +1,5 @@
 #include "buffers/buffers.hpp"
+#include "utility/timing.hpp"
 #include <iostream>
 
 Buffers::Buffers() : vertices(0), texCoords(1) {}
@@ -11,6 +12,7 @@ void Buffers::clear()
 
 void Buffers::bufferData()
 {
+    MeanScopedTimer timer("Buffers::bufferData");
     vertices.bufferData();
     texCoords.bufferData();
 }
@@ -33,6 +35,7 @@ void QuadBuffers::clear()
 
 void QuadBuffers::bufferData()
 {
+    MeanScopedTimer timer("QuadBuffers::bufferData");
     Buffers::bufferData();
     indices.bufferData();
 }
@@ -105,6 +108,8 @@ void InstanceBuffers::clear()
 void InstanceBuffers::bufferData()
 {
     Buffers::bufferData();
+    
+    MeanScopedTimer timer("InstanceBuffers::offsets.bufferData");
     offsets.bufferData();
 }
 
