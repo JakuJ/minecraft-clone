@@ -62,7 +62,7 @@ QuadRenderer::QuadRenderer() : Renderer("data/shaders/quad.vert", "data/shaders/
 void QuadRenderer::render(World &world, Player &player)
 {
     Renderer::render(world, player);
-    glDrawElements(GL_TRIANGLES, buffered_size, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, buffered_size, GL_UNSIGNED_INT, (GLvoid *)0);
 }
 
 void QuadRenderer::constructMesh(const ChunkSector &cs)

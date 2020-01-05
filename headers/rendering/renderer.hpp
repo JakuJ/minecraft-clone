@@ -15,7 +15,7 @@
 class Renderer
 {
 protected:
-    static const int RENDERING_DISTANCE = 12;
+    static const int RENDERING_DISTANCE = 16;
 
     size_t buffered_size;
     std::atomic<bool> new_data;

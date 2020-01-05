@@ -51,8 +51,8 @@ int main()
     double lastFrame = lastSecond;
     double currentTime = lastSecond;
 
-    // QuadRenderer renderer;
-    InstanceRenderer renderer;
+    QuadRenderer renderer;
+    // InstanceRenderer renderer;
 
     while (!glfwWindowShouldClose(window))
     {
