@@ -189,14 +189,38 @@ std::pair<InstanceMesh, InstanceMesh> Chunk::getMeshes<InstanceMesh>(float x_off
     InstanceMesh transparent;
 
     for_each([&](int x, int y, int z, Block *block) {
-        // Render all faces
-        if (Block::transparency_table[block->type])
+        // Render complete block if any face is visible
+
+        Block *up = getAt(x, y + 1, z);
+        Block *down = getAt(x, y - 1, z);
+        Block *north = getAt(x, y, z + 1);
+        Block *south = getAt(x, y, z - 1);
+        Block *east = getAt(x + 1, y, z);
+        Block *west = getAt(x - 1, y, z);
+
+        Block *faces[]{up, down, north, south, east, west};
+
+        bool any = false;
+        for (Block *face : faces)
         {
-            transparent.addCube(x + x_off, y, z + z_off, block->type);
+            if (!face || (face->type != block->type && Block::transparency_table[face->type]))
+            {
+                any = true;
+                break;
+            }
         }
-        else
+
+        if (any)
         {
-            non_transparent.addCube(x + x_off, y, z + z_off, block->type);
+
+            if (Block::transparency_table[block->type])
+            {
+                transparent.addCube(x + x_off, y, z + z_off, block->type);
+            }
+            else
+            {
+                non_transparent.addCube(x + x_off, y, z + z_off, block->type);
+            }
         }
     });
 

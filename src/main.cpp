@@ -36,7 +36,6 @@ int main()
     registerCamera(window, player.camera);
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

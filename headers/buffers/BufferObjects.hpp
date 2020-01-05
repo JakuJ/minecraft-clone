@@ -81,7 +81,7 @@ public:
 
     size_t size() const override
     {
-        return data.size();
+        return data.size() / N;
     };
 
     void append(const std::vector<T> &vec);

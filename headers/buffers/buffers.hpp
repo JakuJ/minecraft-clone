@@ -8,12 +8,11 @@ class Buffers
 protected:
     VBO<float, 3> vertices;
     VBO<float, 2> texCoords;
-    EBO indices;
 
     Buffers();
 
 public:
-    size_t size() const;
+    virtual size_t size() const = 0;
 
     virtual void clear();
     virtual void bufferData();
@@ -21,8 +20,14 @@ public:
 
 class QuadBuffers : public Buffers
 {
+    EBO indices;
+
 public:
     QuadBuffers();
+
+    size_t size() const override;
+    virtual void clear() override;
+    virtual void bufferData() override;
 
     void bufferMesh(const QuadMesh &);
 };
@@ -34,6 +39,7 @@ class InstanceBuffers : public Buffers
 public:
     InstanceBuffers();
 
+    size_t size() const override;
     size_t instances() const;
 
     void clear() override;

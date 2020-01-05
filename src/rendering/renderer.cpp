@@ -4,7 +4,7 @@
 #include <thread>
 #include <atomic>
 
-Renderer::Renderer(const std::string &vPath, const std::string &fPath) : texture("data/textures/blocks.png", GL_TEXTURE0, true), program(vPath, fPath)
+Renderer::Renderer(const std::string &vPath, const std::string &fPath) : buffered_size(0), texture("data/textures/blocks.png", GL_TEXTURE0, true), program(vPath, fPath)
 {
     // Create a Vertex Array Object
     unsigned int VAO;
@@ -42,7 +42,7 @@ void QuadRenderer::render(World &world, Player &player)
             std::lock_guard<std::mutex> guard(mutex);
 
             MeanScopedTimer("Mesh preloading");
-            QuadMesh mesh = world.tree.getSurrounding<QuadMesh>(x, z, 6);
+            QuadMesh mesh = world.tree.getSurrounding<QuadMesh>(x, z, 3);
             std::cout << mesh << std::endl;
             preloadMesh(mesh);
 
@@ -80,7 +80,11 @@ void QuadRenderer::bufferMesh()
     buffered_size = buffers.size();
 }
 
-InstanceRenderer::InstanceRenderer() : Renderer("data/shaders/instance.vert", "data/shaders/instance.frag") {}
+InstanceRenderer::InstanceRenderer() : Renderer("data/shaders/instance.vert", "data/shaders/quad.frag"), buffered_instances(0)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glVertexAttribDivisor(2, 1);
+}
 
 void InstanceRenderer::preloadMesh(const InstanceMesh &mesh)
 {
@@ -110,11 +114,11 @@ void InstanceRenderer::render(World &world, Player &player)
         std::cout << "Moving from chunk " << player.chunkID << " to " << currentID << std::endl;
         player.chunkID = currentID;
 
-        std::thread thread([&](float x, float z) {
+        std::thread thread([this, &world](float x, float z) {
             std::lock_guard<std::mutex> guard(mutex);
 
             MeanScopedTimer("Mesh preloading");
-            InstanceMesh mesh = world.tree.getSurrounding<InstanceMesh>(x, z, 6);
+            InstanceMesh mesh = world.tree.getSurrounding<InstanceMesh>(x, z, 3);
             std::cout << mesh << std::endl;
             preloadMesh(mesh);
 
@@ -137,5 +141,5 @@ void InstanceRenderer::render(World &world, Player &player)
 
     program.setUniform("mvp", player.camera.getViewMatrix());
 
-    glDrawElementsInstanced(GL_TRIANGLE_STRIP, buffered_size, GL_UNSIGNED_INT, 0, buffered_instances);
+    glDrawArraysInstanced(GL_TRIANGLES, 0, buffered_size, buffered_instances);
 }

@@ -51,7 +51,7 @@ std::ostream &operator<<(std::ostream &out, const QuadMesh &mesh)
 
 void InstanceMesh::addCube(float x, float y, float z, Block::Type texId)
 {
-    const float offs[] = {x, y, z, (float)texId / (float)Block::TYPES};
+    const float offs[] = {x, y, z, ((float)texId) / (float)Block::TYPES};
 
     offsets.reserve(offsets.size() + 4);
     offsets.insert(offsets.end(), offs, std::end(offs));
@@ -59,7 +59,6 @@ void InstanceMesh::addCube(float x, float y, float z, Block::Type texId)
 
 void InstanceMesh::operator+=(const InstanceMesh &other)
 {
-    // Copy offsets
     offsets.insert(offsets.end(), other.offsets.cbegin(), other.offsets.cend());
 }
 
