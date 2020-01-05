@@ -47,25 +47,19 @@ void QuadBuffers::bufferMesh(const QuadMesh &mesh)
     texCoords.append(mesh.texCoords);
 }
 
-InstanceBuffers::InstanceBuffers() : offsets(2)
+InstanceBuffers::InstanceBuffers() : offsets(2), typeInfos(3)
 {
     std::vector<float> verts;
-    verts.reserve(6 * 2 * 3 * 3);
+    verts.reserve(2 * 3 * 3);
 
-    const float vs[]{0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1};
+    const float vs[]{0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0};
 
-    const u_int ixs[]{
-        3, 2, 6, 3, 6, 7,
-        4, 5, 1, 4, 1, 0,
-        5, 4, 7, 5, 7, 6,
-        0, 1, 2, 0, 2, 3,
-        1, 5, 6, 1, 6, 2,
-        4, 0, 3, 4, 3, 7};
+    const u_int ixs[]{0, 1, 2, 0, 2, 3};
 
     auto addVert = [&](u_int ix) {
-        verts.push_back(vs[3 * ix]);
-        verts.push_back(vs[3 * ix + 1]);
-        verts.push_back(vs[3 * ix + 2]);
+        verts.push_back(vs[3 * ix] - 0.5);
+        verts.push_back(vs[3 * ix + 1] - 0.5);
+        verts.push_back(vs[3 * ix + 2] - 0.5);
     };
 
     std::for_each(ixs, std::end(ixs), addVert);
@@ -73,17 +67,13 @@ InstanceBuffers::InstanceBuffers() : offsets(2)
     vertices.append(verts);
 
     std::vector<float> coords;
-    coords.reserve(48);
+    coords.reserve(2 * 3 * 2);
 
     const float du = 1.0 / (float)Block::FACES;
     const float dv = 1.0 / (float)Block::TYPES;
 
-    for (u_int i = 0; i < Block::FACES; i++)
-    {
-        const float u = du * (float)i;
-        const float uvs[] = {u, 0, u + du, 0, u + du, dv, u, 0, u + du, dv, u, dv};
-        coords.insert(coords.end(), uvs, std::end(uvs));
-    }
+    const float uvs[] = {0, 0, du, 0, du, dv, 0, 0, du, dv, 0, dv};
+    coords.insert(coords.end(), uvs, std::end(uvs));
 
     texCoords.append(coords);
 
@@ -103,17 +93,20 @@ size_t InstanceBuffers::instances() const
 void InstanceBuffers::clear()
 {
     offsets.clear();
+    typeInfos.clear();
 }
 
 void InstanceBuffers::bufferData()
 {
     Buffers::bufferData();
     
-    MeanScopedTimer timer("InstanceBuffers::offsets.bufferData");
+    MeanScopedTimer timer("InstanceBuffers::bufferData");
     offsets.bufferData();
+    typeInfos.bufferData();
 }
 
 void InstanceBuffers::bufferMesh(const InstanceMesh &mesh)
 {
     offsets.append(mesh.offsets);
+    typeInfos.append(mesh.typeInfos);
 }

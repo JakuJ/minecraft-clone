@@ -18,8 +18,9 @@ struct QuadMesh
 struct InstanceMesh
 {
     std::vector<float> offsets;
+    std::vector<float> typeInfos;
 
-    void addCube(float x, float y, float z, Block::Type texId);
+    void addCube(float x, float y, float z, Block::Type texId, Block::Face faceId);
 
     void operator+=(const InstanceMesh &other);
     friend std::ostream &operator<<(std::ostream &out, const InstanceMesh &mesh);

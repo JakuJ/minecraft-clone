@@ -50,20 +50,24 @@ std::ostream &operator<<(std::ostream &out, const QuadMesh &mesh)
 #pragma endregion
 #pragma region InstanceMesh
 
-void InstanceMesh::addCube(float x, float y, float z, Block::Type texId)
+void InstanceMesh::addCube(float x, float y, float z, Block::Type texId, Block::Face faceId)
 {
-    const float offs[] = {x, y, z, ((float)texId) / (float)Block::TYPES};
+    const float offs[] = {x, y, z};
     offsets.insert(offsets.end(), offs, std::end(offs));
+
+    const float infos[] = {(float)faceId / (float)Block::FACES, (float)texId / (float)Block::TYPES, (float)faceId};
+    typeInfos.insert(typeInfos.end(), infos, std::end(infos));
 }
 
 void InstanceMesh::operator+=(const InstanceMesh &other)
 {
     offsets.insert(offsets.end(), other.offsets.cbegin(), other.offsets.cend());
+    typeInfos.insert(typeInfos.end(), other.typeInfos.cbegin(), other.typeInfos.cend());
 }
 
 std::ostream &operator<<(std::ostream &out, const InstanceMesh &mesh)
 {
-    return out << "Instance Mesh with " << mesh.offsets.size() / 4 << " instances";
+    return out << "Instance Mesh with " << mesh.offsets.size() / 3 << " instances";
 }
 
 #pragma endregion

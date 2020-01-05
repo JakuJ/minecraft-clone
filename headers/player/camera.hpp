@@ -36,7 +36,7 @@ public:
     glm::vec3 position;
 
     // Constructor with vectors
-    Camera(float x, float y, float z, float yaw = -90, float pitch = 0);
+    Camera(float x, float y, float z, float yaw = 90, float pitch = 0);
 
     // Returns the view matrix calculated using Euler Angles and the LookAt Matrix
     glm::mat4 getViewMatrix() const;

@@ -11,10 +11,10 @@ public:
     {
         UP = 0,
         DOWN,
-        NORTH,
-        SOUTH,
-        EAST,
-        WEST,
+        BACK,
+        FRONT,
+        RIGHT,
+        LEFT,
         FACES // enum size
     };
 

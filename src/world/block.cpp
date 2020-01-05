@@ -12,13 +12,13 @@ std::vector<float> Block::getFace(Block::Face face) const
         return std::vector<float>{0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1};
     case DOWN:
         return std::vector<float>{0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0};
-    case NORTH:
+    case BACK:
         return std::vector<float>{1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1};
-    case SOUTH:
+    case FRONT:
         return std::vector<float>{0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0};
-    case EAST:
+    case RIGHT:
         return std::vector<float>{1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0};
-    case WEST:
+    case LEFT:
         return std::vector<float>{0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1};
     default:
         throw "Invalid block face!";

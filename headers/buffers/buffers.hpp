@@ -34,7 +34,8 @@ public:
 
 class InstanceBuffers : public Buffers
 {
-    VBO<float, 4> offsets;
+    VBO<float, 3> offsets;
+    VBO<float, 3> typeInfos;
 
 public:
     InstanceBuffers();

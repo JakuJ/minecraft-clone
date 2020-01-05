@@ -119,19 +119,18 @@ InstanceMesh ChunkSector::getInstanceMesh() const
 
                     Block *faces[]{up, down, north, south, east, west};
 
-                    for (Block *face : faces)
+                    for (Block::Face face = (Block::Face)0; face < Block::FACES; face++)
                     {
-                        if (!face || (face->type != block->type && Block::transparency_table[face->type]))
+                        if (!faces[face] || (faces[face]->type != block->type && Block::transparency_table[faces[face]->type]))
                         {
                             if (Block::transparency_table[block->type])
                             {
-                                transparent.addCube(x + x0, y, z + z0, block->type);
+                                transparent.addCube(x + x0, y, z + z0, block->type, face);
                             }
                             else
                             {
-                                opaque.addCube(x + x0, y, z + z0, block->type);
+                                opaque.addCube(x + x0, y, z + z0, block->type, face);
                             }
-                            break;
                         }
                     }
                 }

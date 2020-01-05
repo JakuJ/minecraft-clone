@@ -11,7 +11,7 @@ An attempt to recreate a subset of the popular game Minecraft, learning OpenGL a
 * Chunk geometry loaded on a separate thread 
 * Transparent and semi-transparent blocks (leaves, water)
 * Seeded terrain generation based on simplex noise
-* Two renderers - one based on quads and glDrawElementArrays, and one based on block instancing
+* Two renderers - one based on glDrawElementArrays, and one based on instancing
 
 ## Screenshots
 

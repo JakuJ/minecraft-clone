@@ -83,6 +83,7 @@ InstanceRenderer::InstanceRenderer() : Renderer("data/shaders/instance.vert", "d
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glVertexAttribDivisor(2, 1);
+    glVertexAttribDivisor(3, 1);
 }
 
 void InstanceRenderer::constructMesh(const ChunkSector &cs)
