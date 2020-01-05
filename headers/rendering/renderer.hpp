@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <thread>
+#include <atomic>
 
 #include "buffers/buffers.hpp"
 #include "world/chunk.hpp"
@@ -14,6 +16,8 @@ class Renderer
 {
 protected:
     size_t buffered_size;
+    std::atomic<bool> new_data;
+    std::mutex data_mutex;
 
     Renderer(const std::string &, const std::string &);
 

@@ -1,10 +1,8 @@
 #include "rendering/renderer.hpp"
 #include "utility/timing.hpp"
 
-#include <thread>
-#include <atomic>
-
-Renderer::Renderer(const std::string &vPath, const std::string &fPath) : buffered_size(0), texture("data/textures/blocks.png", GL_TEXTURE0, true), program(vPath, fPath)
+Renderer::Renderer(const std::string &vPath, const std::string &fPath)
+    : buffered_size(0), new_data(false), texture("data/textures/blocks.png", GL_TEXTURE0, true), program(vPath, fPath)
 {
     // Create a Vertex Array Object
     unsigned int VAO;
@@ -25,9 +23,6 @@ QuadRenderer::QuadRenderer() : Renderer("data/shaders/quad.vert", "data/shaders/
 
 void QuadRenderer::render(World &world, Player &player)
 {
-    static std::atomic<bool> newData = false;
-    static std::mutex mutex;
-
     float px = player.camera.position[0];
     float pz = player.camera.position[2];
 
@@ -39,25 +34,25 @@ void QuadRenderer::render(World &world, Player &player)
         player.chunkID = currentID;
 
         std::thread thread([&](float x, float z) {
-            std::lock_guard<std::mutex> guard(mutex);
+            std::lock_guard<std::mutex> guard(data_mutex);
 
             MeanScopedTimer("Mesh preloading");
             QuadMesh mesh = world.tree.getSurrounding<QuadMesh>(x, z, 3);
             std::cout << mesh << std::endl;
             preloadMesh(mesh);
 
-            newData = true;
+            new_data = true;
         },
                            px, pz);
 
         thread.detach();
     }
 
-    if (newData)
+    if (new_data)
     {
         MeanScopedTimer("Buffering to GPU");
         bufferMesh();
-        newData = false;
+        new_data = false;
     }
 
     program.use();
@@ -101,9 +96,6 @@ void InstanceRenderer::bufferMesh()
 
 void InstanceRenderer::render(World &world, Player &player)
 {
-    static std::atomic<bool> newData = false;
-    static std::mutex mutex;
-
     float px = player.camera.position[0];
     float pz = player.camera.position[2];
 
@@ -115,25 +107,25 @@ void InstanceRenderer::render(World &world, Player &player)
         player.chunkID = currentID;
 
         std::thread thread([this, &world](float x, float z) {
-            std::lock_guard<std::mutex> guard(mutex);
+            std::lock_guard<std::mutex> guard(data_mutex);
 
             MeanScopedTimer("Mesh preloading");
             InstanceMesh mesh = world.tree.getSurrounding<InstanceMesh>(x, z, 3);
             std::cout << mesh << std::endl;
             preloadMesh(mesh);
 
-            newData = true;
+            new_data = true;
         },
                            px, pz);
 
         thread.detach();
     }
 
-    if (newData)
+    if (new_data)
     {
         MeanScopedTimer("Buffering to GPU");
         bufferMesh();
-        newData = false;
+        new_data = false;
     }
 
     program.use();
