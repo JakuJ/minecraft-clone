@@ -11,17 +11,15 @@ uniform mat4 mvp;
 
 out vec2 fTexCoord;
 
-mat4 rotate(vec3 axis, float times)
+mat3 rotateAxis(float x, float y, float times)
 {
-    float angle = times * 0.5 * M_PI;
-    float s = sin(angle);
-    float c = cos(angle);
+    float s = min(times, 2 - times);
+    float c = 1 - abs(times);
     float oc = 1.0 - c;
 
-    return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
-                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
-                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
-                0.0,                                0.0,                                0.0,                                1.0);
+    return mat3(oc * x * x + c, oc * x * y, y * s,
+                oc * x * y, oc * y * y + c, - x * s,
+                - y * s, x * s, c);
 }
 
 float type = aTypeInfo.z;
@@ -34,7 +32,9 @@ void main()
     float minus = 1 - (step(1, type) - step(5, type));
     float rots = 1 + ((step(2, type) - step(4, type)) * (-2 * step(3, type) + 1));
 
-    vec4 face = rotate(vec3(isX, isY, 0), (-2 * minus + 1) * rots) * vec4(aPosition, 1.0);
+    float final_rots = (-2 * minus + 1) * rots;
+
+    vec3 face = rotateAxis(isX, isY, final_rots) * aPosition;
 
     fTexCoord = aTexCoord + aTypeInfo.xy;
     gl_Position = mvp * vec4(face.xyz + aOffset, 1.0);
