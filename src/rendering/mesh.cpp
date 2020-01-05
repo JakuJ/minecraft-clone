@@ -1,4 +1,5 @@
 #include "rendering/mesh.hpp"
+#include "utility/timing.hpp"
 
 #pragma region QuadMesh
 
@@ -52,8 +53,6 @@ std::ostream &operator<<(std::ostream &out, const QuadMesh &mesh)
 void InstanceMesh::addCube(float x, float y, float z, Block::Type texId)
 {
     const float offs[] = {x, y, z, ((float)texId) / (float)Block::TYPES};
-
-    offsets.reserve(offsets.size() + 4);
     offsets.insert(offsets.end(), offs, std::end(offs));
 }
 

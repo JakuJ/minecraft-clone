@@ -87,8 +87,6 @@ void Chunk::generate(int seed)
     static const int noise_mean = (HILL_PEAKS + SEA_BOTTOM) / 2;
     static const float noise_scale = 2.0;
 
-    MeanScopedTimer timer("Chunk::generate");
-
     // Noise-based terrain
     FastNoiseSIMD *myNoise = FastNoiseSIMD::NewFastNoiseSIMD(seed);
     myNoise->SetAxisScales(noise_scale, 1.0, noise_scale);
