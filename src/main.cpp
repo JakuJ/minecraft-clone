@@ -1,10 +1,4 @@
-#include "player/player.hpp"
-#include "rendering/renderer.hpp"
-#include "utility/timing.hpp"
-#include "window.hpp"
-#include "world/world.hpp"
-
-#include "controllers/InputController.hpp"
+#include "controllers/MovementController.hpp"
 #include "views/RenderingView.hpp"
 
 void fix_render_on_mac(GLFWwindow *window)
@@ -33,11 +27,6 @@ int main()
         return -1;
     }
 
-    // World world;
-    // Player player(0, 80, 0);
-
-    // registerCamera(window, player.camera);
-
     glEnable(GL_DEPTH_TEST);
 
     glEnable(GL_BLEND);
@@ -54,11 +43,10 @@ int main()
     double lastFrame = lastSecond;
     double currentTime = lastSecond;
 
-    // QuadRenderer renderer;
-    // InstanceRenderer renderer;
-
-    InputController controller(window);
-    QuadRenderingView view;
+    MovementController controller(window);
+    
+    CompositeView view;
+    view.add(new QuadRenderingView());
 
     while (!glfwWindowShouldClose(window))
     {
@@ -67,13 +55,11 @@ int main()
 
         // update player
         controller.update();
-        // processInput(window, player.camera, currentTime - lastFrame);
 
         // render to screen
         glClearColor(0.6, 0.8, 1, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // renderer.render(world, player);
         view.refresh();
 
         glfwSwapBuffers(window);

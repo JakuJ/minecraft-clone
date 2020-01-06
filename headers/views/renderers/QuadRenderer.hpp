@@ -3,7 +3,7 @@
 #include "views/renderers/AsyncRenderer.hpp"
 #include "rendering/texture.hpp"
 
-class QuadRendererT : public AsyncRenderer
+class QuadRenderer : public AsyncRenderer
 {
     static const int RENDERING_DISTANCE = 12;
 
@@ -11,7 +11,7 @@ class QuadRendererT : public AsyncRenderer
     Texture2D texture;
 
 public:
-    QuadRendererT();
+    QuadRenderer();
 
     void fillBuffersSync() final;
     void renderSync() final;

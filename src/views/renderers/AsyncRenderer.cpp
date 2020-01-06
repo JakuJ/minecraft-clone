@@ -1,6 +1,6 @@
 #include "views/renderers/AsyncRenderer.hpp"
 
-AsyncRenderer::AsyncRenderer(const std::string &vName, const std::string &fName) : RendererT(vName, fName) {}
+AsyncRenderer::AsyncRenderer(const std::string &vName, const std::string &fName) : Renderer(vName, fName) {}
 
 void AsyncRenderer::fillBuffers()
 {
@@ -17,10 +17,13 @@ void AsyncRenderer::fillBuffers()
 
 void AsyncRenderer::render()
 {
+    Renderer::render();
+    
     if (dataLoaded)
     {
         bufferData();
         dataLoaded = false;
     }
+    
     renderSync();
 }

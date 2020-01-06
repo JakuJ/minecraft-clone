@@ -1,18 +1,22 @@
 #pragma once
 
 #include "glm/glm.hpp"
-#include <iostream>
-#include "player/camera.hpp"
 
-class PlayerT
+class Player
 {
+    static constexpr const float MOVEMENT_SPEED = 20;
+
 public:
     glm::vec3 position;
-    Camera* camera;
 
-    PlayerT(float x, float y, float z)
-    {
-        std::cout << "PlayerT created" << std::endl; 
-        position = glm::vec3(x, y, z);
-    }
+    float headPitch;
+    float headYaw;
+
+    Player(const glm::vec3 &position);
+
+    // Move player by the displacement vector
+    void move(const glm::vec3 &);
+
+    // Get first person camera MVP matrix
+    glm::mat4 getFPMatrix() const;
 };

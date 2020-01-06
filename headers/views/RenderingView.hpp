@@ -1,17 +1,17 @@
 #pragma once
 
 #include "views/View.hpp"
-#include "views/renderers/QuadRendererT.hpp"
-#include "views/renderers/RendererT.hpp"
+#include "views/renderers/QuadRenderer.hpp"
+#include "views/renderers/Renderer.hpp"
 #include <memory>
 
 class RenderingView : public View
 {
 protected:
-    std::unique_ptr<RendererT> renderer;
+    std::unique_ptr<Renderer> renderer;
 
 public:
-    void render() override
+    void refresh() override
     {
         renderer->render();
     };
@@ -22,6 +22,6 @@ class QuadRenderingView : public RenderingView
 public:
     QuadRenderingView()
     {
-        renderer = std::make_unique<QuadRendererT>();
+        renderer = std::make_unique<QuadRenderer>();
     }
 };

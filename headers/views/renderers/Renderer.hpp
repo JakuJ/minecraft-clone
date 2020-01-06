@@ -4,7 +4,7 @@
 #include "views/BufferSet.hpp"
 #include <memory>
 
-class RendererT
+class Renderer
 {
 protected:
     Program program;
@@ -12,14 +12,14 @@ protected:
 
     size_t bufferedElements;
 
-    RendererT(const std::string &, const std::string &);
+    Renderer(const std::string &, const std::string &);
 
     virtual void fillBuffers() = 0;
     void bufferData();
 
 public:
-    virtual ~RendererT(){};
-    virtual void render() = 0;
+    virtual ~Renderer() = default;
+    virtual void render();
 };
 
 
