@@ -5,6 +5,34 @@
 
 #include "rendering/program.hpp"
 
+Program::Program(const std::string &vertPath, const std::string &fragPath)
+{
+    vertexShader = Program::loadShader(vertPath, GL_VERTEX_SHADER);
+    fragmentShader = Program::loadShader(fragPath, GL_FRAGMENT_SHADER);
+    id = glCreateProgram();
+
+    glAttachShader(id, vertexShader);
+    glAttachShader(id, fragmentShader);
+    glLinkProgram(id);
+
+    int success;
+    char infoLog[512];
+    glGetProgramiv(id, GL_LINK_STATUS, &success);
+    if (!success)
+    {
+        glGetProgramInfoLog(id, 512, nullptr, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED" << std::endl;
+        std::cout << infoLog << std::endl;
+        throw "Program exception";
+    }
+
+    // No longer needed after linking
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    std::cout << "Program created" << std::endl;
+}
+
 unsigned int Program::loadShader(const std::string &path, int type)
 {
     std::string content;
@@ -43,34 +71,6 @@ unsigned int Program::loadShader(const std::string &path, int type)
     }
 
     return shader;
-}
-
-Program::Program(const std::string &vertPath, const std::string &fragPath)
-{
-    vertexShader = Program::loadShader(vertPath, GL_VERTEX_SHADER);
-    fragmentShader = Program::loadShader(fragPath, GL_FRAGMENT_SHADER);
-    id = glCreateProgram();
-
-    glAttachShader(id, vertexShader);
-    glAttachShader(id, fragmentShader);
-    glLinkProgram(id);
-
-    int success;
-    char infoLog[512];
-    glGetProgramiv(id, GL_LINK_STATUS, &success);
-    if (!success)
-    {
-        glGetProgramInfoLog(id, 512, nullptr, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED" << std::endl;
-        std::cout << infoLog << std::endl;
-        throw "Program exception";
-    }
-
-    // No longer needed after linking
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    std::cout << "Program created" << std::endl;
 }
 
 void Program::use() const

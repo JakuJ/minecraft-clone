@@ -4,6 +4,9 @@
 #include "window.hpp"
 #include "world/world.hpp"
 
+#include "controllers/InputController.hpp"
+#include "views/RenderingView.hpp"
+
 void fix_render_on_mac(GLFWwindow *window)
 {
 #ifdef __APPLE__
@@ -30,10 +33,10 @@ int main()
         return -1;
     }
 
-    World world;
-    Player player(0, 80, 0);
+    // World world;
+    // Player player(0, 80, 0);
 
-    registerCamera(window, player.camera);
+    // registerCamera(window, player.camera);
 
     glEnable(GL_DEPTH_TEST);
 
@@ -52,7 +55,10 @@ int main()
     double currentTime = lastSecond;
 
     // QuadRenderer renderer;
-    InstanceRenderer renderer;
+    // InstanceRenderer renderer;
+
+    InputController controller(window);
+    QuadRenderingView view;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -60,13 +66,15 @@ int main()
         currentTime = glfwGetTime();
 
         // update player
-        processInput(window, player.camera, currentTime - lastFrame);
+        controller.update();
+        // processInput(window, player.camera, currentTime - lastFrame);
 
         // render to screen
         glClearColor(0.6, 0.8, 1, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        renderer.render(world, player);
+        // renderer.render(world, player);
+        view.refresh();
 
         glfwSwapBuffers(window);
 

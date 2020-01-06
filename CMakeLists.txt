@@ -20,7 +20,7 @@ add_compile_options(
   "-O3" "-flto"
 )
 
-file(GLOB app_sources "src/*.cpp" "src/*/*.cpp")
+file(GLOB app_sources "src/*.cpp" "src/*/*.cpp" "src/*/*/*.cpp")
 add_executable(main ${app_sources})
 
 # The GLAD library
