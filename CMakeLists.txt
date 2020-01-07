@@ -31,7 +31,7 @@ if (LINUX)
   find_package(Threads REQUIRED)
 endif ()
 
-file(GLOB app_sources "src/*.cpp" "src/*/*.cpp")
+file(GLOB_RECURSE app_sources "src/*.cpp")
 add_executable(App ${app_sources})
 
 # Strip the produced binary
