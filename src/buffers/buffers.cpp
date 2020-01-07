@@ -62,7 +62,10 @@ InstanceBuffers::InstanceBuffers() : offsets(2), typeInfos(3)
         verts.push_back(vs[3 * ix + 2] - 0.5);
     };
 
-    std::for_each(ixs, std::end(ixs), addVert);
+    for (auto &ix : ixs)
+    {
+        addVert(ix);
+    }
 
     vertices.append(verts);
 
@@ -99,7 +102,7 @@ void InstanceBuffers::clear()
 void InstanceBuffers::bufferData()
 {
     Buffers::bufferData();
-    
+
     MeanScopedTimer timer("InstanceBuffers::bufferData");
     offsets.bufferData();
     typeInfos.bufferData();

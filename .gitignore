@@ -15,8 +15,4 @@ bin/
 # symbolic link to bin/main
 main
 
-# ninja
-.ninja_deps
-.ninja_log
-rules.ninja
-build.ninja
+instdir/
