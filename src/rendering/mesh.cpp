@@ -1,5 +1,6 @@
 #include "rendering/mesh.hpp"
 #include "utility/timing.hpp"
+#include <algorithm>
 
 #pragma region QuadMesh
 

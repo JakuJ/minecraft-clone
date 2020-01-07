@@ -3,6 +3,7 @@
 #include <string>
 #include <thread>
 #include <atomic>
+#include <mutex>
 
 #include "buffers/buffers.hpp"
 #include "world/chunk.hpp"
