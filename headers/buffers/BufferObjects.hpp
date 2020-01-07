@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
-#include <iostream>
 #include "glad/glad.h"
+#include <iostream>
+#include <vector>
 
 template <typename T>
 struct BufferType
@@ -63,14 +63,29 @@ public:
 #pragma endregion
 #pragma region VBO
 
+class VBOProxy
+{
+public:
+    virtual ~VBOProxy() {};
+
+    virtual size_t size() const = 0;
+    virtual void clear() = 0;
+    virtual void bufferData() = 0;
+};
+
 template <typename T, unsigned int N>
-class VBO : BufferObject<T>
+class VBO : BufferObject<T>, VBOProxy
 {
 private:
     unsigned int location;
     std::vector<T> data;
 
 public:
+    static VBO<T, N> Create(unsigned int location)
+    {
+        return VBO<T, N>(location);
+    }
+
     VBO(unsigned int location) : location(location)
     {
         glGenBuffers(1, &(this->id));
@@ -85,8 +100,8 @@ public:
     };
 
     void append(const std::vector<T> &vec);
-    void clear();
-    void bufferData();
+    void clear() override;
+    void bufferData() override;
 };
 
 template <typename T, unsigned int N>

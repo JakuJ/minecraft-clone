@@ -10,12 +10,11 @@ class Program
     static unsigned int loadShader(const std::string &path, int type);
 
 private:
+    unsigned int id;
     unsigned int vertexShader;
     unsigned int fragmentShader;
 
 public:
-    unsigned int id;
-
     void use() const;
 
     void setUniform(const std::string &name, float value) const;
@@ -24,4 +23,7 @@ public:
     void setUniform(const std::string &name, const glm::mat4 &value) const;
 
     Program(const std::string &, const std::string &);
+    
+    Program(const Program&) = delete;
+    Program& operator= (const Program&) = delete;
 };

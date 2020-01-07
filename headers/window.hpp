@@ -3,8 +3,5 @@
 #include <iostream>
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include "player/camera.hpp"
 
 GLFWwindow *setupWindow(int width, int height, bool fullScreen = false);
-void processInput(GLFWwindow *window, Camera &camera, float deltaTime);
-void registerCamera(GLFWwindow *window, const Camera &camera);

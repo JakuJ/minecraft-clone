@@ -1,11 +1,23 @@
-#include <iostream>
-#include <vector>
-#include "stb/stb_image.h"
 #include "rendering/texture.hpp"
+#include "stb/stb_image.h"
+#include <iostream>
+#include "glad/glad.h"
+#include <vector>
 
-Texture::Texture(unsigned int target) : target(target) {}
+Texture::Texture(const std::string &name, int target) : name(name), target(target) {}
 
-Texture2D::Texture2D(const std::string &path, unsigned int target, bool flip) : Texture(target)
+void Texture::bind(const Program &program)
+{
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+    program.setUniform(name, target);
+}
+
+Texture2D::Texture2D(const std::string &name, int target, const std::string &path, bool flip)
+    : Texture(name, target)
 {
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(flip);
@@ -33,7 +45,8 @@ void Texture2D::use() const
     glBindTexture(GL_TEXTURE_2D, id);
 }
 
-CubeTexture::CubeTexture(const std::string &directory, unsigned int target, bool flip) : Texture(target)
+CubeTexture::CubeTexture(const std::string &name, int target, const std::string &directory, bool flip) 
+    : Texture(name, target)
 {
 
     stbi_set_flip_vertically_on_load(flip);
