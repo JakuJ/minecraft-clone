@@ -1,5 +1,7 @@
 # Minecraft clone
 
+![](https://github.com/JakuJ/minecraft-clone/workflows/CMake%20CI/badge.svg)
+
 An attempt to recreate a subset of the popular game Minecraft, learning OpenGL along the way.
 
 ## What works
