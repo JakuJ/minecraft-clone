@@ -1,12 +1,11 @@
 #include "controllers/MovementController.hpp"
 #include "views/RenderingView.hpp"
+#include "views/renderers/InstancingRenderer.hpp"
 
-void fix_render_on_mac(GLFWwindow *window)
-{
+void fix_render_on_mac(GLFWwindow *window) {
 #ifdef __APPLE__
     static bool macMoved = false;
-    if (!macMoved)
-    {
+    if (!macMoved) {
         int x, y;
         glfwGetWindowPos(window, &x, &y);
         glfwSetWindowPos(window, ++x, y);
@@ -15,14 +14,12 @@ void fix_render_on_mac(GLFWwindow *window)
 #endif
 }
 
-int main()
-{
+int main() {
     const bool fullscreen = false;
 
     GLFWwindow *window = fullscreen ? setupWindow(2560, 1600, true) : setupWindow(800, 600);
 
-    if (!window)
-    {
+    if (!window) {
         std::cout << "Aborting!" << std::endl;
         return -1;
     }
@@ -34,22 +31,18 @@ int main()
 
     // For now, only the front-facing side of a transparent block is rendered
     glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CW); // TODO: why is my winding order like this?
+    glFrontFace(GL_CW);  // TODO: why is my winding order like this?
 
     glfwSwapInterval(1);
 
     unsigned int frames = 0;
-    double lastSecond = glfwGetTime();
-    double lastFrame = lastSecond;
-    double currentTime = lastSecond;
+    double currentTime, lastSecond = glfwGetTime();
 
     MovementController controller(window);
-    
-    CompositeView view;
-    view.add(new QuadRenderingView());
 
-    while (!glfwWindowShouldClose(window))
-    {
+    CompositeView view;
+    view.add(new RenderingView(new QuadRenderer()));
+    while (!glfwWindowShouldClose(window)) {
         // pre-frame logic
         currentTime = glfwGetTime();
 
@@ -68,14 +61,12 @@ int main()
         glfwPollEvents();
 
         // print FPS to stdout
-        if (currentTime - lastSecond >= 1.0)
-        {
+        if (currentTime - lastSecond >= 1.0) {
             std::cout << "FPS: " << frames << std::endl;
             frames = 0;
             lastSecond = currentTime;
         }
 
-        lastFrame = currentTime;
         frames++;
 
         // fix rendering if on Mac OS

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "rendering/program.hpp"
-#include "views/BufferSet.hpp"
+#include <string>
 #include <memory>
+#include "views/BufferSet.hpp"
+#include "rendering/program.hpp"
 
-class Renderer
-{
+class Renderer {
 protected:
     Program program;
     std::unique_ptr<BufferSet> buffers;
@@ -15,10 +15,12 @@ protected:
     Renderer(const std::string &, const std::string &);
 
     virtual void fillBuffers() = 0;
-    void bufferData();
+
+    virtual void bufferData();
 
 public:
     virtual ~Renderer() = default;
+
     virtual void render();
 };
 

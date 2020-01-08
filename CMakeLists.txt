@@ -26,13 +26,14 @@ add_compile_options(
   "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
   "-O3" "-flto"
 )
+
 if (LINUX)
   set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
   find_package(Threads REQUIRED)
 endif ()
 
 file(GLOB_RECURSE app_sources "src/*.cpp")
-add_executable(App ${app_sources})
+add_executable(App ${app_sources} src/views/RenderingView.cpp)
 
 # Strip the produced binary
 set_target_properties(App PROPERTIES LINK_FLAGS_RELEASE -s)
@@ -58,7 +59,6 @@ target_link_libraries(App glfw glad FastNoiseSIMD stb_image ${CMAKE_THREAD_LIBS_
 else()
 target_link_libraries(App LINK_PUBLIC glfw glad FastNoiseSIMD stb_image)
 endif()
-
 
 if(APPLE) # Set up dylib RPATH on macOS
 set_target_properties(App PROPERTIES INSTALL_RPATH "lib")

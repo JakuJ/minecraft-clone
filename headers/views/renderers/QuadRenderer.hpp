@@ -15,4 +15,5 @@ public:
 
     void fillBuffersSync() final;
     void renderSync() final;
+    void bufferData() override;
 };

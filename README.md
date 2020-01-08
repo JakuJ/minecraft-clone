@@ -2,7 +2,7 @@
 
 ![](https://github.com/JakuJ/minecraft-clone/workflows/CMake%20CI/badge.svg)
 
-An attempt to recreate a subset of the popular game Minecraft, learning OpenGL along the way.
+An attempt to recreate a subset of the popular game "Minecraft", delving deeper and deeper into OpenGL along the way.
 
 ## What works
 
@@ -14,6 +14,7 @@ An attempt to recreate a subset of the popular game Minecraft, learning OpenGL a
 * Transparent and semi-transparent blocks (leaves, water)
 * Seeded terrain generation based on simplex noise
 * Two renderers - one based on glDrawElementArrays, and one based on instancing
+* GitHub Actions pipeline for releases on Linux and MacOS (Windows in the future)
 
 ## Screenshots
 
