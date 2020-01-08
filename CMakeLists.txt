@@ -54,17 +54,27 @@ file(GLOB noise_sources "lib/FastNoiseSIMD/*.cpp")
 add_library(FastNoiseSIMD SHARED ${noise_sources})
 
 # Link libpthread on Linux
-if(LINUX)
-target_link_libraries(App glfw glad FastNoiseSIMD stb_image ${CMAKE_THREAD_LIBS_INIT})
-else()
-target_link_libraries(App LINK_PUBLIC glfw glad FastNoiseSIMD stb_image)
-endif()
+if (LINUX)
+    target_link_libraries(App glfw glad FastNoiseSIMD stb_image ${CMAKE_THREAD_LIBS_INIT})
+else ()
+    target_link_libraries(App LINK_PUBLIC glfw glad FastNoiseSIMD stb_image)
+endif ()
 
-if(APPLE) # Set up dylib RPATH on macOS
-set_target_properties(App PROPERTIES INSTALL_RPATH "lib")
-elseif(LINUX)
-set(CMAKE_INSTALL_PREFIX "../instdir")
-endif()
+# Generate updated PlantUML diagram
+add_custom_command(
+        TARGET App
+        POST_BUILD COMMAND tools/generate_uml.sh
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        BYPRODUCTS docs/class_diagram.puml
+)
+
+# Installation settings
+
+if (APPLE) # Set up dylib RPATH on macOS
+    set_target_properties(App PROPERTIES INSTALL_RPATH "lib")
+elseif (LINUX)
+    set(CMAKE_INSTALL_PREFIX "../instdir")
+endif ()
 
 # Install binaries
 install(TARGETS App glad stb_image FastNoiseSIMD

@@ -2,9 +2,9 @@
 
 ![](https://github.com/JakuJ/minecraft-clone/workflows/CMake%20CI/badge.svg)
 
-An attempt to recreate a subset of the popular game "Minecraft", delving deeper and deeper into OpenGL along the way.
+An attempt to recreate a subset of the popular game "Minecraft", delving deeper and deeper into OpenGL and modern C++ along the way.
 
-## What works
+## Features done so far
 
 * A controllable free-floating camera
 * A quad tree for efficient querying of chunk info
@@ -14,7 +14,10 @@ An attempt to recreate a subset of the popular game "Minecraft", delving deeper 
 * Transparent and semi-transparent blocks (leaves, water)
 * Seeded terrain generation based on simplex noise
 * Two renderers - one based on glDrawElementArrays, and one based on instancing
+
+## Extra stuff
 * GitHub Actions pipeline for releases on Linux and MacOS (Windows in the future)
+* Up-to-date PlantUML class diagram in the `docs/` directory
 
 ## Screenshots
 
