@@ -15,9 +15,7 @@ void fix_render_on_mac(GLFWwindow *window) {
 }
 
 int main() {
-    const bool fullscreen = false;
-
-    GLFWwindow *window = fullscreen ? setupWindow(2560, 1600, true) : setupWindow(800, 600);
+    GLFWwindow *window = setupWindow(800, 600);
 
     if (!window) {
         std::cout << "Aborting!" << std::endl;
@@ -42,6 +40,7 @@ int main() {
 
     CompositeView view;
     view.add(new RenderingView(new QuadRenderer()));
+
     while (!glfwWindowShouldClose(window)) {
         // pre-frame logic
         currentTime = glfwGetTime();

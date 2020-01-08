@@ -2,26 +2,25 @@
 
 #include "window.hpp"
 
-class Controller
-{
+class Controller {
 public:
     virtual void update() = 0;
 };
 
-class InputController : public Controller
-{
+class InputController : public Controller {
     double lastUpdate;
 
 protected:
     GLFWwindow *window;
 
 public:
-    InputController(GLFWwindow *);
+    explicit InputController(GLFWwindow *);
 
     void registerMouseHandler() const;
 
     void update() final;
 
-    virtual void processKeyboard(int keyCode, float deltaTime) = 0;
-    virtual void processMouseMovement(float xoff, float yoff) = 0;
+    virtual void processKeyboard(int keyCode, double deltaTime) = 0;
+
+    virtual void processMouseMovement(double xOff, double yOff) = 0;
 };

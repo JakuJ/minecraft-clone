@@ -1,12 +1,10 @@
 #include "window.hpp"
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-GLFWwindow *setupWindow(int width, int height, bool fullScreen)
-{
+GLFWwindow *setupWindow(int width, int height, bool fullScreen) {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
@@ -16,18 +14,17 @@ GLFWwindow *setupWindow(int width, int height, bool fullScreen)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    GLFWwindow *window = glfwCreateWindow(width, height, "Minecraft clone", fullScreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(width, height, "Minecraft clone",
+                                          fullScreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
-    if (!window)
-    {
+    if (!window) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return nullptr;
     }
     glfwMakeContextCurrent(window);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return nullptr;
     }

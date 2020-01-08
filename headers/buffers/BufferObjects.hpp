@@ -14,12 +14,12 @@ struct BufferType {
 template<typename T>
 class BufferObject {
 protected:
-    unsigned int id;
+    unsigned int id{};
     size_t buffer_size;
 
-    BufferObject() : buffer_size(0) {};
+    BufferObject() : buffer_size(0) {}
 
-    virtual size_t size() const = 0;
+    [[nodiscard]] virtual size_t size() const = 0;
 
     void bufferVector(const std::vector<T> &, GLenum);
 };
@@ -47,7 +47,7 @@ private:
 public:
     EBO();
 
-    size_t size() const override;
+    [[nodiscard]] size_t size() const override;
 
     void append(const std::vector<unsigned int> &vec);
 
@@ -61,9 +61,9 @@ public:
 
 class VBOProxy {
 public:
-    virtual ~VBOProxy() {};
+    virtual ~VBOProxy() = default;
 
-    virtual size_t size() const = 0;
+    [[nodiscard]] virtual size_t size() const = 0;
 
     virtual void clear() = 0;
 
@@ -103,7 +103,7 @@ template<typename T, unsigned int N>
 void VBO<T, N>::bufferData() {
     glBindBuffer(GL_ARRAY_BUFFER, this->id);
     this->bufferVector(data, GL_ARRAY_BUFFER);
-    glVertexAttribPointer(location, N, BufferType<T>::Type, GL_FALSE, N * sizeof(T), (void *) 0);
+    glVertexAttribPointer(location, N, BufferType<T>::Type, GL_FALSE, N * sizeof(T), reinterpret_cast<void *>(0));
     glEnableVertexAttribArray(location);
 }
 

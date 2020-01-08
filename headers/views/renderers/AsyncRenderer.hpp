@@ -8,7 +8,7 @@
 #include "views/renderers/Renderer.hpp"
 
 class AsyncRenderer : public Renderer {
-    std::atomic<bool> dataLoaded;
+    std::atomic<bool> dataLoaded{false};
     std::mutex dataMutex;
 
 public:

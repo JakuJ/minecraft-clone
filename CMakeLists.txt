@@ -33,7 +33,7 @@ if (LINUX)
 endif ()
 
 file(GLOB_RECURSE app_sources "src/*.cpp")
-add_executable(App ${app_sources} src/views/RenderingView.cpp)
+add_executable(App ${app_sources})
 
 # Strip the produced binary
 set_target_properties(App PROPERTIES LINK_FLAGS_RELEASE -s)

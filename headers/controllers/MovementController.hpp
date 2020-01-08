@@ -2,11 +2,11 @@
 
 #include "controllers/InputController.hpp"
 
-class MovementController : public InputController
-{
+class MovementController : public InputController {
 public:
-    MovementController(GLFWwindow *);
+    explicit MovementController(GLFWwindow *);
 
-    void processKeyboard(int keyCode, float deltaTime) final;
-    void processMouseMovement(float xoff, float yoff) final;
+    void processKeyboard(int keyCode, double deltaTime) final;
+
+    void processMouseMovement(double xOff, double yOff) final;
 };

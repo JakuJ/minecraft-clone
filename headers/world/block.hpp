@@ -4,22 +4,19 @@
 #include <vector>
 #include "utility/enums.hpp"
 
-struct Block
-{
+struct Block {
 public:
-    enum Face
-    {
+    enum Face {
         UP = 0,
         DOWN,
         BACK,
         FRONT,
         RIGHT,
         LEFT,
-        FACES // enum size
+        FACES  // enum size
     };
 
-    enum Type
-    {
+    enum Type {
         BEDROCK = 0,
         STONE,
         DIRT,
@@ -28,16 +25,16 @@ public:
         ACACIA_LEAVES,
         WATER,
         SAND,
-        TYPES // enum size
+        TYPES  // enum size
     };
 
     static const bool transparency_table[TYPES];
 
     Type type;
 
-    Block(Type);
+    explicit Block(Type);
 
-    std::vector<float> getFace(Block::Face) const;
+    [[nodiscard]] std::vector<float> getFace(Block::Face) const;
 
     friend std::ostream &operator<<(std::ostream &, const Block &);
 };

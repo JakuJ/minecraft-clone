@@ -1,13 +1,10 @@
 #include "controllers/InputController.hpp"
-#include "models/Game.hpp"
 
-InputController::InputController(GLFWwindow *window) : lastUpdate(0), window(window)
-{
+InputController::InputController(GLFWwindow *window) : lastUpdate(0), window(window) {
     registerMouseHandler();
 }
 
-void InputController::update()
-{
+void InputController::update() {
     auto currentTime = glfwGetTime();
 
     const int keys[]{GLFW_KEY_ESCAPE,
@@ -18,11 +15,9 @@ void InputController::update()
                      GLFW_KEY_LEFT_SHIFT,
                      GLFW_KEY_Z};
 
-    // PROCESS KEYPRESSES
-    for (auto key : keys)
-    {
-        if (glfwGetKey(window, key) == GLFW_PRESS)
-        {
+    // PROCESS KEY PRESSES
+    for (auto key : keys) {
+        if (glfwGetKey(window, key) == GLFW_PRESS) {
             processKeyboard(key, currentTime - lastUpdate);
         }
     }
@@ -30,22 +25,21 @@ void InputController::update()
     lastUpdate = currentTime;
 }
 
-void InputController::registerMouseHandler() const
-{
+void InputController::registerMouseHandler() const {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetWindowUserPointer(window, (void *)this);
-    glfwSetCursorPosCallback(window, [](GLFWwindow *w, double xpos, double ypos) {
-        InputController *self = static_cast<InputController *>(glfwGetWindowUserPointer(w));
+    glfwSetWindowUserPointer(window, (void *) this);
+    glfwSetCursorPosCallback(window, [](GLFWwindow *w, double xPos, double yPos) {
+        auto *self = static_cast<InputController *>(glfwGetWindowUserPointer(w));
 
-        static float lastX = xpos;
-        static float lastY = ypos;
+        static double lastX = xPos;
+        static double lastY = yPos;
 
-        float xoffset = xpos - lastX;
-        float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+        double xOffset = xPos - lastX;
+        double yOffset = lastY - yPos;  // reversed since y-coordinates go from bottom to top
 
-        lastX = xpos;
-        lastY = ypos;
+        lastX = xPos;
+        lastY = yPos;
 
-        self->processMouseMovement(xoffset, yoffset);
+        self->processMouseMovement(xOffset, yOffset);
     });
 }

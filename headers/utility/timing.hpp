@@ -1,35 +1,34 @@
 #pragma once
 
-#include <chrono>
 #include <iostream>
-#include <map>
 #include <string>
+#include <map>
 #include <utility>
+#include <chrono>
 
 typedef std::milli unit;
 
-class Timer
-{
+class Timer {
 protected:
     std::chrono::steady_clock::time_point start;
     std::string message;
 
 public:
-    Timer(const std::string &message);
+    explicit Timer(std::string message);
 };
 
-class ScopedTimer : Timer
-{
+class ScopedTimer : Timer {
 public:
-    ScopedTimer(const std::string &message);
+    explicit ScopedTimer(const std::string &message);
+
     ~ScopedTimer();
 };
 
-class MeanScopedTimer : Timer
-{
+class MeanScopedTimer : Timer {
     static std::map<std::string, std::pair<double, double>> times;
 
 public:
-    MeanScopedTimer(const std::string &message);
+    explicit MeanScopedTimer(const std::string &message);
+
     ~MeanScopedTimer();
 };

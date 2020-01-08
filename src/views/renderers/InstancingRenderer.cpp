@@ -73,8 +73,8 @@ void InstancingRenderer::fillBuffersSync() {
     ChunkSector cs = game.world.tree.getSurrounding(pos[0], pos[2], RENDERING_DISTANCE);
     InstanceMesh mesh = cs.getInstanceMesh();
 
-    ((VBO < float, 3 > *)(*buffers)[2])->append(mesh.offsets);
-    ((VBO < float, 3 > *)(*buffers)[3])->append(mesh.typeInfos);
+    ((VBO<float, 3> *) (*buffers)[2])->append(mesh.offsets);
+    ((VBO<float, 3> *) (*buffers)[3])->append(mesh.typeInfos);
 }
 
 void InstancingRenderer::bufferData() {

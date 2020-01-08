@@ -2,8 +2,7 @@
 
 AsyncRenderer::AsyncRenderer(const std::string &vName, const std::string &fName) : Renderer(vName, fName) {}
 
-void AsyncRenderer::fillBuffers()
-{
+void AsyncRenderer::fillBuffers() {
     std::thread thread([this]() {
         std::lock_guard<std::mutex> guard(dataMutex);
 
@@ -15,15 +14,13 @@ void AsyncRenderer::fillBuffers()
     thread.detach();
 }
 
-void AsyncRenderer::render()
-{
+void AsyncRenderer::render() {
     Renderer::render();
-    
-    if (dataLoaded)
-    {
+
+    if (dataLoaded) {
         bufferData();
         dataLoaded = false;
     }
-    
+
     renderSync();
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "buffers/BufferObjects.hpp"
-#include <memory>
 #include <vector>
+#include <memory>
+#include "buffers/BufferObjects.hpp"
 
 class BufferSet {
     unsigned int VAO{};

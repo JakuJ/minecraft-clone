@@ -14,4 +14,3 @@ public:
 
     void refresh() override;
 };
-
