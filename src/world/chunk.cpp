@@ -9,9 +9,9 @@ Chunk::Chunk(int x0, int z0) : x0(x0), z0(z0), id(Chunk::NEXT_ID++) {
     // allocate memory
     blocks = new Block ***[Chunk::SIDE];
 
-    for (size_t i = 0; i < Chunk::SIDE; i++) {
+    for (int i = 0; i < Chunk::SIDE; i++) {
         blocks[i] = new Block **[Chunk::HEIGHT];
-        for (size_t j = 0; j < Chunk::HEIGHT; j++) {
+        for (int j = 0; j < Chunk::HEIGHT; j++) {
             blocks[i][j] = new Block *[Chunk::SIDE]{nullptr};
         }
     }
@@ -30,20 +30,20 @@ Chunk::~Chunk() {
     delete[] blocks;
 }
 
-void Chunk::placeAt(u_int x, u_int y, u_int z, Block *c) {
+void Chunk::placeAt(int x, int y, int z, Block *block) {
     removeAt(x, y, z);
-    blocks[x][y][z] = c;
+    blocks[x][y][z] = block;
 }
 
-void Chunk::removeAt(u_int x, u_int y, u_int z) {
+void Chunk::removeAt(int x, int y, int z) {
     delete blocks[x][y][z];
     blocks[x][y][z] = nullptr;
 }
 
 void Chunk::for_each(const std::function<void(int, int, int, Block *)> &f) const {
-    for (u_int i = 0; i < Chunk::SIDE; i++) {
-        for (u_int j = 0; j < Chunk::HEIGHT; j++) {
-            for (u_int k = 0; k < Chunk::SIDE; k++) {
+    for (int i = 0; i < Chunk::SIDE; i++) {
+        for (int j = 0; j < Chunk::HEIGHT; j++) {
+            for (int k = 0; k < Chunk::SIDE; k++) {
                 if (blocks[i][j][k]) {
                     f(i, j, k, blocks[i][j][k]);
                 }
@@ -53,8 +53,7 @@ void Chunk::for_each(const std::function<void(int, int, int, Block *)> &f) const
 }
 
 Block *Chunk::getAt(int x, int y, int z) const {
-    if (x < 0 || y < 0 || z < 0 || x >= static_cast<int>(SIDE) || y >= static_cast<int>(HEIGHT) ||
-        z >= static_cast<int>(SIDE)) {
+    if (x < 0 || x >= SIDE || y < 0 || y >= HEIGHT || z < 0 || z >= SIDE) {
         return nullptr;
     }
     return blocks[x][y][z];
@@ -112,11 +111,4 @@ void Chunk::generate(int seed) {
     }
 
     FastNoiseSIMD::FreeNoiseSet(noiseSet);
-}
-
-std::ostream &operator<<(std::ostream &out, const Chunk &chunk) {
-    chunk.for_each([&out](u_int x, u_int y, u_int z, Block *block) {
-        out << *block << " at (" << x << ", " << y << ", " << z << ")" << std::endl;
-    });
-    return out;
 }

@@ -1,4 +1,5 @@
 #include <memory>
+#include <utility/Log.hpp>
 #include "views/renderers/InstancingRenderer.hpp"
 #include "models/Game.hpp"
 #include "rendering/mesh.hpp"
@@ -37,7 +38,7 @@ InstancingRenderer::InstancingRenderer()
         addVert(ix);
     }
 
-    ((VBO<float, 3> *) (*buffers)[0])->append(verts);
+    ((VBO<float, 3> *) (*buffers)[0])->fill(verts);
 
     std::vector<float> coords;
     coords.reserve(2 * 3 * 2);
@@ -48,15 +49,13 @@ InstancingRenderer::InstancingRenderer()
     const float uvs[] = {0, 0, du, 0, du, dv, 0, 0, du, dv, 0, dv};
     coords.insert(coords.end(), uvs, std::end(uvs));
 
-    ((VBO<float, 2> *) (*buffers)[1])->append(coords);
+    ((VBO<float, 2> *) (*buffers)[1])->fill(coords);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glVertexAttribDivisor(2, 1);
     glVertexAttribDivisor(3, 1);
 
-    fillBuffers();
-
-    std::cout << "InstanceBuffers created" << std::endl;
+    Log::log("Instancing renderer created");
 }
 
 void InstancingRenderer::renderSync() {
@@ -73,8 +72,8 @@ void InstancingRenderer::fillBuffersSync() {
     ChunkSector cs = game.world.tree.getSurrounding(pos[0], pos[2], RENDERING_DISTANCE);
     InstanceMesh mesh = cs.getInstanceMesh();
 
-    ((VBO<float, 3> *) (*buffers)[2])->append(mesh.offsets);
-    ((VBO<float, 3> *) (*buffers)[3])->append(mesh.typeInfos);
+    ((VBO<float, 3> *) (*buffers)[2])->fill(mesh.offsets);
+    ((VBO<float, 3> *) (*buffers)[3])->fill(mesh.typeInfos);
 }
 
 void InstancingRenderer::bufferData() {

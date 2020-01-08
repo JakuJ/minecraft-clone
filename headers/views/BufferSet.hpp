@@ -27,16 +27,12 @@ public:
 
     void addVBO(VBOProxy *);
 
-    virtual void clear();
-
     virtual void bufferData();
 };
 
 class IndexedBufferSet : public BufferSet {
 public:
     EBO ebo;
-
-    void clear() override;
 
     void bufferData() override;
 };

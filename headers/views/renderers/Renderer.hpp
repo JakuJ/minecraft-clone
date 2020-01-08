@@ -14,12 +14,12 @@ protected:
 
     Renderer(const std::string &, const std::string &);
 
-    virtual void fillBuffers() = 0;
-
     virtual void bufferData();
 
 public:
     virtual ~Renderer() = default;
 
     virtual void render();
+
+    virtual void fillBuffers() = 0;
 };

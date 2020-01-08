@@ -1,13 +1,13 @@
 #include "views/renderers/AsyncRenderer.hpp"
 
-AsyncRenderer::AsyncRenderer(const std::string &vName, const std::string &fName) : Renderer(vName, fName) {}
+AsyncRenderer::AsyncRenderer(const std::string &vName, const std::string &fName) : Renderer(vName, fName) {
+    fillBuffers();
+}
 
 void AsyncRenderer::fillBuffers() {
     std::thread thread([this]() {
         std::lock_guard<std::mutex> guard(dataMutex);
-
         fillBuffersSync();
-
         dataLoaded = true;
     });
 

@@ -7,7 +7,7 @@
 #include "rendering/mesh.hpp"
 
 class Chunk {
-    static const u_int HEIGHT = 256;
+    static const int HEIGHT = 256;
     static u_int NEXT_ID;
 
     Block ****blocks;
@@ -17,7 +17,7 @@ class Chunk {
     void for_each(const std::function<void(int, int, int, Block *)> &) const;
 
 public:
-    static const u_int SIDE = 16;
+    static const int SIDE = 16;
 
     u_int id;
 
@@ -25,15 +25,13 @@ public:
 
     ~Chunk();
 
-    void placeAt(u_int, u_int, u_int, Block *);
+    void placeAt(int x, int y, int z, Block *block);
 
-    void removeAt(u_int, u_int, u_int);
+    void removeAt(int x, int y, int z);
 
     [[nodiscard]] Block *getAt(int x, int y, int z) const;
 
     void generate(int seed);
 
     friend class ChunkSector;
-
-    friend std::ostream &operator<<(std::ostream &, const Chunk &);
 };

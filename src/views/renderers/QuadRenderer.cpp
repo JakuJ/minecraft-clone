@@ -1,4 +1,5 @@
 #include <memory>
+#include <utility/Log.hpp>
 #include "views/renderers/QuadRenderer.hpp"
 #include "models/Game.hpp"
 #include "rendering/mesh.hpp"
@@ -12,8 +13,6 @@ QuadRenderer::QuadRenderer()
 
     buffers->addVBO(static_cast<VBOProxy *>(new VBO<float, 3>(0)));  // vertices
     buffers->addVBO(static_cast<VBOProxy *>(new VBO<float, 2>(1)));  // texCoords
-
-    fillBuffers();
 }
 
 void QuadRenderer::renderSync() {
@@ -29,10 +28,11 @@ void QuadRenderer::fillBuffersSync() {
     ChunkSector cs = game.world.tree.getSurrounding(pos[0], pos[2], RENDERING_DISTANCE);
     QuadMesh mesh = cs.getQuadMesh();
 
-    dynamic_cast<VBO<float, 3> *>((*buffers)[0])->append(mesh.vertices);
-    dynamic_cast<VBO<float, 2> *>((*buffers)[1])->append(mesh.texCoords);
+    static_cast<VBO<float, 3> *>((*buffers)[0])->fill(mesh.vertices); // NOLINT
+    static_cast<VBO<float, 2> *>((*buffers)[1])->fill(mesh.texCoords); // NOLINT
 
-    static_cast<IndexedBufferSet *>(buffers.get())->ebo.append(mesh.indices); // NOLINT
+    static_cast<IndexedBufferSet *>(buffers.get())->ebo.fill(mesh.indices); // NOLINT
+    Log::log("QuadRenderer buffers filled");
 }
 
 void QuadRenderer::bufferData() {

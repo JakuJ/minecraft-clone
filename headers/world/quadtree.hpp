@@ -6,24 +6,24 @@
 #include "utility/timing.hpp"
 
 struct Node {
-    unsigned int level;
+    int level;
     int x0, z0;
 
-    explicit Node(unsigned int level);
+    explicit Node(int level);
 
-    Node(unsigned int level, int x0, int z0);
+    Node(int level, int x0, int z0);
 
     virtual ~Node() = default;
 
-    [[nodiscard]] unsigned int getExtent() const;
+    [[nodiscard]] double getExtent() const;
 };
 
 struct Branch : public Node {
     Node *q1, *q2, *q3, *q4;
 
-    explicit Branch(unsigned int level);
+    explicit Branch(int level);
 
-    Branch(unsigned int level, int x0, int z0);
+    Branch(int level, int x0, int z0);
 
     ~Branch() override;
 
@@ -37,14 +37,7 @@ struct Leaf : public Node {
 
     Leaf(int x0, int z0);
 
-    template<typename T>
-    T getBy(std::function<T(const Chunk &)>) const;
 };
-
-template<typename T>
-T Leaf::getBy(std::function<T(const Chunk &)> f) const {
-    return f(chunk);
-}
 
 class QuadTree {
     Branch root;
@@ -52,7 +45,7 @@ class QuadTree {
     Leaf *leafAt(int x, int z);
 
 public:
-    explicit QuadTree(unsigned int depth);
+    explicit QuadTree(int depth);
 
     void insert(int x, int y, int z, Block *);
 

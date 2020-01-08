@@ -4,7 +4,7 @@
 #include "views/renderers/AsyncRenderer.hpp"
 
 class InstancingRenderer : public AsyncRenderer {
-    static const int RENDERING_DISTANCE = 8;
+    static const int RENDERING_DISTANCE = 16;
 
     Texture2D texture;
     unsigned int bufferedInstances;

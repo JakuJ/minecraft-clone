@@ -1,28 +1,23 @@
 #include <cmath>
 #include "world/quadtree.hpp"
 
-#pragma region Node
-
-Node::Node(unsigned int level) : level(level) {
-    int coord = static_cast<int>(getExtent()) / 2;
+Node::Node(int level) : level(level) {
+    int coord = static_cast<int>(getExtent() / 2);
     x0 = -coord;
     z0 = -coord;
 }
 
-Node::Node(unsigned int level, int x0, int z0) : level(level), x0(x0), z0(z0) {}
+Node::Node(int level, int x0, int z0) : level(level), x0(x0), z0(z0) {}
 
-unsigned int Node::getExtent() const {
-    return static_cast<unsigned int>(pow(2, level)) * Chunk::SIDE;
+double Node::getExtent() const {
+    return pow(2, level) * Chunk::SIDE;
 }
 
-#pragma endregion Node
-#pragma region Branch
-
-Branch::Branch(unsigned int level) : Node(level) {
+Branch::Branch(int level) : Node(level) {
     q1 = q2 = q3 = q4 = nullptr;
 }
 
-Branch::Branch(unsigned int level, int x0, int z0) : Node(level, x0, z0) {
+Branch::Branch(int level, int x0, int z0) : Node(level, x0, z0) {
     q1 = q2 = q3 = q4 = nullptr;
 }
 
@@ -41,7 +36,7 @@ Node *Branch::makeChild(int x, int z) {
 }
 
 Node *Branch::descent(int x, int z) {
-    int width = static_cast<int>(getExtent()) / 2;
+    int width = static_cast<int>(getExtent() / 2);
     int midX = x0 + width;
     int midZ = z0 + width;
 
@@ -68,18 +63,14 @@ Node *Branch::descent(int x, int z) {
     }
 }
 
-#pragma endregion Branch
-
 Leaf::Leaf(int x0, int z0) : Node(0, x0, z0), chunk(x0, z0) {
 }
 
-#pragma region QuadTree
-
-QuadTree::QuadTree(unsigned int depth) : root(depth) {
+QuadTree::QuadTree(int depth) : root(depth) {
 }
 
 Leaf *QuadTree::leafAt(int x, int z) {
-    int extent = static_cast<int>(root.getExtent()) / 2;
+    auto extent = root.getExtent() / 2;
 
     if (x < -extent || x >= extent || z < -extent || z >= extent) {
         return nullptr;
@@ -129,12 +120,7 @@ ChunkSector QuadTree::getSurrounding(int x, int z, int radius) {
         chunks[cx] = new Chunk *[side];
 
         for (int j = -radius; j <= radius; j++) {
-            int cz = j + radius;
-
-            int leaf_x = x + static_cast<int>(Chunk::SIDE) * i;
-            int leaf_z = z + static_cast<int>(Chunk::SIDE) * j;
-
-            chunks[cx][cz] = &leafAt(leaf_x, leaf_z)->chunk;
+            chunks[cx][(j + radius)] = &leafAt(x + Chunk::SIDE * i, z + Chunk::SIDE * j)->chunk;
         }
     }
 

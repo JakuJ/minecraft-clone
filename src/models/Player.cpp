@@ -1,11 +1,14 @@
+#include <iostream>
+#include <models/Game.hpp>
 #include "models/Player.hpp"
+#include "utility/Log.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtx/fast_trigonometry.hpp"
 #include "glm/gtx/vec_swizzle.hpp"
-#include <iostream>
 
-Player::Player(const glm::vec3 &position) : position(position), headPitch(0), headYaw(-90) {
+Player::Player(const glm::vec3 &position)
+        : currentChunkID(-1), position(position), headPitch(0), headYaw(-90) {
     std::cout << "Player created" << std::endl;
 }
 
@@ -14,6 +17,14 @@ void Player::move(const glm::vec3 &vector) {
                                       glm::vec3(0, 1, 0));
     glm::vec4 trans = transform * glm::vec4(vector, 0.0);
     position += glm::xyz(trans) * MOVEMENT_SPEED;
+
+    // Check if the player crossed from one chunk to another
+    int chunkID = Game::getInstance().world.tree.chunkIDAt(position.x, position.z);
+    if (currentChunkID != chunkID) {
+        Log::log("Crossing from chunk ", currentChunkID, " to ", chunkID);
+        chunk_changed.raise();
+        currentChunkID = chunkID;
+    }
 }
 
 glm::mat4 Player::getFPMatrix() const {

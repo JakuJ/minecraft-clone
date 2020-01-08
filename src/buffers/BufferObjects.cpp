@@ -18,10 +18,6 @@ size_t EBO::size() const {
     return indices.size();
 }
 
-void EBO::append(const std::vector<unsigned int> &vec) {
-    indices.insert(indices.end(), vec.cbegin(), vec.cend());
-}
-
-void EBO::clear() {
-    indices.clear();
+void EBO::fill(const std::vector<unsigned int> &vec) {
+    indices.assign(vec.begin(), vec.end());
 }

@@ -14,5 +14,5 @@ public:
 
     void placeBlock(int, int, int, Block::Type);
 
-    void removeBlock(int, int, int);
+    [[maybe_unused]] void removeBlock(int, int, int);
 };

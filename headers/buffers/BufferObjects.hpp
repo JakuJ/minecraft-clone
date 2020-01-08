@@ -9,8 +9,6 @@ struct BufferType {
     static unsigned int const Type;
 };
 
-#pragma region BufferObject
-
 template<typename T>
 class BufferObject {
 protected:
@@ -37,9 +35,6 @@ inline void BufferObject<T>::bufferVector(const std::vector<T> &v, GLenum target
     }
 }
 
-#pragma endregion
-#pragma region EBO
-
 class EBO : BufferObject<unsigned int> {
 private:
     std::vector<unsigned int> indices;
@@ -49,23 +44,16 @@ public:
 
     [[nodiscard]] size_t size() const override;
 
-    void append(const std::vector<unsigned int> &vec);
-
-    void clear();
+    void fill(const std::vector<unsigned int> &vec);
 
     void bufferData();
 };
-
-#pragma endregion
-#pragma region VBO
 
 class VBOProxy {
 public:
     virtual ~VBOProxy() = default;
 
     [[nodiscard]] virtual size_t size() const = 0;
-
-    virtual void clear() = 0;
 
     virtual void bufferData() = 0;
 };
@@ -92,9 +80,7 @@ public:
         return data.size() / N;
     }
 
-    void append(const std::vector<T> &vec);
-
-    void clear() override;
+    void fill(const std::vector<T> &vec);
 
     void bufferData() override;
 };
@@ -108,13 +94,8 @@ void VBO<T, N>::bufferData() {
 }
 
 template<typename T, unsigned int N>
-void VBO<T, N>::append(const std::vector<T> &vec) {
-    data.insert(data.end(), vec.cbegin(), vec.cend());
-}
-
-template<typename T, unsigned int N>
-void VBO<T, N>::clear() {
-    data.clear();
+void VBO<T, N>::fill(const std::vector<T> &vec) {
+    data.assign(vec.begin(), vec.end());
 }
 
 #pragma endregion
