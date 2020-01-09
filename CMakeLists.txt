@@ -19,18 +19,10 @@ set(LINUX (UNIX AND NOT APPLE))
 find_package(glfw3 REQUIRED)
 
 include_directories("include")
-include_directories("headers")
+include_directories("external")
 
 # Main executable
-add_compile_options(
-  "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
-  "-O3" "-flto"
-)
-
-if (LINUX)
-  set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
-  find_package(Threads REQUIRED)
-endif ()
+add_compile_options("-Wall" "-Wpedantic" "-Wextra" "-fexceptions" "-O3" "-flto")
 
 file(GLOB_RECURSE app_sources "src/*.cpp")
 add_executable(App ${app_sources})
@@ -39,26 +31,28 @@ add_executable(App ${app_sources})
 set_target_properties(App PROPERTIES LINK_FLAGS_RELEASE -s)
 
 # The GLAD library
-add_library(glad STATIC "lib/glad.c")
+add_library(glad STATIC "external/glad/glad.c")
 
 # The stb_image library
-add_library(stb_image STATIC "lib/stb_image.c")
+add_library(stb_image STATIC "external/stb/stb_image.c")
 
 # The FastNoiseSIMD library
 add_compile_options("-mfma" "-Wno-unused-parameter" "-Wno-sometimes-uninitialized")
-set_source_files_properties("lib/FastNoiseSIMD/FastNoiseSIMD_sse2.cpp" PROPERTIES COMPILE_FLAGS "-msse2")
-set_source_files_properties("lib/FastNoiseSIMD/FastNoiseSIMD_sse41.cpp" PROPERTIES COMPILE_FLAGS "-msse4.1")
-set_source_files_properties("lib/FastNoiseSIMD/FastNoiseSIMD_avx2.cpp" PROPERTIES COMPILE_FLAGS "-mavx2")
+set_source_files_properties("external/FastNoiseSIMD/FastNoiseSIMD_sse2.cpp" PROPERTIES COMPILE_FLAGS "-msse2")
+set_source_files_properties("external/FastNoiseSIMD/FastNoiseSIMD_sse41.cpp" PROPERTIES COMPILE_FLAGS "-msse4.1")
+set_source_files_properties("external/FastNoiseSIMD/FastNoiseSIMD_avx2.cpp" PROPERTIES COMPILE_FLAGS "-mavx2")
 
-file(GLOB noise_sources "lib/FastNoiseSIMD/*.cpp")
+file(GLOB noise_sources "external/FastNoiseSIMD/*.cpp")
 add_library(FastNoiseSIMD SHARED ${noise_sources})
 
 # Link libpthread on Linux
 if (LINUX)
-    target_link_libraries(App glfw glad FastNoiseSIMD stb_image ${CMAKE_THREAD_LIBS_INIT})
-else ()
-    target_link_libraries(App LINK_PUBLIC glfw glad FastNoiseSIMD stb_image)
+    set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+    find_package(Threads REQUIRED)
+    target_link_libraries(App Threads::Threads) # ${CMAKE_THREAD_LIBS_INIT}
 endif ()
+
+target_link_libraries(App glfw glad FastNoiseSIMD stb_image)
 
 # Generate updated PlantUML diagram
 add_custom_command(
@@ -68,13 +62,12 @@ add_custom_command(
         BYPRODUCTS docs/class_diagram.puml
 )
 
-# Installation settings
-
-if (APPLE) # Set up dylib RPATH on macOS
+# Set up dylib RPATH on macOS
+if (APPLE)
     set_target_properties(App PROPERTIES INSTALL_RPATH "lib")
-elseif (LINUX)
-    set(CMAKE_INSTALL_PREFIX "../instdir")
 endif ()
+
+set(CMAKE_INSTALL_PREFIX "installed")
 
 # Install binaries
 install(TARGETS App glad stb_image FastNoiseSIMD
@@ -83,8 +76,4 @@ install(TARGETS App glad stb_image FastNoiseSIMD
         LIBRARY DESTINATION lib)
 
 # Copy application data
-file(GLOB shader_files "data/shaders/*")
-file(GLOB texture_files "data/textures/*.png")
-
-install(FILES ${shader_files} DESTINATION "data/shaders")
-install(FILES ${texture_files} DESTINATION "data/textures")
+install(DIRECTORY "data" DESTINATION ".")

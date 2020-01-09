@@ -40,18 +40,6 @@ void Chunk::removeAt(int x, int y, int z) {
     blocks[x][y][z] = nullptr;
 }
 
-void Chunk::for_each(const std::function<void(int, int, int, Block *)> &f) const {
-    for (int i = 0; i < Chunk::SIDE; i++) {
-        for (int j = 0; j < Chunk::HEIGHT; j++) {
-            for (int k = 0; k < Chunk::SIDE; k++) {
-                if (blocks[i][j][k]) {
-                    f(i, j, k, blocks[i][j][k]);
-                }
-            }
-        }
-    }
-}
-
 Block *Chunk::getAt(int x, int y, int z) const {
     if (x < 0 || x >= SIDE || y < 0 || y >= HEIGHT || z < 0 || z >= SIDE) {
         return nullptr;

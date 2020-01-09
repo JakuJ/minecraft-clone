@@ -1,7 +1,7 @@
 #include <iostream>
 #include <models/Game.hpp>
 #include "models/Player.hpp"
-#include "utility/Log.hpp"
+#include "utils/Log.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtx/fast_trigonometry.hpp"

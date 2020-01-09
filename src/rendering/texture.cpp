@@ -1,7 +1,7 @@
 #include <iostream>
 #include <utility>
 #include <vector>
-#include <utility/Log.hpp>
+#include "utils/Log.hpp"
 #include "rendering/texture.hpp"
 #include "stb/stb_image.h"
 #include "glad/glad.h"

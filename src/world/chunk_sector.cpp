@@ -1,5 +1,5 @@
 #include "world/chunk_sector.hpp"
-#include "utility/timing.hpp"
+#include "utils/timing.hpp"
 
 ChunkSector::ChunkSector(Chunk ***chunks, int side)
         : side(side), chunks(chunks) {}

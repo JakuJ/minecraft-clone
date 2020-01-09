@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <utility/Log.hpp>
+#include "utils/Log.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "rendering/program.hpp"
 

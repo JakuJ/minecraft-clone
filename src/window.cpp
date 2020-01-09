@@ -1,5 +1,5 @@
-#include <utility/Log.hpp>
 #include "window.hpp"
+#include "utils/Log.hpp"
 
 void framebuffer_size_callback(__unused GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);

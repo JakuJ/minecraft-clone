@@ -1,5 +1,5 @@
 #include <memory>
-#include <utility/Log.hpp>
+#include "utils/Log.hpp"
 #include "views/renderers/QuadRenderer.hpp"
 #include "models/Game.hpp"
 #include "rendering/mesh.hpp"
