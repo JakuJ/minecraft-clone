@@ -9,12 +9,10 @@ public:
     static Game &getInstance() {
         static Game instance;
         return instance;
-    };
+    }
 
 private:
-    Game() : player(glm::vec3(0, 90, 0)) {
-        std::cout << "Game created" << std::endl;
-    }
+    Game() : player(glm::vec3(0, 90, 0)) {}
 
 public:
     World world;

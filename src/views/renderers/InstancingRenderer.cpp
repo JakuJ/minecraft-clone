@@ -55,7 +55,7 @@ InstancingRenderer::InstancingRenderer()
     glVertexAttribDivisor(2, 1);
     glVertexAttribDivisor(3, 1);
 
-    Log::log("Instancing renderer created");
+    Log::debug("Instancing renderer created");
 }
 
 void InstancingRenderer::renderSync() {

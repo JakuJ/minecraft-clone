@@ -1,6 +1,7 @@
 #include "utility/timing.hpp"
 
 #include <utility>
+#include <utility/Log.hpp>
 
 Timer::Timer(std::string message) : message(std::move(message)) {
     start = std::chrono::steady_clock::now();
@@ -10,7 +11,7 @@ ScopedTimer::ScopedTimer(const std::string &message) : Timer(message) {}
 
 ScopedTimer::~ScopedTimer() {
     auto end = std::chrono::steady_clock::now();
-    std::cout << message << "\t[" << std::chrono::duration<double, unit>(end - start).count() << " ms]" << std::endl;
+    Log::debug(message, "\t[", std::chrono::duration<double, unit>(end - start).count(), " ms]");
 }
 
 std::map<std::string, std::pair<double, double>> MeanScopedTimer::times;
@@ -28,5 +29,5 @@ MeanScopedTimer::~MeanScopedTimer() {
 
     auto mean = times[message].first / times[message].second;
 
-    std::cout << message << "\t[" << elapsed << " ms]\tMean: [" << mean << " ms]" << std::endl;
+    Log::debug(message, "\t[", elapsed, " ms]\tMean: [", mean, " ms]");
 }

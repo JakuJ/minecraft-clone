@@ -3,6 +3,7 @@
 #include "glad/glad.h"
 #include <iostream>
 #include <vector>
+#include <utility/Log.hpp>
 
 template<typename T>
 struct BufferType {
@@ -27,7 +28,7 @@ inline void BufferObject<T>::bufferVector(const std::vector<T> &v, GLenum target
     size_t currentSize = v.size() * sizeof(T);
 
     if (currentSize > buffer_size) {
-        std::cout << "Reallocating a buffer!" << std::endl;
+        Log::debug("Reallocating a buffer");
         glBufferData(target, currentSize, &v.front(), GL_DYNAMIC_DRAW);
         buffer_size = currentSize;
     } else {
@@ -72,8 +73,6 @@ public:
     explicit VBO(unsigned int location) : location(location) {
         glGenBuffers(1, &(this->id));
         data = std::vector<T>();
-
-        std::cout << "VBO created" << std::endl;
     }
 
     [[nodiscard]] size_t size() const override {

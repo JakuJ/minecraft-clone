@@ -1,6 +1,7 @@
 #include <iostream>
 #include <utility>
 #include <vector>
+#include <utility/Log.hpp>
 #include "rendering/texture.hpp"
 #include "stb/stb_image.h"
 #include "glad/glad.h"
@@ -30,7 +31,7 @@ Texture2D::Texture2D(const std::string &name, int target, const std::string &pat
                      data);
         glGenerateMipmap(GL_TEXTURE_2D);
     } else {
-        std::cout << "Failed to load texture" << std::endl;
+        Log::warn("Failed to load texture: ", path);
     }
 
     stbi_image_free(data);
@@ -64,7 +65,7 @@ CubeTexture::CubeTexture(const std::string &name, int target, const std::string 
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0,
                          nrChannels == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, data);
         } else {
-            std::cout << "Failed to load texture" << std::endl;
+            Log::warn("Failed to load cube maps from directory: ", directory);
         }
 
         stbi_image_free(data);

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <utility/Log.hpp>
 #include "glm/gtc/type_ptr.hpp"
 #include "rendering/program.hpp"
 
@@ -18,16 +19,14 @@ Program::Program(const std::string &vertPath, const std::string &fragPath) {
     glGetProgramiv(id, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(id, 512, nullptr, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED" << std::endl;
-        std::cout << infoLog << std::endl;
-        throw std::runtime_error("Program exception");
+        Log::error("Shader program failed to link");
+        Log::error(infoLog);
+        throw std::runtime_error("Shader program exception");
     }
 
     // No longer needed after linking
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-
-    std::cout << "Program created" << std::endl;
 }
 
 unsigned int Program::loadShader(const std::string &path, int type) {
@@ -41,9 +40,9 @@ unsigned int Program::loadShader(const std::string &path, int type) {
         file.close();
     }
     catch (std::ifstream::failure &e) {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULY_READ" << std::endl;
-        std::cout << e.what() << std::endl;
-        throw std::runtime_error("Shader exception");
+        Log::error("Shader file read unsuccessfully");
+        Log::error(e.what());
+        throw std::runtime_error("Shader program exception");
     }
 
     const char *source = content.c_str();
@@ -58,8 +57,8 @@ unsigned int Program::loadShader(const std::string &path, int type) {
 
     if (!success) {
         glGetShaderInfoLog(shader, 512, nullptr, infoLog);
-        std::cout << "ERROR::SHADER::COMPILATION_FAILED" << std::endl;
-        std::cout << infoLog << std::endl;
+        Log::error("Shader program failed to compile");
+        Log::error(infoLog);
         throw std::runtime_error("Shader exception");
     }
 

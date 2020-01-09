@@ -14,7 +14,6 @@ public:
     BufferSet() {
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
-        std::cout << "BufferSet created" << std::endl;
     }
 
     virtual ~BufferSet() = default;

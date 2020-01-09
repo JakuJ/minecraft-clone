@@ -1,3 +1,4 @@
+#include <utility/Log.hpp>
 #include "controllers/MovementController.hpp"
 #include "views/RenderingView.hpp"
 #include "views/renderers/InstancingRenderer.hpp"
@@ -18,8 +19,8 @@ int main() {
     GLFWwindow *window = setupWindow(800, 600);
 
     if (!window) {
-        std::cout << "Aborting!" << std::endl;
-        return -1;
+        Log::error("Couldn't create a window!");
+        exit(1);
     }
 
     glEnable(GL_DEPTH_TEST);
@@ -50,7 +51,7 @@ int main() {
 
         // render to screen
         glClearColor(0.6, 0.8, 1, 1);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // NOLINT
 
         view.refresh();
 
@@ -61,7 +62,7 @@ int main() {
 
         // print FPS to stdout
         if (currentTime - lastSecond >= 1.0) {
-            std::cout << "FPS: " << frames << std::endl;
+            Log::info("FPS: ", frames);
             frames = 0;
             lastSecond = currentTime;
         }

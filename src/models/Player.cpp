@@ -8,9 +8,7 @@
 #include "glm/gtx/vec_swizzle.hpp"
 
 Player::Player(const glm::vec3 &position)
-        : currentChunkID(-1), position(position), headPitch(0), headYaw(-90) {
-    std::cout << "Player created" << std::endl;
-}
+        : currentChunkID(-1), position(position), headPitch(0), headYaw(-90) {}
 
 void Player::move(const glm::vec3 &vector) {
     glm::mat4 transform = glm::rotate(glm::mat4(1), glm::radians(-static_cast<float>(headYaw) - 90),
@@ -21,7 +19,7 @@ void Player::move(const glm::vec3 &vector) {
     // Check if the player crossed from one chunk to another
     int chunkID = Game::getInstance().world.tree.chunkIDAt(position.x, position.z);
     if (currentChunkID != chunkID) {
-        Log::log("Crossing from chunk ", currentChunkID, " to ", chunkID);
+        Log::info("Crossing from chunk ", currentChunkID, " to ", chunkID);
         chunk_changed.raise();
         currentChunkID = chunkID;
     }

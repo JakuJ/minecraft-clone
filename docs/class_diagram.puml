@@ -189,6 +189,19 @@ class Leaf {
 }
 
 
+class Log {
+	-{static} getLevelMessage(Level level) : constexpr auto
+	-{static} loggingLevel : static Level
+	-{static} clearColor() : void
+	+{static} debug(Args args) : void
+	+{static} error(Args args) : void
+	+{static} info(Args args) : void
+	-{static} logAt(Level level, Args args) : void
+	-{static} setColor(__unused Level level) : void
+	+{static} warn(Args args) : void
+}
+
+
 class MeanScopedTimer {
 	+MeanScopedTimer(const std::string& message)
 	+~MeanScopedTimer()

@@ -6,7 +6,6 @@ unsigned int const BufferType<float>::Type = GL_FLOAT;
 EBO::EBO() {
     glGenBuffers(1, &id);
     indices = std::vector<unsigned int>();
-    std::cout << "EBO created" << std::endl;
 }
 
 void EBO::bufferData() {
