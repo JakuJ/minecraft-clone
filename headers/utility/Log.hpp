@@ -10,6 +10,10 @@
 #define COLOR_SUPPORT 0
 #endif
 
+#ifndef __unused
+#define __unused __attribute__((unused))
+#endif
+
 #include <iostream>
 #include <iomanip>
 #include <string>
