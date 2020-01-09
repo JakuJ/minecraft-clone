@@ -1,11 +1,11 @@
 #include "views/View.hpp"
 
-void CompositeView::refresh() {
+void View::refresh() {
     for (auto &view : subviews) {
         view->refresh();
     }
 }
 
-void CompositeView::add(View *view) {
-    subviews.push_back(std::unique_ptr<View>(view));
+void View::addView(View *view) {
+    subviews.emplace_back(view);
 }

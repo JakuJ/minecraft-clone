@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "world/chunk.hpp"
-#include "quadtree.hpp"
+#include "world/quadtree.hpp"
 
 class World {
     static const unsigned int SIDE = 10;

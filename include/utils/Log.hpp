@@ -19,6 +19,8 @@
 #include <string>
 
 class Log {
+
+public:
     enum Level {
         DEBUG,
         INFO,
@@ -26,6 +28,7 @@ class Log {
         ERROR
     };
 
+private:
     static Level loggingLevel;
 
     static constexpr auto getLevelMessage(Level level) {
@@ -57,6 +60,9 @@ class Log {
     }
 
 public:
+    static constexpr void setLoggingLevel(Level level) {
+        loggingLevel = level;
+    }
 
     template<class... Args>
     static void debug(Args... args) {

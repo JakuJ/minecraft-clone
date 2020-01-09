@@ -1,7 +1,7 @@
 #pragma once
 
 #include "models/Player.hpp"
-#include "world/world.hpp"
+#include "World.hpp"
 
 // A singleton, central model in the system
 class Game {

@@ -1,5 +1,11 @@
-#include "views/BufferSet.hpp"
 #include <algorithm>
+#include <glad/glad.h>
+#include <views/BufferSet.hpp>
+
+BufferSet::BufferSet() {
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+}
 
 VBOProxy *BufferSet::operator[](unsigned int index) {
     return vbos[index].get();

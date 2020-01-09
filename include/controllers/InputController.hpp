@@ -1,6 +1,6 @@
 #pragma once
 
-#include "window.hpp"
+#include <GLFW/glfw3.h>
 
 class Controller {
 public:

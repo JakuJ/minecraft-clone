@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "world/world.hpp"
+#include "models/World.hpp"
 
 World::World() : tree(World::SIDE) {}
 

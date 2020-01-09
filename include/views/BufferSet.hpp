@@ -11,10 +11,7 @@ protected:
     std::vector<std::unique_ptr<VBOProxy>> vbos;
 
 public:
-    BufferSet() {
-        glGenVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
-    }
+    BufferSet();
 
     virtual ~BufferSet() = default;
 

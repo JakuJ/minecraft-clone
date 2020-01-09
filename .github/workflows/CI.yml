@@ -57,14 +57,14 @@ jobs:
         working-directory: build
         run: ${{ matrix.config.install-command }}
 
-    - name: Pack build artifacts
-      run: cmake -E tar cJfv ${{ matrix.config.artifact }} build/installed
+      - name: Pack build artifacts
+        run: cmake -E tar cJfv ${{ matrix.config.artifact }} build/installed
 
-    - name: Upload package
-      uses: actions/upload-artifact@v1
-      with:
-        path: ./${{ matrix.config.artifact }}
-        name: ${{ matrix.config.artifact }}
+      - name: Upload package
+        uses: actions/upload-artifact@v1
+        with:
+          path: ./${{ matrix.config.artifact }}
+          name: ${{ matrix.config.artifact }}
 
   release:
     if: contains(github.ref, 'tags/v')

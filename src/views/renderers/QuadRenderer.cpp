@@ -18,6 +18,10 @@ QuadRenderer::QuadRenderer()
 void QuadRenderer::renderSync() {
     texture.use();
     program.setUniform("mvp", Game::getInstance().player.getFPMatrix());
+
+    // render to screen
+    glClearColor(0.6, 0.8, 1, 1);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // NOLINT
     glDrawElements(GL_TRIANGLES, bufferedElements, GL_UNSIGNED_INT, reinterpret_cast<GLvoid *>(0));
 }
 
