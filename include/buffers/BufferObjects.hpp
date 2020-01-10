@@ -1,8 +1,8 @@
 #pragma once
 
-#include "glad/glad.h"
 #include <iostream>
 #include <vector>
+#include <glad/glad.h>
 #include <utils/Log.hpp>
 
 template<typename T>
@@ -87,9 +87,9 @@ public:
 template<typename T, unsigned int N>
 void VBO<T, N>::bufferData() {
     glBindBuffer(GL_ARRAY_BUFFER, this->id);
-    this->bufferVector(data, GL_ARRAY_BUFFER);
-    glVertexAttribPointer(location, N, BufferType<T>::Type, GL_FALSE, N * sizeof(T), reinterpret_cast<void *>(0));
-    glEnableVertexAttribArray(location);
+    this->bufferVector(this->data, GL_ARRAY_BUFFER);
+    glVertexAttribPointer(this->location, N, BufferType<T>::Type, GL_FALSE, N * sizeof(T), reinterpret_cast<void *>(0));
+    glEnableVertexAttribArray(this->location);
 }
 
 template<typename T, unsigned int N>

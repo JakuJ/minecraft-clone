@@ -19,7 +19,7 @@ void Player::move(const glm::vec3 &vector) {
     // Check if the player crossed from one chunk to another
     int chunkID = Game::getInstance().world.tree.chunkIDAt(position.x, position.z);
     if (currentChunkID != chunkID) {
-        Log::info("Crossing from chunk ", currentChunkID, " to ", chunkID);
+        Log::debug("Crossing from chunk ", currentChunkID, " to ", chunkID);
         chunk_changed.raise();
         currentChunkID = chunkID;
     }

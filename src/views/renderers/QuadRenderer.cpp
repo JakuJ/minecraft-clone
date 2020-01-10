@@ -36,7 +36,7 @@ void QuadRenderer::fillBuffersSync() {
     static_cast<VBO<float, 2> *>((*buffers)[1])->fill(mesh.texCoords); // NOLINT
 
     static_cast<IndexedBufferSet *>(buffers.get())->ebo.fill(mesh.indices); // NOLINT
-    Log::info("QuadRenderer buffers filled");
+    Log::debug("QuadRenderer buffers filled");
 }
 
 void QuadRenderer::bufferData() {
