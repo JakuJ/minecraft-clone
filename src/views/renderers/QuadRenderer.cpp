@@ -7,12 +7,8 @@
 QuadRenderer::QuadRenderer()
         : AsyncRenderer("data/shaders/quad.vert", "data/shaders/quad.frag"),
           texture("cubes", GL_TEXTURE0, "data/textures/blocks.png", true) {
+
     texture.bind(program);
-
-    buffers = std::make_unique<IndexedBufferSet>();
-
-    buffers->addVBO(static_cast<VBOProxy *>(new VBO<float, 3>(0)));  // vertices
-    buffers->addVBO(static_cast<VBOProxy *>(new VBO<float, 2>(1)));  // texCoords
 }
 
 void QuadRenderer::renderSync() {
@@ -32,14 +28,16 @@ void QuadRenderer::fillBuffersSync() {
     ChunkSector cs = game.world.tree.getSurrounding(pos[0], pos[2], RENDERING_DISTANCE);
     QuadMesh mesh = cs.getQuadMesh();
 
-    static_cast<VBO<float, 3> *>((*buffers)[0])->fill(mesh.vertices); // NOLINT
-    static_cast<VBO<float, 2> *>((*buffers)[1])->fill(mesh.texCoords); // NOLINT
+    vertices.fill(mesh.vertices);
+    texCoords.fill(mesh.texCoords);
+    indices.fill(mesh.indices);
 
-    static_cast<IndexedBufferSet *>(buffers.get())->ebo.fill(mesh.indices); // NOLINT
     Log::debug("QuadRenderer buffers filled");
 }
 
 void QuadRenderer::bufferData() {
-    Renderer::bufferData();
-    bufferedElements = static_cast<IndexedBufferSet *>(buffers.get())->ebo.size(); // NOLINT
+    vertices.bufferData();
+    texCoords.bufferData();
+    indices.bufferData();
+    bufferedElements = indices.size();
 }

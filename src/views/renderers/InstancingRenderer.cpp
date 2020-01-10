@@ -8,17 +8,8 @@ InstancingRenderer::InstancingRenderer()
         : AsyncRenderer("data/shaders/instance.vert", "data/shaders/quad.frag"),
           texture("cubes", GL_TEXTURE0, "data/textures/blocks.png", true),
           bufferedInstances(0) {
-    texture.bind(program);
-    buffers = std::make_unique<BufferSet>();
 
-    buffers->addVBO(static_cast<VBOProxy *>(
-                            new VBO<float, 3>(0)));  // position
-    buffers->addVBO(static_cast<VBOProxy *>(
-                            new VBO<float, 2>(1)));  // texture coordinate
-    buffers->addVBO(static_cast<VBOProxy *>(
-                            new VBO<float, 3>(2)));  // instance offset
-    buffers->addVBO(static_cast<VBOProxy *>(
-                            new VBO<float, 3>(3)));  // textureInfo
+    texture.bind(program);
 
     // Initial filling of the buffers
     std::vector<float> verts;
@@ -38,7 +29,9 @@ InstancingRenderer::InstancingRenderer()
         addVert(ix);
     }
 
-    ((VBO<float, 3> *) (*buffers)[0])->fill(verts);
+    vertices.fill(verts);
+    vertices.bufferData();
+    bufferedElements = vertices.size();
 
     std::vector<float> coords;
     coords.reserve(2 * 3 * 2);
@@ -49,7 +42,8 @@ InstancingRenderer::InstancingRenderer()
     const float uvs[] = {0, 0, du, 0, du, dv, 0, 0, du, dv, 0, dv};
     coords.insert(coords.end(), uvs, std::end(uvs));
 
-    ((VBO<float, 2> *) (*buffers)[1])->fill(coords);
+    texCoords.fill(coords);
+    texCoords.bufferData();
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glVertexAttribDivisor(2, 1);
@@ -75,12 +69,13 @@ void InstancingRenderer::fillBuffersSync() {
     ChunkSector cs = game.world.tree.getSurrounding(pos[0], pos[2], RENDERING_DISTANCE);
     InstanceMesh mesh = cs.getInstanceMesh();
 
-    ((VBO<float, 3> *) (*buffers)[2])->fill(mesh.offsets);
-    ((VBO<float, 3> *) (*buffers)[3])->fill(mesh.typeInfos);
+    offsets.fill(mesh.offsets);
+    infos.fill(mesh.typeInfos);
+    Log::debug("InstancingRenderer buffers filled");
 }
 
 void InstancingRenderer::bufferData() {
-    Renderer::bufferData();
-    bufferedElements = (*buffers)[0]->size();
-    bufferedInstances = (*buffers)[3]->size();
+    offsets.bufferData();
+    infos.bufferData();
+    bufferedInstances = infos.size();
 }

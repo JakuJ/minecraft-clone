@@ -23,7 +23,7 @@ mat3 rotateAxis(float x, float y, float times)
 }
 
 void main()
-{   
+{
     float type = aTypeInfo.z;
 
     float isX = 1 - step(2, type);

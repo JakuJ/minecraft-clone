@@ -126,5 +126,3 @@ ChunkSector QuadTree::getSurrounding(int x, int z, int radius) {
 
     return ChunkSector(chunks, side);
 }
-
-#pragma endregion QuadTree

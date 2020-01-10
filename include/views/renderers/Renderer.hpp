@@ -2,19 +2,17 @@
 
 #include <string>
 #include <memory>
-#include "views/BufferSet.hpp"
 #include "rendering/program.hpp"
 
 class Renderer {
 protected:
     Program program;
-    std::unique_ptr<BufferSet> buffers;
 
     size_t bufferedElements;
 
     Renderer(const std::string &, const std::string &);
 
-    virtual void bufferData();
+    virtual void bufferData() = 0;
 
 public:
     virtual ~Renderer() = default;

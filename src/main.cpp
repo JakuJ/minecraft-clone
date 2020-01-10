@@ -1,4 +1,5 @@
 #include <views/WindowView.hpp>
+#include <views/renderers/InstancingRenderer.hpp>
 #include "controllers/MovementController.hpp"
 #include "views/RenderingView.hpp"
 
@@ -12,7 +13,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    windowView->addView(new RenderingView(new QuadRenderer()));
+    windowView->addView(new RenderingView(new InstancingRenderer()));
 
     MovementController controller(windowView->getWindow());
 

@@ -1,8 +1,6 @@
 #include "rendering/mesh.hpp"
 #include <algorithm>
 
-#pragma region QuadMesh
-
 void QuadMesh::addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face faceId) {
     u_int offset = vertices.size() / 3;
 
@@ -44,9 +42,6 @@ std::ostream &operator<<(std::ostream &out, const QuadMesh &mesh) {
     return out;
 }
 
-#pragma endregion
-#pragma region InstanceMesh
-
 void InstanceMesh::addCube(float x, float y, float z, Block::Type texId, Block::Face faceId) {
     const float offs[] = {x, y, z};
     offsets.insert(offsets.end(), offs, std::end(offs));
@@ -64,5 +59,3 @@ void InstanceMesh::operator+=(const InstanceMesh &other) {
 std::ostream &operator<<(std::ostream &out, const InstanceMesh &mesh) {
     return out << "Instance Mesh with " << mesh.offsets.size() / 3 << " instances";
 }
-
-#pragma endregion

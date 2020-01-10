@@ -50,6 +50,11 @@ WindowView::WindowView(int width, int height) {
 
     // VSYNC
     glfwSwapInterval(1);
+
+    // Global vertex array object
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
 }
 
 WindowView::~WindowView() {
