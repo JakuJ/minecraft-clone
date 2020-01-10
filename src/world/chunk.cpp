@@ -5,46 +5,35 @@
 
 u_int Chunk::NEXT_ID = 0;
 
-Chunk::Chunk(int x0, int z0) : x0(x0), z0(z0), id(Chunk::NEXT_ID++) {
-    // allocate memory
-    blocks = new Block ***[Chunk::SIDE];
-
-    for (int i = 0; i < Chunk::SIDE; i++) {
-        blocks[i] = new Block **[Chunk::HEIGHT];
-        for (int j = 0; j < Chunk::HEIGHT; j++) {
-            blocks[i][j] = new Block *[Chunk::SIDE]{nullptr};
-        }
-    }
-
-    // generate chunk
+Chunk::Chunk(int x0, int z0) : x0(x0), z0(z0), blocks(SIDE * SIDE * HEIGHT), id(Chunk::NEXT_ID++) {
     generate(1337);
 }
 
 Chunk::~Chunk() {
-    for (size_t i = 0; i < Chunk::SIDE; i++) {
-        for (size_t j = 0; j < Chunk::HEIGHT; j++) {
-            delete[] blocks[i][j];
-        }
-        delete[] blocks[i];
+    for (Block *b : blocks) {
+        delete b;
     }
-    delete[] blocks;
+}
+
+constexpr auto &Chunk::at(int x, int y, int z) {
+    return blocks[x + y * SIDE + z * SIDE * HEIGHT];
 }
 
 void Chunk::placeAt(int x, int y, int z, Block *block) {
     removeAt(x, y, z);
-    blocks[x][y][z] = block;
+    at(x, y, z) = block;
 }
 
 void Chunk::removeAt(int x, int y, int z) {
-    delete blocks[x][y][z];
-    blocks[x][y][z] = nullptr;
+    delete at(x, y, z);
+    at(x, y, z) = nullptr;
 }
 
-Block *Chunk::getAt(int x, int y, int z) const {
+Block *Chunk::getAt(int x, int y, int z) {
     if (x < 0 || x >= SIDE || y < 0 || y >= HEIGHT || z < 0 || z >= SIDE) {
         return nullptr;
     }
-    return blocks[x][y][z];
+    return at(x, y, z);
 }
 
 void Chunk::generate(int seed) {
@@ -100,3 +89,5 @@ void Chunk::generate(int seed) {
 
     FastNoiseSIMD::FreeNoiseSet(noiseSet);
 }
+
+

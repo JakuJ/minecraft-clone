@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <functional>
+#include <vector>
 #include "world/block.hpp"
 #include "rendering/mesh.hpp"
 
@@ -9,9 +10,11 @@ class Chunk {
     static const int HEIGHT = 256;
     static u_int NEXT_ID;
 
-    Block ****blocks;
-
     const int x0, z0;
+
+    std::vector<Block *> blocks;
+
+    [[nodiscard]] constexpr auto &at(int, int, int);
 
 public:
     static const int SIDE = 16;
@@ -26,7 +29,7 @@ public:
 
     void removeAt(int x, int y, int z);
 
-    [[nodiscard]] Block *getAt(int x, int y, int z) const;
+    [[nodiscard]] Block *getAt(int x, int y, int z);
 
     void generate(int seed);
 

@@ -1,4 +1,5 @@
 #include <cmath>
+#include <utils/Log.hpp>
 #include "world/quadtree.hpp"
 
 Node::Node(int level) : level(level) {
@@ -113,14 +114,12 @@ ChunkSector QuadTree::getSurrounding(int x, int z, int radius) {
 
     const int side = (2 * radius + 1);
 
-    auto ***chunks = new Chunk **[side];
+    std::vector<Chunk *> chunks;
+    chunks.reserve(side * side);
 
-    for (int i = -radius; i <= radius; i++) {
-        int cx = i + radius;
-        chunks[cx] = new Chunk *[side];
-
-        for (int j = -radius; j <= radius; j++) {
-            chunks[cx][(j + radius)] = &leafAt(x + Chunk::SIDE * i, z + Chunk::SIDE * j)->chunk;
+    for (int j = -radius; j <= radius; j++) {
+        for (int i = -radius; i <= radius; i++) {
+            chunks.push_back(&leafAt(x + Chunk::SIDE * i, z + Chunk::SIDE * j)->chunk);
         }
     }
 

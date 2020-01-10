@@ -4,7 +4,7 @@
 #include "utils/Event.hpp"
 
 class Player {
-    static constexpr const float MOVEMENT_SPEED = 20;
+    static constexpr const float MOVEMENT_SPEED = 50;
 
     int currentChunkID;
 

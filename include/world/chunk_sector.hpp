@@ -1,16 +1,17 @@
 #pragma once
 
+#include <vector>
 #include "world/chunk.hpp"
 #include "rendering/mesh.hpp"
 
 class ChunkSector {
     const int side;
-    Chunk ***chunks;
+    std::vector<Chunk *> chunks;
+
+    [[nodiscard]] constexpr auto &at(int x, int z) const;
 
 public:
-    ChunkSector(Chunk ***chunks, int side);
-
-    ~ChunkSector();
+    ChunkSector(std::vector<Chunk *> chunks, int side);
 
     [[nodiscard]] Block *getAt(int x, int y, int z) const;
 

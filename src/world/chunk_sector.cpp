@@ -1,14 +1,11 @@
 #include "world/chunk_sector.hpp"
 #include "utils/timing.hpp"
 
-ChunkSector::ChunkSector(Chunk ***chunks, int side)
-        : side(side), chunks(chunks) {}
+ChunkSector::ChunkSector(std::vector<Chunk *> chunks, int side)
+        : side(side), chunks(std::move(chunks)) {}
 
-ChunkSector::~ChunkSector() {
-    for (int i = 0; i < side; i++) {
-        delete[] chunks[i];
-    }
-    delete[] chunks;
+constexpr auto &ChunkSector::at(int x, int z) const {
+    return chunks[x + side * z];
 }
 
 Block *ChunkSector::getAt(int x, int y, int z) const {
@@ -16,14 +13,14 @@ Block *ChunkSector::getAt(int x, int y, int z) const {
         return nullptr;
     }
 
-    int cx = x / static_cast<int>(Chunk::SIDE);
-    int cz = z / static_cast<int>(Chunk::SIDE);
+    int cx = x / Chunk::SIDE;
+    int cz = z / Chunk::SIDE;
 
     if (cx < 0 || cx >= side || cz < 0 || cz >= side) {
         return nullptr;
     }
 
-    return chunks[cx][cz]->getAt(x - cx * Chunk::SIDE, y, z - cz * Chunk::SIDE);
+    return at(cx, cz)->getAt(x - cx * Chunk::SIDE, y, z - cz * Chunk::SIDE);
 }
 
 QuadMesh ChunkSector::getQuadMesh() const {
@@ -31,8 +28,8 @@ QuadMesh ChunkSector::getQuadMesh() const {
 
     QuadMesh opaque, transparent;
 
-    int x0 = chunks[0][0]->x0;
-    int z0 = chunks[0][0]->z0;
+    int x0 = at(0, 0)->x0;
+    int z0 = at(0, 0)->z0;
 
     for (int x = 0; x < side * static_cast<int>(Chunk::SIDE); x++) {
         for (int y = 0; y < static_cast<int>(Chunk::HEIGHT); y++) {
@@ -82,8 +79,8 @@ InstanceMesh ChunkSector::getInstanceMesh() const {
 
     InstanceMesh opaque, transparent;
 
-    int x0 = chunks[0][0]->x0;
-    int z0 = chunks[0][0]->z0;
+    int x0 = at(0, 0)->x0;
+    int z0 = at(0, 0)->z0;
 
     for (int x = 0; x < side * static_cast<int>(Chunk::SIDE); x++) {
         for (int y = 0; y < static_cast<int>(Chunk::HEIGHT); y++) {
@@ -118,3 +115,4 @@ InstanceMesh ChunkSector::getInstanceMesh() const {
 
     return opaque;
 }
+

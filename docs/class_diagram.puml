@@ -55,13 +55,14 @@ class BufferType <template<typename T>> {
 class Chunk {
 	+Chunk(int x0, int z0)
 	+~Chunk()
-	-blocks : Block****
-	+getAt(int x, int y, int z) : [ [ nodiscard ] ] Block* {query}
+	+getAt(int x, int y, int z) : [ [ nodiscard ] ] Block*
+	-at(int, int, int) : [ [ nodiscard ] ] constexpr auto&
 	-x0 : const int
 	-z0 : const int
 	-{static} HEIGHT : static const int
 	+{static} SIDE : static const int
 	-{static} NEXT_ID : static u_int
+	-blocks : std::vector<Block*>
 	+id : u_int
 	+generate(int seed) : void
 	+placeAt(int x, int y, int z, Block* block) : void
@@ -70,13 +71,13 @@ class Chunk {
 
 
 class ChunkSector {
-	+ChunkSector(Chunk*** chunks, int side)
-	+~ChunkSector()
-	-chunks : Chunk***
+	+ChunkSector(std::vector<Chunk*> chunks, int side)
 	+getAt(int x, int y, int z) : [ [ nodiscard ] ] Block* {query}
 	+getInstanceMesh() : [ [ nodiscard ] ] InstanceMesh {query}
 	+getQuadMesh() : [ [ nodiscard ] ] QuadMesh {query}
+	-at(int x, int z) : [ [ nodiscard ] ] constexpr auto& {query}
 	-side : const int
+	-chunks : std::vector<Chunk*>
 }
 
 
