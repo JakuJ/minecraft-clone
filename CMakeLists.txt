@@ -22,7 +22,11 @@ include_directories("include")
 include_directories("external")
 
 # Main executable
-add_compile_options("-Wall" "-Wpedantic" "-Wextra" "-fexceptions" "-O3" "-flto")
+add_compile_options("-Wall" "-Wextra" "-fexceptions" "-O3" "-flto")
+# Linux GitHub Actions environment really just hates casting to function pointers nad my logs are full of warning
+if (NOT LINUX)
+    add_compile_options("-Wpedantic")
+endif ()
 
 file(GLOB_RECURSE app_sources "src/*.cpp")
 add_executable(App ${app_sources})

@@ -1,4 +1,3 @@
-#include <memory>
 #include <utils/Log.hpp>
 #include "views/renderers/InstancingRenderer.hpp"
 #include "models/Game.hpp"

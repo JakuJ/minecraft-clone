@@ -4,7 +4,7 @@
 #include "utils/Event.hpp"
 
 class Player {
-    static constexpr const float MOVEMENT_SPEED = 50;
+    static constexpr const float MOVEMENT_SPEED = 20;
 
     int currentChunkID;
 
@@ -12,7 +12,7 @@ public:
     glm::vec3 position;
     double headPitch, headYaw;
 
-    Event<> chunk_changed;
+    Event<> chunkChanged;
 
     explicit Player(const glm::vec3 &position);
 

@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <vector>
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include <utils/Log.hpp>
 
 template<typename T>
