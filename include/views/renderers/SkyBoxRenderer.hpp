@@ -6,12 +6,12 @@
 class SkyBoxRenderer : public Renderer {
     VBO<float, 3> vertices{4};
 
-    void bufferData() override;
+    void bufferData() final;
 
 public:
     SkyBoxRenderer();
 
-    void render() override;
+    void render() final;
 
-    void fillBuffers() override;
+    void fillBuffers() final;
 };
