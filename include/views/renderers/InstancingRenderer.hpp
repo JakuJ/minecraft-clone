@@ -6,8 +6,6 @@
 
 
 class InstancingRenderer : public AsyncRenderer {
-    static const int RENDERING_DISTANCE = 8;
-
     Texture2D texture;
     unsigned int bufferedInstances;
 

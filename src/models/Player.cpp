@@ -1,4 +1,3 @@
-#include <iostream>
 #include <models/Game.hpp>
 #include "models/Player.hpp"
 #include "utils/Log.hpp"
@@ -25,15 +24,17 @@ void Player::move(const glm::vec3 &vector) {
     }
 }
 
-glm::mat4 Player::getFPMatrix() const {
+glm::vec3 Player::getFront() const {
     glm::vec3 front;
     front.x = glm::fastCos(glm::radians(headYaw)) * cos(glm::radians(headPitch));
     front.y = glm::fastSin(glm::radians(headPitch));
     front.z = glm::fastSin(glm::radians(headYaw)) * cos(glm::radians(headPitch));
 
-    front = glm::normalize(front);
+    return glm::normalize(front);
+}
 
-    glm::mat4 mvp = glm::infinitePerspective(glm::radians(60.0), 8.0 / 6.0, 0.1);
-    mvp *= glm::lookAt(position, position + front, glm::vec3(0, 1, 0));
+glm::mat4 Player::getFPMatrix() const {
+    glm::mat4 mvp = glm::infinitePerspective(glm::radians(60.0), 4.0 / 3.0, 0.1);
+    mvp *= glm::lookAt(position, position + getFront(), glm::vec3(0, 1, 0));
     return mvp;
 }

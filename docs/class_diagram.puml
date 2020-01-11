@@ -111,10 +111,10 @@ class Event <template<class ...Args>> {
 
 class Game {
 	-Game()
-	+Game(Game const &)
 	+{static} getInstance() : Game&
 	+player : Player
 	+world : World
+	+{static} chunkLoadingDistance : static const int
 	+operator=(const Game &) : void
 }
 
@@ -150,7 +150,6 @@ class InstanceMesh {
 class InstancingRenderer {
 	+InstancingRenderer()
 	-texture : Texture2D
-	-{static} RENDERING_DISTANCE : static const int
 	-bufferedInstances : unsigned int
 	+bufferData() : void
 	+fillBuffersSync() : void
@@ -207,6 +206,7 @@ class Player {
 	+Player(const glm::vec3& position)
 	+chunkChanged : Event<>
 	+getFPMatrix() : [ [ nodiscard ] ] glm::mat4 {query}
+	+getFront() : [ [ nodiscard ] ] glm::vec3 {query}
 	+headPitch : double
 	+headYaw : double
 	+position : glm::vec3
@@ -247,7 +247,6 @@ class QuadRenderer {
 	+QuadRenderer()
 	-indices : EBO
 	-texture : Texture2D
-	-{static} RENDERING_DISTANCE : static const int
 	+bufferData() : void
 	+fillBuffersSync() : void
 	+renderSync() : void
@@ -286,6 +285,14 @@ class RenderingView {
 class ScopedTimer {
 	+ScopedTimer(const std::string& message)
 	+~ScopedTimer()
+}
+
+
+class SkyBoxRenderer {
+	+SkyBoxRenderer()
+	-bufferData() : void
+	+fillBuffers() : void
+	+render() : void
 }
 
 
@@ -390,6 +397,9 @@ Node <|-- Leaf
 
 
 Renderer <|-- AsyncRenderer
+
+
+Renderer <|-- SkyBoxRenderer
 
 
 Texture <|-- CubeTexture

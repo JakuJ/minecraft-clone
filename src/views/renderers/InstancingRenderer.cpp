@@ -48,6 +48,7 @@ InstancingRenderer::InstancingRenderer()
     glVertexAttribDivisor(2, 1);
     glVertexAttribDivisor(3, 1);
 
+    Game::getInstance().player.chunkChanged.subscribe([this]() { fillBuffers(); });
     Log::debug("Instancing renderer created");
 }
 
@@ -56,8 +57,6 @@ void InstancingRenderer::renderSync() {
     program.setUniform("mvp", Game::getInstance().player.getFPMatrix());
 
     // render to screen
-    glClearColor(0.6, 0.8, 1, 1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // NOLINT
     glDrawArraysInstanced(GL_TRIANGLES, 0, bufferedElements, bufferedInstances);
 }
 
@@ -65,7 +64,7 @@ void InstancingRenderer::fillBuffersSync() {
     Game &game = Game::getInstance();
     auto &pos = game.player.position;
 
-    ChunkSector cs = game.world.tree.getSurrounding(pos[0], pos[2], RENDERING_DISTANCE);
+    ChunkSector cs = game.world.tree.getSurrounding(pos[0], pos[2], Game::chunkLoadingDistance);
     InstanceMesh mesh = cs.getInstanceMesh();
 
     offsets.fill(mesh.offsets);

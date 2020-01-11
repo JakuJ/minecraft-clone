@@ -15,10 +15,10 @@ private:
     Game() : player(glm::vec3(0, 90, 0)) {}
 
 public:
+    static const int chunkLoadingDistance = 12;
+
     World world;
     Player player;
-
-    Game(Game const &) = delete;
 
     void operator=(const Game &) = delete;
 };

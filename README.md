@@ -14,7 +14,7 @@ An attempt to recreate a subset of the popular game "Minecraft", delving deeper 
 * Transparent and semi-transparent blocks (leaves, water)
 * Seeded terrain generation based on simplex noise
 * Two renderers - one based on glDrawElementArrays, and one based on instancing
-* Naive fog implementation
+* Simple sky block and distance-based fog
 
 ## Extra stuff
 * GitHub Actions pipeline for releases on Linux and MacOS (Windows in the future)
