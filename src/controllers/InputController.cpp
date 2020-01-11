@@ -27,7 +27,7 @@ void InputController::update() {
 
 void InputController::registerMouseHandler() const {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetWindowUserPointer(window, (void *) this);
+    glfwSetWindowUserPointer(window, const_cast<void *>(reinterpret_cast<void const *>(this)));
     glfwSetCursorPosCallback(window, [](GLFWwindow *w, double xPos, double yPos) {
         auto *self = static_cast<InputController *>(glfwGetWindowUserPointer(w));
 

@@ -13,7 +13,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    windowView->addView(new RenderingView(new InstancingRenderer()));
+    windowView->addView(new RenderingView(new QuadRenderer()));
 
     MovementController controller(windowView->getWindow());
 

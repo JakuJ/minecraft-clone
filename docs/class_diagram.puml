@@ -227,6 +227,7 @@ class Program {
 	+setUniform(const std::string& name, float value) : void {query}
 	+setUniform(const std::string& name, bool value) : void {query}
 	+setUniform(const std::string& name, int value) : void {query}
+	+setUniform(const std::string& name, const glm::vec3& value) : void {query}
 	+setUniform(const std::string& name, const glm::mat4& value) : void {query}
 	+use() : void {query}
 }
