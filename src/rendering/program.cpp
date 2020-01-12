@@ -69,16 +69,8 @@ void Program::use() const {
     glUseProgram(Id);
 }
 
-unsigned int Program::getId() const {
-    return Id;
-}
-
 void Program::setUniform(const std::string &name, float value) const {
     glUniform1f(glGetUniformLocation(Id, name.c_str()), value);
-}
-
-void Program::setUniform(const std::string &name, bool value) const {
-    glUniform1i(glGetUniformLocation(Id, name.c_str()), static_cast<int>(value));
 }
 
 void Program::setUniform(const std::string &name, int value) const {

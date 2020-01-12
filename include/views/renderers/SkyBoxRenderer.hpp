@@ -1,4 +1,4 @@
-# pragma once
+#pragma once
 
 #include "views/renderers/Renderer.hpp"
 #include "buffers/VBO.hpp"

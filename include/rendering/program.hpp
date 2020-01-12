@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include "glad/glad.h"
 #include "glm/glm.hpp"
 
 // A simple context manager for the shader program
@@ -16,11 +15,7 @@ private:
 public:
     void use() const;
 
-    [[nodiscard]] unsigned int getId() const;
-
     void setUniform(const std::string &name, float value) const;
-
-    void setUniform(const std::string &name, bool value) const;
 
     void setUniform(const std::string &name, int value) const;
 

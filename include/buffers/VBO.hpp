@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "buffers/BufferObject.hpp"
+#include "glad/glad.h"
 
 template<typename T, unsigned int N>
 class VBO : public BufferObject<T> {
@@ -10,7 +11,6 @@ private:
     std::vector<T> data;
 
 public:
-
     explicit VBO(unsigned int location) : location(location) {
         glGenBuffers(1, &(this->id));
         data = std::vector<T>();
