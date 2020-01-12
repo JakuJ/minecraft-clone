@@ -41,7 +41,7 @@ void Chunk::generate(int seed) {
     static const int STONE_LEVEL = 40;
     static const int SEA_LEVEL = 64;
     static const int SEA_BOTTOM = 50;
-    static const int HILL_PEAKS = 100;
+    static const int HILL_PEAKS = 80;
 
     static const int noise_sd = (HILL_PEAKS - SEA_BOTTOM) / 2;
     static const int noise_mean = (HILL_PEAKS + SEA_BOTTOM) / 2;

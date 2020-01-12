@@ -9,7 +9,8 @@ class QuadRenderer : public AsyncRenderer {
     Texture2D texture;
 
     VBO<float, 3> vertices{0};
-    VBO<float, 2> texCoords{1};
+    VBO<float, 3> normals{1};
+    VBO<float, 2> texCoords{2};
     EBO indices;
 
 public:

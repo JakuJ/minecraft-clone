@@ -5,14 +5,13 @@
 
 struct QuadMesh {
     std::vector<float> vertices;
+    std::vector<float> normals;
     std::vector<u_int> indices;
     std::vector<float> texCoords;
 
-    void addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face faceId);
+    void addQuad(const std::vector<float> &vs, const std::vector<float> &ns, Block::Type texId, Block::Face faceId);
 
     void operator+=(const QuadMesh &other);
-
-    friend std::ostream &operator<<(std::ostream &out, const QuadMesh &mesh);
 };
 
 struct InstanceMesh {

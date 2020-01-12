@@ -1,4 +1,3 @@
-#include <GLFW/glfw3.h>
 #include "utils/Log.hpp"
 #include "views/renderers/QuadRenderer.hpp"
 #include "models/Game.hpp"
@@ -14,7 +13,6 @@ QuadRenderer::QuadRenderer()
 
 void QuadRenderer::renderSync() {
     texture.use();
-
     glDrawElements(GL_TRIANGLES, bufferedElements, GL_UNSIGNED_INT, reinterpret_cast<GLvoid *>(0));
 }
 
@@ -26,6 +24,7 @@ void QuadRenderer::fillBuffersSync() {
     QuadMesh mesh = cs.getQuadMesh();
 
     vertices.fill(mesh.vertices);
+    normals.fill(mesh.normals);
     texCoords.fill(mesh.texCoords);
     indices.fill(mesh.indices);
 
@@ -34,6 +33,7 @@ void QuadRenderer::fillBuffersSync() {
 
 void QuadRenderer::bufferData() {
     vertices.bufferData();
+    normals.bufferData();
     texCoords.bufferData();
     indices.bufferData();
     bufferedElements = indices.size();

@@ -34,7 +34,7 @@ public:
 
     explicit Block(Type);
 
-    [[nodiscard]] std::vector<float> getFace(Block::Face) const;
+    [[nodiscard]] std::pair<std::vector<float>, std::vector<float>> getFace(Block::Face) const;
 
     friend std::ostream &operator<<(std::ostream &, const Block &);
 };

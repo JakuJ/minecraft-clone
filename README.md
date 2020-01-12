@@ -4,7 +4,7 @@
 
 An attempt to recreate a subset of the popular game "Minecraft", delving deeper and deeper into OpenGL and modern C++ along the way.
 
-## Features done so far
+## What's working so far
 
 * A controllable free-floating camera
 * A quad tree for efficient querying of chunk info
@@ -14,7 +14,8 @@ An attempt to recreate a subset of the popular game "Minecraft", delving deeper 
 * Transparent and semi-transparent blocks (leaves, water)
 * Seeded terrain generation based on simplex noise
 * Two renderers - one based on glDrawElementArrays, and one based on instancing
-* Simple sky block and distance-based fog
+* Simple sky block
+* Day and night cycle with dynamic lighting during sunset and dusk
 
 ## Extra stuff
 * GitHub Actions pipeline for releases on Linux and MacOS (Windows in the future)
@@ -24,3 +25,4 @@ An attempt to recreate a subset of the popular game "Minecraft", delving deeper 
 
 ![A screenshot of the current state](docs/screenshot.png)
 ![A screenshot of the current state](docs/screenshot2.png)
+![A screenshot of the current state](docs/screenshot3.png)

@@ -1,13 +1,10 @@
 #version 410 core
 
-#define fogColor vec3(0.662745098, 0.776470588, 0.937254902)
-#define renderingDistance 9600
-#define falloff 0.1
-
 out vec4 FragColor;
 
-in vec2 fTexCoord;
 in vec3 fPosition;
+in vec3 fNormal;
+in vec2 fTexCoord;
 
 // Common uniforms
 uniform float time;
@@ -18,12 +15,14 @@ uniform sampler2D cubes;
 
 void main()
 {
-    vec4 texColor = texture(cubes, fTexCoord);
-    float distance = length(fPosition - cameraPosition);
-    float fromHorizon = max(0.0, distance - renderingDistance);
-    float fogLevel = clamp(falloff * fromHorizon, 0.0, 1.0);
-    vec3 distantFogColor = fogColor * 0.5 * (1 + sin(time));
+    float lightness = max(0.0, 0.5 + sunPosition.y);
 
-    vec3 color = mix(texColor.xyz, distantFogColor, fogLevel);
+    vec4 texColor = texture(cubes, fTexCoord);
+
+    float ambient = 0.2 + lightness * 0.3;
+    float lambertian = 0.5 * lightness * max(0.0, dot(normalize(sunPosition), normalize(fNormal)));
+
+    vec3 color = (ambient + lambertian) * texColor.xyz;
+
     FragColor = vec4(color, texColor.w);
 }

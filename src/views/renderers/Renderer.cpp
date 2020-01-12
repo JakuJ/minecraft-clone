@@ -10,7 +10,7 @@ Renderer::Renderer(const std::string &vName, const std::string &fName)
 void Renderer::render() {
     program.use();
 
-    auto time = static_cast<float>(glfwGetTime()) / 50.0f;
+    auto time = static_cast<float>(glfwGetTime()) / 5.0f;
     program.setUniform("time", time);
     program.setUniform("playerMVP", Game::getInstance().player.getFPMatrix());
     program.setUniform("cameraPosition", Game::getInstance().player.position);

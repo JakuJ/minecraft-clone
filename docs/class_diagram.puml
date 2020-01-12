@@ -19,7 +19,7 @@ abstract class AsyncRenderer {
 class Block {
 	+Block(Type)
 	+type : Type
-	+getFace(Block:: Face) : [ [ nodiscard ] ] std::vector<float> {query}
+	+getFace(Block:: Face) : [ [ nodiscard ] ] std::pair<std::vector<float> , std::vector<float> > {query}
 	+{static} transparency_table : static const bool
 	+operator<<(std::ostream &, const Block &) : std : : ostream&
 }
@@ -235,11 +235,11 @@ class Program {
 
 
 class QuadMesh {
-	+operator<<(std::ostream& out, const QuadMesh& mesh) : std : : ostream&
+	+normals : std::vector<float>
 	+texCoords : std::vector<float>
 	+vertices : std::vector<float>
 	+indices : std::vector<u_int>
-	+addQuad(const std::vector<float>& vs, Block::Type texId, Block::Face faceId) : void
+	+addQuad(const std::vector<float>& vs, const std::vector<float>& ns, Block::Type texId, Block::Face faceId) : void
 	+operator+=(const QuadMesh& other) : void
 }
 

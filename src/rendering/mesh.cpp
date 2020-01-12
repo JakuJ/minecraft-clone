@@ -1,10 +1,12 @@
 #include "rendering/mesh.hpp"
 #include <algorithm>
 
-void QuadMesh::addQuad(const std::vector<float> &vs, Block::Type texId, Block::Face faceId) {
+void
+QuadMesh::addQuad(const std::vector<float> &vs, const std::vector<float> &ns, Block::Type texId, Block::Face faceId) {
     u_int offset = vertices.size() / 3;
 
     vertices.insert(vertices.end(), vs.cbegin(), vs.cend());
+    normals.insert(normals.end(), ns.cbegin(), ns.cend());
 
     for (u_int k : {0, 1, 2, 0, 2, 3}) {
         indices.push_back(k + offset);
@@ -27,6 +29,9 @@ void QuadMesh::operator+=(const QuadMesh &other) {
     // Copy vertices
     vertices.insert(vertices.end(), other.vertices.cbegin(), other.vertices.cend());
 
+    // Copy normals
+    normals.insert(normals.end(), other.normals.cbegin(), other.normals.cend());
+
     // Copy texture coordinates
     texCoords.insert(texCoords.end(), other.texCoords.cbegin(), other.texCoords.cend());
 
@@ -34,12 +39,6 @@ void QuadMesh::operator+=(const QuadMesh &other) {
                    [&offset](unsigned int ix) {
                        return ix + offset;
                    });
-}
-
-std::ostream &operator<<(std::ostream &out, const QuadMesh &mesh) {
-    out << "Quad Mesh with " << mesh.vertices.size() / 3 << " vertices, " << mesh.indices.size() << " indices and "
-        << mesh.texCoords.size() / 2 << " tex coords";
-    return out;
 }
 
 void InstanceMesh::addCube(float x, float y, float z, Block::Type texId, Block::Face faceId) {

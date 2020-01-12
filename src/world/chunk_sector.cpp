@@ -50,7 +50,8 @@ QuadMesh ChunkSector::getQuadMesh() const {
                     for (auto face = (Block::Face) 0; face < Block::FACES; face++) {
                         if (!faces[face] ||
                             (faces[face]->type != block->type && Block::transparency_table[faces[face]->type])) {
-                            std::vector<float> vectors = block->getFace(face);
+                            auto[vectors, normals] = block->getFace(face);
+
                             for (int j = 0; j <= 9; j += 3) {
                                 vectors[j] += static_cast<float>(x + x0);
                                 vectors[j + 1] += static_cast<float>(y);
@@ -58,9 +59,9 @@ QuadMesh ChunkSector::getQuadMesh() const {
                             }
 
                             if (Block::transparency_table[block->type]) {
-                                transparent.addQuad(vectors, block->type, face);
+                                transparent.addQuad(vectors, normals, block->type, face);
                             } else {
-                                opaque.addQuad(vectors, block->type, face);
+                                opaque.addQuad(vectors, normals, block->type, face);
                             }
                         }
                     }

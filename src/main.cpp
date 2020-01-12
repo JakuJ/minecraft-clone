@@ -15,7 +15,7 @@ int main() {
     }
 
     windowView->addView(new RenderingView(new SkyBoxRenderer()));
-    windowView->addView(new RenderingView(new InstancingRenderer()));
+    windowView->addView(new RenderingView(new QuadRenderer()));
 
     MovementController controller(windowView->getWindow());
 
