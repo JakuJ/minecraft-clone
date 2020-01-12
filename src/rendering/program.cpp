@@ -1,10 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "glad/glad.h"
 #include "utils/Log.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "rendering/program.hpp"
-#include "glad/glad.h"
 
 Program::Program(const std::string &vertPath, const std::string &fragPath) {
     vertexShader = Program::loadShader(vertPath, GL_VERTEX_SHADER);

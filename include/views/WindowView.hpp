@@ -1,8 +1,8 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
 #include <views/View.hpp>
 #include <controllers/InputController.hpp>
+#include <GLFW/glfw3.h>
 
 class WindowView : public View {
 

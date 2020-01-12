@@ -1,8 +1,8 @@
 #include <models/Game.hpp>
-#include <GLFW/glfw3.h>
 #include <glm/gtx/vec_swizzle.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include "views/renderers/Renderer.hpp"
+#include <GLFW/glfw3.h>
 
 Renderer::Renderer(const std::string &vName, const std::string &fName)
         : program(vName, fName), bufferedElements(0) {}

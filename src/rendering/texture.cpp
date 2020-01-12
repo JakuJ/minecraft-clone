@@ -1,10 +1,10 @@
 #include <iostream>
 #include <utility>
 #include <vector>
+#include "glad/glad.h"
 #include "utils/Log.hpp"
 #include "rendering/texture.hpp"
 #include "stb/stb_image.h"
-#include "glad/glad.h"
 
 Texture::Texture(std::string name, int target) : name(std::move(name)), target(target) {}
 
