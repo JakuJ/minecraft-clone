@@ -1,8 +1,10 @@
-#include "rendering/mesh.hpp"
 #include <algorithm>
+#include "rendering/mesh.hpp"
 
-void
-QuadMesh::addQuad(const std::vector<float> &vs, const std::vector<float> &ns, Block::Type texId, Block::Face faceId) {
+void QuadMesh::addQuad(const std::vector<float> &vs,
+                       const std::vector<float> &ns,
+                       Block::Type texId,
+                       Block::Face faceId) {
     u_int offset = vertices.size() / 3;
 
     vertices.insert(vertices.end(), vs.cbegin(), vs.cend());

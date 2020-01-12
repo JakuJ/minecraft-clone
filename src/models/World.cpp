@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "models/World.hpp"
 
 World::World() : tree(World::SIDE) {}

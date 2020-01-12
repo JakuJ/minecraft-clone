@@ -2,7 +2,6 @@
 
 #include <vector>
 #include "buffers/BufferObject.hpp"
-#include "glad/glad.h"
 
 template<typename T, unsigned int N>
 class VBO : public BufferObject<T> {

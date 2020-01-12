@@ -1,7 +1,5 @@
 #include <models/Game.hpp>
-#include <GLFW/glfw3.h>
 #include "views/renderers/SkyBoxRenderer.hpp"
-
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 

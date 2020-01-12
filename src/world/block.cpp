@@ -1,5 +1,4 @@
 #include "world/block.hpp"
-#include <utility>
 
 const bool Block::transparency_table[] = {false, false, false, false, false, true, true, false};
 

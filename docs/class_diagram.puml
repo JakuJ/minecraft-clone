@@ -220,13 +220,11 @@ class Program {
 	+Program(const std::string &, const std::string &)
 	+Program(const Program &)
 	+operator=(const Program &) : Program&
-	+getId() : [ [ nodiscard ] ] unsigned int {query}
 	-Id : unsigned int
 	-fragmentShader : unsigned int
 	-{static} loadShader(const std::string& path, int type) : unsigned int
 	-vertexShader : unsigned int
 	+setUniform(const std::string& name, float value) : void {query}
-	+setUniform(const std::string& name, bool value) : void {query}
 	+setUniform(const std::string& name, int value) : void {query}
 	+setUniform(const std::string& name, const glm::vec3& value) : void {query}
 	+setUniform(const std::string& name, const glm::mat4& value) : void {query}
