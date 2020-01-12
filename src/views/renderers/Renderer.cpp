@@ -2,6 +2,9 @@
 #include <glm/gtx/vec_swizzle.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include "views/renderers/Renderer.hpp"
+
+#define GLFW_INCLUDE_NONE
+
 #include <GLFW/glfw3.h>
 
 Renderer::Renderer(const std::string &vName, const std::string &fName)

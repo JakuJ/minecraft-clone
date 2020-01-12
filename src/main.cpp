@@ -1,6 +1,5 @@
 #include <views/WindowView.hpp>
 #include <views/renderers/SkyBoxRenderer.hpp>
-#include <views/renderers/InstancingRenderer.hpp>
 #include "controllers/MovementController.hpp"
 #include "views/RenderingView.hpp"
 
