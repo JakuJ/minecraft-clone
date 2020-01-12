@@ -28,7 +28,7 @@ jobs:
           os: ubuntu-latest,
           build_type: "Release", cc: "gcc", cxx: "g++",
           install-glfw: "sudo apt-get install libglfw3-dev",
-          install-command: "cmake --build . && strip installed/App"
+          install-command: "cmake --build ."
         }
         - {
           name: "macOS Latest Clang", artifact: "macOS.tar.xz",
