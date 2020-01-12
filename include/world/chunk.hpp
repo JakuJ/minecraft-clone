@@ -10,16 +10,17 @@ class Chunk {
     static const int HEIGHT = 256;
     static u_int NEXT_ID;
 
-    const int x0, z0;
-
     std::vector<Block *> blocks;
 
-    [[nodiscard]] auto &at(int, int, int);
+    [[nodiscard]] bool valid(int, int, int) const;
+
+    [[nodiscard]] Block *&unsafeAt(int, int, int);
 
 public:
     static const int SIDE = 16;
 
     u_int id;
+    const int x0, z0;
 
     Chunk(int x0, int z0);
 

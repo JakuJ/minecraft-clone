@@ -5,7 +5,7 @@
 
 u_int Chunk::NEXT_ID = 0;
 
-Chunk::Chunk(int x0, int z0) : x0(x0), z0(z0), blocks(SIDE * SIDE * HEIGHT), id(Chunk::NEXT_ID++) {
+Chunk::Chunk(int x0, int z0) : id(Chunk::NEXT_ID++), x0(x0), z0(z0), blocks(SIDE * SIDE * HEIGHT) {
     generate(1337);
 }
 
@@ -15,25 +15,26 @@ Chunk::~Chunk() {
     }
 }
 
-auto &Chunk::at(int x, int y, int z) {
+bool Chunk::valid(int x, int y, int z) const {
+    return x >= 0 && x < SIDE && y >= 0 && y < HEIGHT && z >= 0 && z < SIDE;
+}
+
+Block *&Chunk::unsafeAt(int x, int y, int z) {
     return blocks[x + y * SIDE + z * SIDE * HEIGHT];
 }
 
 void Chunk::placeAt(int x, int y, int z, Block *block) {
     removeAt(x, y, z);
-    at(x, y, z) = block;
+    unsafeAt(x, y, z) = block;
 }
 
 void Chunk::removeAt(int x, int y, int z) {
-    delete at(x, y, z);
-    at(x, y, z) = nullptr;
+    delete unsafeAt(x, y, z);
+    unsafeAt(x, y, z) = nullptr;
 }
 
 Block *Chunk::getAt(int x, int y, int z) {
-    if (x < 0 || x >= SIDE || y < 0 || y >= HEIGHT || z < 0 || z >= SIDE) {
-        return nullptr;
-    }
-    return at(x, y, z);
+    return valid(x, y, z) ? unsafeAt(x, y, z) : nullptr;
 }
 
 void Chunk::generate(int seed) {
@@ -89,5 +90,3 @@ void Chunk::generate(int seed) {
 
     FastNoiseSIMD::FreeNoiseSet(noiseSet);
 }
-
-

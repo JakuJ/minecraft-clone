@@ -99,14 +99,9 @@ void QuadTree::remove(int x, int y, int z) {
     }
 }
 
-int QuadTree::chunkIDAt(int x, int z) {
+Chunk *QuadTree::chunkAt(int x, int z) {
     Leaf *leaf = leafAt(x, z);
-
-    if (leaf) {
-        return leaf->chunk.id;
-    }
-
-    return -1;
+    return leaf ? &leaf->chunk : nullptr;
 }
 
 ChunkSector QuadTree::getSurrounding(int x, int z, int radius) {

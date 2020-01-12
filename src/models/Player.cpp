@@ -13,14 +13,36 @@ void Player::move(const glm::vec3 &vector) {
     glm::mat4 transform = glm::rotate(glm::mat4(1), glm::radians(-static_cast<float>(headYaw) - 90),
                                       glm::vec3(0, 1, 0));
     glm::vec4 trans = transform * glm::vec4(vector, 0.0);
-    position += glm::xyz(trans) * MOVEMENT_SPEED;
+
+    glm::vec3 nextPosition = position + glm::xyz(trans) * MOVEMENT_SPEED;
+
+    glm::vec<3, int, glm::qualifier::packed> floored = glm::floor(nextPosition);
+
+    // Next potential chunk
+    Chunk *chunk = Game::getInstance().world.tree.chunkAt(floored.x, floored.z);
+    if (!chunk) {
+        return;
+    }
+
+    floored -= glm::vec3(chunk->x0, 0, chunk->z0);
+
+    // Collision detection - head
+    if (chunk->getAt(floored.x, floored.y, floored.z)) {
+        return;
+    }
+    // Collision detection - legs
+    if (chunk->getAt(floored.x, floored.y - 1, floored.z)) {
+        return;
+    }
+
+    // Update position
+    position = nextPosition;
 
     // Check if the player crossed from one chunk to another
-    int chunkID = Game::getInstance().world.tree.chunkIDAt(position.x, position.z);
-    if (currentChunkID != chunkID) {
-        Log::debug("Crossing from chunk ", currentChunkID, " to ", chunkID);
+    if (currentChunkID != chunk->id) {
+        Log::debug("Crossing from chunk ", currentChunkID, " to ", chunk->id);
         chunkChanged.raise();
-        currentChunkID = chunkID;
+        currentChunkID = chunk->id;
     }
 }
 

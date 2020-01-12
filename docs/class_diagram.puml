@@ -56,9 +56,10 @@ class Chunk {
 	+Chunk(int x0, int z0)
 	+~Chunk()
 	+getAt(int x, int y, int z) : [ [ nodiscard ] ] Block*
-	-at(int, int, int) : [ [ nodiscard ] ] auto&
-	-x0 : const int
-	-z0 : const int
+	-unsafeAt(int, int, int) : [ [ nodiscard ] ] Block*
+	-valid(int, int, int) : [ [ nodiscard ] ] bool {query}
+	+x0 : const int
+	+z0 : const int
 	-{static} HEIGHT : static const int
 	+{static} SIDE : static const int
 	-{static} NEXT_ID : static u_int
@@ -211,6 +212,7 @@ class Player {
 	+headYaw : double
 	+position : glm::vec3
 	-currentChunkID : int
+	-{static} HEIGHT : static constexpr float
 	-{static} MOVEMENT_SPEED : static constexpr float
 	+move(const glm::vec3 &) : void
 }
@@ -255,9 +257,9 @@ class QuadRenderer {
 class QuadTree {
 	+QuadTree(int depth)
 	-root : Branch
+	+chunkAt(int x, int z) : Chunk*
 	+getSurrounding(int x, int z, int radius) : ChunkSector
 	-leafAt(int x, int z) : Leaf*
-	+chunkIDAt(int x, int z) : int
 	+insert(int x, int y, int z, Block*) : void
 	+remove(int x, int y, int z) : void
 }

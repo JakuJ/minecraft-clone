@@ -5,6 +5,7 @@
 
 class Player {
     static constexpr float MOVEMENT_SPEED = 20;
+    static constexpr float HEIGHT = 1.6;
 
     int currentChunkID;
 

@@ -15,12 +15,12 @@ uniform sampler2D cubes;
 
 void main()
 {
-    float lightness = max(0.0, 0.5 + sunPosition.y);
+    float lightness = clamp(0.0, 1.0, 0.5 + sunPosition.y);
 
     vec4 texColor = texture(cubes, fTexCoord);
 
-    float ambient = 0.2 + lightness * 0.3;
-    float lambertian = 0.5 * lightness * max(0.0, dot(normalize(sunPosition), normalize(fNormal)));
+    float ambient = 0.3 + lightness * 0.4;
+    float lambertian = 0.3 * lightness * max(0.0, dot(normalize(sunPosition), normalize(fNormal)));
 
     vec3 color = (ambient + lambertian) * texColor.xyz;
 

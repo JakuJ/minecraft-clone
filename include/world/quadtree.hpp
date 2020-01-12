@@ -1,6 +1,8 @@
 #pragma once
 
 #include <functional>
+#include <glm/detail/type_vec3.hpp>
+#include <glm/vec3.hpp>
 #include "world/chunk.hpp"
 #include "world/chunk_sector.hpp"
 #include "utils/timing.hpp"
@@ -51,7 +53,7 @@ public:
 
     void remove(int x, int y, int z);
 
-    int chunkIDAt(int x, int z);
+    Chunk *chunkAt(int x, int z);
 
     // Mesh generation
     ChunkSector getSurrounding(int x, int z, int radius);
