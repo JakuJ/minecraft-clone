@@ -8,6 +8,7 @@ layout (location = 3) in vec3 aTypeInfo;
 uniform mat4 playerMVP;
 
 out vec3 fPosition;
+out vec3 fNormal;
 out vec2 fTexCoord;
 
 mat3 rotateAxis(float x, float y, float times)
@@ -31,9 +32,10 @@ void main()
     float minus = 1 - (step(1, type) - step(5, type));
     float rots = 1 + ((step(2, type) - step(4, type)) * (-2 * step(3, type) + 1));
 
-    vec3 face = rotateAxis(isX, isY, (-2 * minus + 1) * rots) * aPosition;
+    mat3 rotMat = rotateAxis(isX, isY, (-2 * minus + 1) * rots);
 
     fTexCoord = aTexCoord + aTypeInfo.xy;
-    fPosition = face + aOffset;
+    fPosition = rotMat * aPosition + aOffset;
+    fNormal = rotMat * vec3(0, 0, -1);
     gl_Position = playerMVP * vec4(fPosition, 1.0);
 }
