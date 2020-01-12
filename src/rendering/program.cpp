@@ -8,17 +8,17 @@
 Program::Program(const std::string &vertPath, const std::string &fragPath) {
     vertexShader = Program::loadShader(vertPath, GL_VERTEX_SHADER);
     fragmentShader = Program::loadShader(fragPath, GL_FRAGMENT_SHADER);
-    id = glCreateProgram();
+    Id = glCreateProgram();
 
-    glAttachShader(id, vertexShader);
-    glAttachShader(id, fragmentShader);
-    glLinkProgram(id);
+    glAttachShader(Id, vertexShader);
+    glAttachShader(Id, fragmentShader);
+    glLinkProgram(Id);
 
     int success;
     char infoLog[512];
-    glGetProgramiv(id, GL_LINK_STATUS, &success);
+    glGetProgramiv(Id, GL_LINK_STATUS, &success);
     if (!success) {
-        glGetProgramInfoLog(id, 512, nullptr, infoLog);
+        glGetProgramInfoLog(Id, 512, nullptr, infoLog);
         Log::error("Shader program failed to link");
         Log::error(infoLog);
         throw std::runtime_error("Shader program exception");
@@ -66,27 +66,31 @@ unsigned int Program::loadShader(const std::string &path, int type) {
 }
 
 void Program::use() const {
-    glUseProgram(id);
+    glUseProgram(Id);
+}
+
+unsigned int Program::getId() const {
+    return Id;
 }
 
 void Program::setUniform(const std::string &name, float value) const {
-    glUniform1f(glGetUniformLocation(id, name.c_str()), value);
+    glUniform1f(glGetUniformLocation(Id, name.c_str()), value);
 }
 
 void Program::setUniform(const std::string &name, bool value) const {
-    glUniform1i(glGetUniformLocation(id, name.c_str()), static_cast<int>(value));
+    glUniform1i(glGetUniformLocation(Id, name.c_str()), static_cast<int>(value));
 }
 
 void Program::setUniform(const std::string &name, int value) const {
-    glUniform1i(glGetUniformLocation(id, name.c_str()), value);
+    glUniform1i(glGetUniformLocation(Id, name.c_str()), value);
 }
 
 void Program::setUniform(const std::string &name, const glm::vec3 &value) const {
-    auto location = glGetUniformLocation(id, name.c_str());
+    auto location = glGetUniformLocation(Id, name.c_str());
     glUniform3fv(location, 1, glm::value_ptr(value));
 }
 
 void Program::setUniform(const std::string &name, const glm::mat4 &value) const {
-    auto location = glGetUniformLocation(id, name.c_str());
+    auto location = glGetUniformLocation(Id, name.c_str());
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 }

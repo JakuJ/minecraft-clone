@@ -2,7 +2,7 @@
 
 #include "rendering/texture.hpp"
 #include "views/renderers/AsyncRenderer.hpp"
-#include "buffers/BufferObjects.hpp"
+#include "buffers/VBO.hpp"
 
 
 class InstancingRenderer : public AsyncRenderer {

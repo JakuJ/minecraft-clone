@@ -1,4 +1,5 @@
 #include <models/Game.hpp>
+#include <GLFW/glfw3.h>
 #include "views/renderers/SkyBoxRenderer.hpp"
 
 #include "glm/ext/matrix_clip_space.hpp"
@@ -17,14 +18,13 @@ void SkyBoxRenderer::bufferData() {
 void SkyBoxRenderer::render() {
     Renderer::render();
 
-    const auto mv = glm::rotate(
+    const auto mvp = glm::rotate(
             glm::infinitePerspective(glm::radians(60.0f), 4.0f / 3.0f, 0.1f),
             glm::radians(static_cast<float>(Game::getInstance().player.headPitch)),
             glm::vec3(-1, 0, 0)
     );
 
-    program.setUniform("mv", mv);
-    program.setUniform("playerY", Game::getInstance().player.position[1]);
+    program.setUniform("mvp", mvp);
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, bufferedElements);
     glClear(GL_DEPTH_BUFFER_BIT);  // NOLINT

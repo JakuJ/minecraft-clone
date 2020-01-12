@@ -1,14 +1,13 @@
 #version 410 core
 
-#define M_PI 3.1415926535897932384626433832795
-
 layout (location = 0) in vec3 aPosition;
 layout (location = 1) in vec2 aTexCoord;
 layout (location = 2) in vec3 aOffset;
 layout (location = 3) in vec3 aTypeInfo;
 
-uniform mat4 mvp;
+uniform mat4 playerMVP;
 
+out vec3 fPosition;
 out vec2 fTexCoord;
 
 mat3 rotateAxis(float x, float y, float times)
@@ -35,5 +34,6 @@ void main()
     vec3 face = rotateAxis(isX, isY, (-2 * minus + 1) * rots) * aPosition;
 
     fTexCoord = aTexCoord + aTypeInfo.xy;
-    gl_Position = mvp * vec4(face + aOffset, 1.0);
+    fPosition = face + aOffset;
+    gl_Position = playerMVP * vec4(fPosition, 1.0);
 }

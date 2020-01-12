@@ -1,4 +1,4 @@
-#include "buffers/BufferObjects.hpp"
+#include "buffers/EBO.hpp"
 
 template<>
 unsigned int const BufferType<float>::Type = GL_FLOAT;

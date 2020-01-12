@@ -3,13 +3,13 @@
 #include "views/renderers/Renderer.hpp"
 #include "buffers/VBO.hpp"
 
-class SkyBoxRenderer : public Renderer {
-    VBO<float, 3> vertices{4};
+class SunRenderer : public Renderer {
+    VBO<float, 3> vertices{5};
 
     void bufferData() final;
 
 public:
-    SkyBoxRenderer();
+    SunRenderer();
 
     void render() final;
 

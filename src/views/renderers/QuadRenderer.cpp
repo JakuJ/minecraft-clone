@@ -1,3 +1,4 @@
+#include <GLFW/glfw3.h>
 #include "utils/Log.hpp"
 #include "views/renderers/QuadRenderer.hpp"
 #include "models/Game.hpp"
@@ -13,8 +14,6 @@ QuadRenderer::QuadRenderer()
 
 void QuadRenderer::renderSync() {
     texture.use();
-    program.setUniform("mvp", Game::getInstance().player.getFPMatrix());
-    program.setUniform("cameraPosition", Game::getInstance().player.position);
 
     glDrawElements(GL_TRIANGLES, bufferedElements, GL_UNSIGNED_INT, reinterpret_cast<GLvoid *>(0));
 }

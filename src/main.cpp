@@ -1,6 +1,7 @@
 #include <views/WindowView.hpp>
-#include <views/renderers/InstancingRenderer.hpp>
 #include <views/renderers/SkyBoxRenderer.hpp>
+#include <views/renderers/SunRenderer.hpp>
+#include <views/renderers/InstancingRenderer.hpp>
 #include "controllers/MovementController.hpp"
 #include "views/RenderingView.hpp"
 
@@ -15,7 +16,8 @@ int main() {
     }
 
     windowView->addView(new RenderingView(new SkyBoxRenderer()));
-    windowView->addView(new RenderingView(new QuadRenderer()));
+    windowView->addView(new RenderingView(new SunRenderer()));
+    windowView->addView(new RenderingView(new InstancingRenderer()));
 
     MovementController controller(windowView->getWindow());
 

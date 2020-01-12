@@ -54,9 +54,7 @@ InstancingRenderer::InstancingRenderer()
 
 void InstancingRenderer::renderSync() {
     texture.use();
-    program.setUniform("mvp", Game::getInstance().player.getFPMatrix());
 
-    // render to screen
     glDrawArraysInstanced(GL_TRIANGLES, 0, bufferedElements, bufferedInstances);
 }
 
