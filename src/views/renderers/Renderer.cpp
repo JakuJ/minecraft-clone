@@ -10,9 +10,9 @@ Renderer::Renderer(const std::string &vName, const std::string &fName)
 void Renderer::render() {
     program.use();
 
-    auto time = static_cast<float>(glfwGetTime() + 2.5f);
-    program.setUniform("playerMVP", Game::getInstance().player.getFPMatrix());
+    auto time = static_cast<float>(glfwGetTime()) / 50.0f;
     program.setUniform("time", time);
+    program.setUniform("playerMVP", Game::getInstance().player.getFPMatrix());
     program.setUniform("cameraPosition", Game::getInstance().player.position);
 
     auto rotMatrix = glm::rotate(glm::identity<glm::mat4>(), time, glm::vec3(0, 0, 1));
