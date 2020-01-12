@@ -18,11 +18,8 @@ void SkyBoxRenderer::bufferData() {
 void SkyBoxRenderer::render() {
     Renderer::render();
 
-    const auto mvp = glm::rotate(
-            glm::infinitePerspective(glm::radians(60.0f), 4.0f / 3.0f, 0.1f),
-            glm::radians(static_cast<float>(Game::getInstance().player.headPitch)),
-            glm::vec3(-1, 0, 0)
-    );
+    auto mvp = glm::infinitePerspective(glm::radians(60.0f), 4.0f / 3.0f, 0.1f);
+    mvp *= glm::lookAt(glm::vec3(0), Game::getInstance().player.getFront(), glm::vec3(0, 1, 0));
 
     program.setUniform("mvp", mvp);
 
@@ -31,14 +28,14 @@ void SkyBoxRenderer::render() {
 }
 
 void SkyBoxRenderer::fillBuffers() {
-    const float vs[] = {-1, -1, -1,
-                        1, -1, -1,
-                        1, 1, -1,
-                        -1, 1, -1,
-                        -1, -1, 1,
-                        1, -1, 1,
-                        1, 1, 1,
-                        -1, 1, 1};
+    const float vs[] = {1.0, 1.0, 1.0,
+                        -1.0f, 1.0, 1.0,
+                        1.0, 1.0, -1.0f,
+                        -1.0f, 1.0, -1.0f,
+                        1.0, -1.0f, 1.0,
+                        -1.0f, -1.0f, 1.0,
+                        -1.0f, -1.0f, -1.0f,
+                        1.0, -1.0f, -1.0f};
 
     std::vector<float> verts;
 
@@ -48,7 +45,7 @@ void SkyBoxRenderer::fillBuffers() {
         verts.push_back(vs[3 * ix + 2]);
     };
 
-    for (int i : {5, 4, 1, 0, 2, 3, 6, 7}) {
+    for (int i : {3, 2, 6, 7, 4, 2, 0, 3, 1, 6, 5, 4, 1, 0}) {
         addVert(i);
     }
 

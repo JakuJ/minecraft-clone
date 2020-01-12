@@ -1,7 +1,7 @@
 #version 410 core
 
 #define fogColor vec3(0.662745098, 0.776470588, 0.937254902)
-#define renderingDistance 96
+#define renderingDistance 9600
 #define falloff 0.1
 
 out vec4 FragColor;

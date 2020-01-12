@@ -10,11 +10,11 @@ Renderer::Renderer(const std::string &vName, const std::string &fName)
 void Renderer::render() {
     program.use();
 
-    auto time = static_cast<float>(glfwGetTime());
+    auto time = static_cast<float>(glfwGetTime() + 2.5f);
     program.setUniform("playerMVP", Game::getInstance().player.getFPMatrix());
     program.setUniform("time", time);
     program.setUniform("cameraPosition", Game::getInstance().player.position);
 
     auto rotMatrix = glm::rotate(glm::identity<glm::mat4>(), time, glm::vec3(0, 0, 1));
-    program.setUniform("sunPosition", glm::xyz(rotMatrix * glm::vec4(100, 0, 0, 1)));
+    program.setUniform("sunPosition", glm::xyz(rotMatrix * glm::vec4(1, 0, 0, 0)));
 }
