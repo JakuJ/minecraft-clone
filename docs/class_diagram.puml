@@ -56,7 +56,7 @@ class Chunk {
 	+Chunk(int x0, int z0)
 	+~Chunk()
 	+getAt(int x, int y, int z) : [ [ nodiscard ] ] Block*
-	-at(int, int, int) : [ [ nodiscard ] ] constexpr auto&
+	-at(int, int, int) : [ [ nodiscard ] ] auto&
 	-x0 : const int
 	-z0 : const int
 	-{static} HEIGHT : static const int
@@ -75,7 +75,7 @@ class ChunkSector {
 	+getAt(int x, int y, int z) : [ [ nodiscard ] ] Block* {query}
 	+getInstanceMesh() : [ [ nodiscard ] ] InstanceMesh {query}
 	+getQuadMesh() : [ [ nodiscard ] ] QuadMesh {query}
-	-at(int x, int z) : [ [ nodiscard ] ] constexpr auto& {query}
+	-at(int x, int z) : [ [ nodiscard ] ] auto& {query}
 	-side : const int
 	-chunks : std::vector<Chunk*>
 }
@@ -164,8 +164,7 @@ class Leaf {
 
 
 class Log {
-	-{static} getLevelMessage(Level level) : constexpr auto
-	+{static} setLoggingLevel(Level level) : constexpr void
+	-{static} getLevelMessage(Level level) : auto
 	-{static} loggingLevel : static Level
 	-{static} clearColor() : void
 	+{static} debug(Args args) : void
@@ -173,6 +172,7 @@ class Log {
 	+{static} info(Args args) : void
 	-{static} logAt(Level level, Args args) : void
 	-{static} setColor(__unused Level level) : void
+	+{static} setLoggingLevel(Level level) : void
 	+{static} warn(Args args) : void
 }
 
@@ -211,7 +211,7 @@ class Player {
 	+headYaw : double
 	+position : glm::vec3
 	-currentChunkID : int
-	-{static} MOVEMENT_SPEED : static constexpr const float
+	-{static} MOVEMENT_SPEED : static constexpr float
 	+move(const glm::vec3 &) : void
 }
 

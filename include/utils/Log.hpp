@@ -31,7 +31,7 @@ public:
 private:
     static Level loggingLevel;
 
-    static constexpr auto getLevelMessage(Level level) {
+    static auto getLevelMessage(Level level) {
         const char *messages[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
         return messages[level];
     }
@@ -60,7 +60,7 @@ private:
     }
 
 public:
-    static constexpr void setLoggingLevel(Level level) {
+    static void setLoggingLevel(Level level) {
         loggingLevel = level;
     }
 

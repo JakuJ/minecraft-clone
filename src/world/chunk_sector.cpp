@@ -4,9 +4,9 @@
 ChunkSector::ChunkSector(std::vector<Chunk *> chunks, int side)
         : side(side), chunks(std::move(chunks)) {}
 
-constexpr auto &ChunkSector::at(int x, int z) const {
-    return chunks[x + side * z];
-}
+ auto &ChunkSector::at(int x, int z) const {
+     return chunks[x + side * z];
+ }
 
 Block *ChunkSector::getAt(int x, int y, int z) const {
     if (x < 0 || y < 0 || z < 0) {

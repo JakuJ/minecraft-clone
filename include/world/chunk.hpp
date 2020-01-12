@@ -14,7 +14,7 @@ class Chunk {
 
     std::vector<Block *> blocks;
 
-    [[nodiscard]] constexpr auto &at(int, int, int);
+    [[nodiscard]] auto &at(int, int, int);
 
 public:
     static const int SIDE = 16;

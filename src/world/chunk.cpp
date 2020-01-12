@@ -15,7 +15,7 @@ Chunk::~Chunk() {
     }
 }
 
-constexpr auto &Chunk::at(int x, int y, int z) {
+auto &Chunk::at(int x, int y, int z) {
     return blocks[x + y * SIDE + z * SIDE * HEIGHT];
 }
 

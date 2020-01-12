@@ -8,7 +8,7 @@ class ChunkSector {
     const int side;
     std::vector<Chunk *> chunks;
 
-    [[nodiscard]] constexpr auto &at(int x, int z) const;
+    [[nodiscard]] auto &at(int x, int z) const;
 
 public:
     ChunkSector(std::vector<Chunk *> chunks, int side);
