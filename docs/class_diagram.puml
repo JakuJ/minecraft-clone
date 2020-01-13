@@ -212,7 +212,6 @@ class Player {
 	+headYaw : double
 	+position : glm::vec3
 	-currentChunkID : int
-	-{static} HEIGHT : static constexpr float
 	-{static} MOVEMENT_SPEED : static constexpr float
 	+move(const glm::vec3 &) : void
 }

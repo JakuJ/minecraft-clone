@@ -12,11 +12,11 @@ Player::Player(const glm::vec3 &position)
 void Player::move(const glm::vec3 &vector) {
     glm::mat4 transform = glm::rotate(glm::mat4(1), glm::radians(-static_cast<float>(headYaw) - 90),
                                       glm::vec3(0, 1, 0));
-    glm::vec4 trans = transform * glm::vec4(vector, 0.0);
+    glm::vec3 trans = glm::xyz(transform * glm::vec4(vector, 0.0));
 
-    glm::vec3 nextPosition = position + glm::xyz(trans) * MOVEMENT_SPEED;
+    glm::vec3 nextPosition = position + trans * MOVEMENT_SPEED;
 
-    glm::vec<3, int, glm::qualifier::packed> floored = glm::floor(nextPosition);
+    glm::vec<3, int, glm::qualifier::packed> floored = glm::round(nextPosition);
 
     // Next potential chunk
     Chunk *chunk = Game::getInstance().world.tree.chunkAt(floored.x, floored.z);
@@ -26,13 +26,17 @@ void Player::move(const glm::vec3 &vector) {
 
     floored -= glm::vec3(chunk->x0, 0, chunk->z0);
 
-    // Collision detection - head
-    if (chunk->getAt(floored.x, floored.y, floored.z)) {
-        return;
-    }
-    // Collision detection - legs
-    if (chunk->getAt(floored.x, floored.y - 1, floored.z)) {
-        return;
+    auto direction = glm::vec3(1);
+    for (int i = -1; i <= 0; i++) {
+        for (int j = -2; j <= 0; j++) {
+            for (int k = -1; k <= 0; k++) {
+                if (chunk->getAt(floored.x + i, floored.y + j, floored.z + k)) {
+                    // TODO: Fix behaviour on chunks edges
+                    // TODO: Add sliding along walls
+                    return;
+                }
+            }
+        }
     }
 
     // Update position
