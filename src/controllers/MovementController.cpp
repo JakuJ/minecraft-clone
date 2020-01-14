@@ -24,12 +24,9 @@ void MovementController::processKeyboard(int key, double deltaTime) {
         case GLFW_KEY_D:
             vector *= glm::vec3(1, 0, 0);
             break;
-        case GLFW_KEY_LEFT_SHIFT:
-            vector *= glm::vec3(0, 1, 0);
-            break;
-        case GLFW_KEY_Z:
-            vector *= glm::vec3(0, -1, 0);
-            break;
+        case GLFW_KEY_SPACE:
+            Game::getInstance().player.jump();
+            return;
         default:
             return;
     }

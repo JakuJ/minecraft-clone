@@ -14,7 +14,6 @@ void Renderer::render() {
     program.use();
 
     auto time = static_cast<float>(glfwGetTime()) / 5.0f;
-    time = 0.0f; // can't see at night
 
     program.setUniform("time", time);
     program.setUniform("playerMVP", Game::getInstance().player.getFPMatrix());

@@ -1,3 +1,5 @@
+#include <models/Game.hpp>
+#include <glm/vec3.hpp>
 #include "controllers/InputController.hpp"
 
 InputController::InputController(GLFWwindow *window) : lastUpdate(0), window(window) {
@@ -12,15 +14,18 @@ void InputController::update() {
                      GLFW_KEY_S,
                      GLFW_KEY_A,
                      GLFW_KEY_D,
-                     GLFW_KEY_LEFT_SHIFT,
-                     GLFW_KEY_Z};
+                     GLFW_KEY_SPACE};
+
+    double deltaTime = currentTime - lastUpdate;
 
     // PROCESS KEY PRESSES
     for (auto key : keys) {
         if (glfwGetKey(window, key) == GLFW_PRESS) {
-            processKeyboard(key, currentTime - lastUpdate);
+            processKeyboard(key, deltaTime);
         }
     }
+
+    Game::getInstance().player.applyGravity(deltaTime);
 
     lastUpdate = currentTime;
 }

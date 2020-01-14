@@ -7,9 +7,9 @@
 #include "glm/gtx/vec_swizzle.hpp"
 
 Player::Player(const glm::vec3 &position)
-        : currentChunkID(-1), position(position), headPitch(0), headYaw(-90) {}
+        : currentChunkID(-1), position(position), headPitch(0), headYaw(-90), gravity(0), jumping(true) {}
 
-void Player::move(const glm::vec3 &vector) {
+void Player::move(glm::vec3 vector) {
     glm::mat4 transform = glm::rotate(glm::mat4(1), glm::radians(-static_cast<float>(headYaw) - 90),
                                       glm::vec3(0, 1, 0));
     glm::vec3 trans = glm::xyz(transform * glm::vec4(vector, 0.0));
@@ -33,6 +33,10 @@ void Player::move(const glm::vec3 &vector) {
                 if (chunk->getAt(floored.x + i, floored.y + j, floored.z + k)) {
                     // TODO: Fix behaviour on chunks edges
                     // TODO: Add sliding along walls
+                    if (j == -2) {
+                        jumping = false;
+                        gravity = 0;
+                    }
                     return;
                 }
             }
@@ -63,4 +67,16 @@ glm::mat4 Player::getFPMatrix() const {
     glm::mat4 mvp = glm::infinitePerspective(glm::radians(60.0), 4.0 / 3.0, 0.1);
     mvp *= glm::lookAt(position, position + getFront(), glm::vec3(0, 1, 0));
     return mvp;
+}
+
+void Player::applyGravity(double deltaTime) {
+    move(glm::vec3(0, gravity, 0));
+    gravity -= 9.81 * 0.01 * deltaTime;
+}
+
+void Player::jump() {
+    if (!jumping) {
+        jumping = true;
+        gravity = 0.02;
+    }
 }
