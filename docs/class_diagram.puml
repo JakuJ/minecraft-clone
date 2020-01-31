@@ -19,8 +19,11 @@ abstract class AsyncRenderer {
 class Block {
 	+Block(Type)
 	+type : Type
+	+isSolid() : [ [ nodiscard ] ] bool {query}
+	+isTransparent() : [ [ nodiscard ] ] bool {query}
 	+getFace(Block:: Face) : [ [ nodiscard ] ] std::pair<std::vector<float> , std::vector<float> > {query}
-	+{static} transparency_table : static const bool
+	-{static} solidity_table : static const bool
+	-{static} transparency_table : static const bool
 	+operator<<(std::ostream &, const Block &) : std : : ostream&
 }
 

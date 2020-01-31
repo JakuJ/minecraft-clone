@@ -4,9 +4,9 @@
 ChunkSector::ChunkSector(std::vector<Chunk *> chunks, int side)
         : side(side), chunks(std::move(chunks)) {}
 
- auto &ChunkSector::at(int x, int z) const {
-     return chunks[x + side * z];
- }
+auto &ChunkSector::at(int x, int z) const {
+    return chunks[x + side * z];
+}
 
 Block *ChunkSector::getAt(int x, int y, int z) const {
     if (x < 0 || y < 0 || z < 0) {
@@ -49,7 +49,7 @@ QuadMesh ChunkSector::getQuadMesh() const {
                     // Only render visible faces
                     for (auto face = (Block::Face) 0; face < Block::FACES; face++) {
                         if (!faces[face] ||
-                            (faces[face]->type != block->type && Block::transparency_table[faces[face]->type])) {
+                            (faces[face]->type != block->type && faces[face]->isTransparent())) {
                             auto[vectors, normals] = block->getFace(face);
 
                             for (int j = 0; j <= 9; j += 3) {
@@ -58,7 +58,7 @@ QuadMesh ChunkSector::getQuadMesh() const {
                                 vectors[j + 2] += static_cast<float>(z + z0);
                             }
 
-                            if (Block::transparency_table[block->type]) {
+                            if (block->isTransparent()) {
                                 transparent.addQuad(vectors, normals, block->type, face);
                             } else {
                                 opaque.addQuad(vectors, normals, block->type, face);
@@ -99,8 +99,8 @@ InstanceMesh ChunkSector::getInstanceMesh() const {
 
                     for (auto face = (Block::Face) 0; face < Block::FACES; face++) {
                         if (!faces[face] ||
-                            (faces[face]->type != block->type && Block::transparency_table[faces[face]->type])) {
-                            if (Block::transparency_table[block->type]) {
+                            (faces[face]->type != block->type && faces[face]->isTransparent())) {
+                            if (block->isTransparent()) {
                                 transparent.addCube(x + x0, y, z + z0, block->type, face);
                             } else {
                                 opaque.addCube(x + x0, y, z + z0, block->type, face);

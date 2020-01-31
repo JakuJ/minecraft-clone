@@ -1,6 +1,7 @@
 #include "world/block.hpp"
 
 const bool Block::transparency_table[] = {false, false, false, false, false, true, true, false};
+const bool Block::solidity_table[] = {true, true, true, true, true, true, false, true};
 
 Block::Block(Block::Type t) : type(t) {}
 
@@ -37,4 +38,12 @@ std::pair<std::vector<float>, std::vector<float>> Block::getFace(Block::Face fac
 
 std::ostream &operator<<(std::ostream &out, const Block &block) {
     return out << "Block of type " << block.type;
+}
+
+bool Block::isTransparent() const {
+    return transparency_table[type];
+}
+
+bool Block::isSolid() const {
+    return solidity_table[type];
 }

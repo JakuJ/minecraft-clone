@@ -29,7 +29,11 @@ public:
         TYPES  // enum size
     };
 
+private:
     static const bool transparency_table[TYPES];
+    static const bool solidity_table[TYPES];
+
+public:
 
     Type type;
 
@@ -38,6 +42,10 @@ public:
     [[nodiscard]] std::pair<std::vector<float>, std::vector<float>> getFace(Block::Face) const;
 
     friend std::ostream &operator<<(std::ostream &, const Block &);
+
+    [[nodiscard]] bool isTransparent() const;
+
+    [[nodiscard]] bool isSolid() const;
 };
 
 GENERATE_ENUM_OPERATORS(Block::Face)

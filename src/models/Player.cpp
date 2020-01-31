@@ -30,7 +30,8 @@ void Player::move(glm::vec3 vector) {
     for (int i = -1; i <= 0; i++) {
         for (int j = -2; j <= 0; j++) {
             for (int k = -1; k <= 0; k++) {
-                if (chunk->getAt(floored.x + i, floored.y + j, floored.z + k)) {
+                Block *colliding = chunk->getAt(floored.x + i, floored.y + j, floored.z + k);
+                if (colliding && colliding->isSolid()) {
                     // TODO: Fix behaviour on chunks edges
                     // TODO: Add sliding along walls
                     if (j == -2) {
@@ -77,6 +78,6 @@ void Player::applyGravity(double deltaTime) {
 void Player::jump() {
     if (!jumping) {
         jumping = true;
-        gravity = 0.02;
+        gravity = 0.025;
     }
 }
