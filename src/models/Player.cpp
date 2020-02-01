@@ -7,14 +7,15 @@
 #include "glm/gtx/vec_swizzle.hpp"
 
 Player::Player(const glm::vec3 &position)
-        : currentChunkID(-1), position(position), headPitch(0), headYaw(-90), gravity(0), jumping(true) {}
+        : currentChunkID(-1), position(position), headPitch(0), headYaw(-90), vertical_v(0), jumping(true),
+          swimming(false) {}
 
 void Player::move(glm::vec3 vector) {
     glm::mat4 transform = glm::rotate(glm::mat4(1), glm::radians(-static_cast<float>(headYaw) - 90),
                                       glm::vec3(0, 1, 0));
     glm::vec3 trans = glm::xyz(transform * glm::vec4(vector, 0.0));
 
-    glm::vec3 nextPosition = position + trans * MOVEMENT_SPEED;
+    glm::vec3 nextPosition = position + trans * (swimming ? SWIMMING_SPEED : MOVEMENT_SPEED);
 
     glm::vec<3, int, glm::qualifier::packed> floored = glm::round(nextPosition);
 
@@ -26,19 +27,30 @@ void Player::move(glm::vec3 vector) {
 
     floored -= glm::vec3(chunk->x0, 0, chunk->z0);
 
+    // Collision
     auto direction = glm::vec3(1);
+    swimming = false;
+
     for (int i = -1; i <= 0; i++) {
         for (int j = -2; j <= 0; j++) {
             for (int k = -1; k <= 0; k++) {
                 Block *colliding = chunk->getAt(floored.x + i, floored.y + j, floored.z + k);
-                if (colliding && colliding->isSolid()) {
-                    // TODO: Fix behaviour on chunks edges
-                    // TODO: Add sliding along walls
-                    if (j == -2) {
-                        jumping = false;
-                        gravity = 0;
+                if (colliding) {
+                    if (colliding->isSolid()) {
+                        // TODO: Fix behaviour on chunks edges
+                        // TODO: Add sliding along walls
+                        // Collision with ground - exit jump mode
+                        if (j == -2) {
+                            jumping = false;
+                            vertical_v = 0;
+                        }
+                        return;
+                    } else {
+                        // detect arms in the water
+                        if (j == -1) {
+                            swimming = true;
+                        }
                     }
-                    return;
                 }
             }
         }
@@ -71,13 +83,19 @@ glm::mat4 Player::getFPMatrix() const {
 }
 
 void Player::applyGravity(double deltaTime) {
-    move(glm::vec3(0, gravity, 0));
-    gravity -= 9.81 * 0.01 * deltaTime;
+    move(glm::vec3(0, deltaTime * vertical_v, 0));
+    if (swimming) {
+        vertical_v = -SWIMMING_SPEED;  // sinking
+    } else {
+        vertical_v -= deltaTime * GRAVITY_C;  // apply gravity
+    }
 }
 
 void Player::jump() {
-    if (!jumping) {
+    if (swimming) {
+        vertical_v = SWIMMING_SPEED;
+    } else if (!jumping) {
         jumping = true;
-        gravity = 0.025;
+        vertical_v = FALL_SPEED;  // 0.5s jumps
     }
 }

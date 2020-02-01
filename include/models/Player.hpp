@@ -4,15 +4,20 @@
 #include "utils/Event.hpp"
 
 class Player {
-    static constexpr float MOVEMENT_SPEED = 10;
+    static constexpr float MOVEMENT_SPEED = 4.3;
+    static constexpr float SWIMMING_SPEED = 1.97;
+    static constexpr float GRAVITY_C = 9.81;
+    static constexpr float FALL_SPEED = 0.25 * GRAVITY_C;
 
     int currentChunkID;
 
 public:
     glm::vec3 position;
     double headPitch, headYaw;
-    double gravity;
+    double vertical_v;
+
     bool jumping;
+    bool swimming;
 
     Event<> chunkChanged;
 

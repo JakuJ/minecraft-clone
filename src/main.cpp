@@ -14,8 +14,11 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
+    auto renderer = new QuadRenderer();
+    renderer->fillBuffers();
+
     windowView->addView(new RenderingView(new SkyBoxRenderer()));
-    windowView->addView(new RenderingView(new QuadRenderer()));
+    windowView->addView(new RenderingView(renderer));
 
     MovementController controller(windowView->getWindow());
 

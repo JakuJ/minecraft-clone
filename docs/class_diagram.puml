@@ -212,12 +212,16 @@ class Player {
 	+getFPMatrix() : [ [ nodiscard ] ] glm::mat4 {query}
 	+getFront() : [ [ nodiscard ] ] glm::vec3 {query}
 	+jumping : bool
-	+gravity : double
+	+swimming : bool
 	+headPitch : double
 	+headYaw : double
+	+vertical_v : double
 	+position : glm::vec3
 	-currentChunkID : int
+	-{static} FALL_SPEED : static constexpr float
+	-{static} GRAVITY_C : static constexpr float
 	-{static} MOVEMENT_SPEED : static constexpr float
+	-{static} SWIMMING_SPEED : static constexpr float
 	+applyGravity(double deltaTime) : void
 	+jump() : void
 	+move(glm:: vec3) : void
