@@ -211,11 +211,12 @@ class Player {
 	+chunkChanged : Event<>
 	+getFPMatrix() : [ [ nodiscard ] ] glm::mat4 {query}
 	+getFront() : [ [ nodiscard ] ] glm::vec3 {query}
-	+jumping : bool
-	+swimming : bool
+	+isUnderwater : bool
+	-jumping : bool
+	-swimming : bool
 	+headPitch : double
 	+headYaw : double
-	+vertical_v : double
+	-vertical_v : double
 	+position : glm::vec3
 	-currentChunkID : int
 	-{static} FALL_SPEED : static constexpr float

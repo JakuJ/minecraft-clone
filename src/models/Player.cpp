@@ -8,7 +8,7 @@
 
 Player::Player(const glm::vec3 &position)
         : currentChunkID(-1), position(position), headPitch(0), headYaw(-90), vertical_v(0), jumping(true),
-          swimming(false) {}
+          swimming(false), isUnderwater(false) {}
 
 void Player::move(glm::vec3 vector) {
     glm::mat4 transform = glm::rotate(glm::mat4(1), glm::radians(-static_cast<float>(headYaw) - 90),
@@ -30,6 +30,8 @@ void Player::move(glm::vec3 vector) {
     // Collision
     auto direction = glm::vec3(1);
     swimming = false;
+    isUnderwater = false;
+    bool moving = true;
 
     for (int i = -1; i <= 0; i++) {
         for (int j = -2; j <= 0; j++) {
@@ -44,16 +46,22 @@ void Player::move(glm::vec3 vector) {
                             jumping = false;
                             vertical_v = 0;
                         }
-                        return;
+                        moving = false;
                     } else {
                         // detect arms in the water
                         if (j == -1) {
                             swimming = true;
+                        } else if (j == 0) {  // detect head under water
+                            isUnderwater = true;
                         }
                     }
                 }
             }
         }
+    }
+
+    if (!moving) {
+        return;
     }
 
     // Update position

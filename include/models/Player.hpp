@@ -11,13 +11,15 @@ class Player {
 
     int currentChunkID;
 
+    double vertical_v;
+    bool jumping;
+    bool swimming;
+
 public:
     glm::vec3 position;
     double headPitch, headYaw;
-    double vertical_v;
 
-    bool jumping;
-    bool swimming;
+    bool isUnderwater;
 
     Event<> chunkChanged;
 

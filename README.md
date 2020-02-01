@@ -16,6 +16,7 @@ An attempt to recreate a subset of the popular game "Minecraft", delving deeper 
 * Two renderers - one based on glDrawElementArrays, and one based on instancing
 * Simple sky block
 * Day and night cycle with dynamic lighting during sunset and dusk
+* Jumping and swimming
 
 ## Extra stuff
 * GitHub Actions pipeline for releases on Linux and MacOS (Windows in the future)
