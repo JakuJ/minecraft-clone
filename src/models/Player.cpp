@@ -17,7 +17,8 @@ void Player::move(glm::vec3 vector) {
 
     glm::vec3 nextPosition = position + trans * (swimming ? SWIMMING_SPEED : MOVEMENT_SPEED);
 
-    glm::vec<3, int, glm::qualifier::packed> floored = glm::round(nextPosition);
+    // Block position of the bottom left corner of the feet
+    glm::vec<3, int, glm::qualifier::defaultp> floored = glm::floor(nextPosition - glm::vec3(0.5, 1.6, 0.5));
 
     // Next potential chunk
     Chunk *chunk = Game::getInstance().world.tree.chunkAt(floored.x, floored.z);
@@ -25,34 +26,41 @@ void Player::move(glm::vec3 vector) {
         return;
     }
 
+    // Block position of the eyes
+    glm::vec<3, int, glm::qualifier::defaultp> flooredEyes = glm::floor(nextPosition - glm::vec3(0.5, 0, 0.5));
+
     floored -= glm::vec3(chunk->x0, 0, chunk->z0);
+    flooredEyes -= glm::vec3(chunk->x0, 0, chunk->z0);
 
     // Collision
-    auto direction = glm::vec3(1);
     swimming = false;
-    isUnderwater = false;
     bool moving = true;
 
-    for (int i = -1; i <= 0; i++) {
-        for (int j = -2; j <= 0; j++) {
-            for (int k = -1; k <= 0; k++) {
+    isUnderwater = false;
+    auto headBlock = chunk->getAt(flooredEyes.x, flooredEyes.y, flooredEyes.z);
+    if (headBlock && headBlock->isTransparent()) {
+        isUnderwater = true;
+    }
+
+    // collision 2x3x2 zone
+    for (int i = 0; i <= 1; i++) {
+        for (int j = 0; j <= 2; j++) {
+            for (int k = 0; k <= 1; k++) {
                 Block *colliding = chunk->getAt(floored.x + i, floored.y + j, floored.z + k);
                 if (colliding) {
                     if (colliding->isSolid()) {
                         // TODO: Fix behaviour on chunks edges
                         // TODO: Add sliding along walls
                         // Collision with ground - exit jump mode
-                        if (j == -2) {
+                        if (j == 0) {
                             jumping = false;
                             vertical_v = 0;
                         }
                         moving = false;
                     } else {
                         // detect arms in the water
-                        if (j == -1) {
+                        if (j == 1) {
                             swimming = true;
-                        } else if (j == 0) {  // detect head under water
-                            isUnderwater = true;
                         }
                     }
                 }

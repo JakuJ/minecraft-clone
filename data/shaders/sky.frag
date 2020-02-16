@@ -1,5 +1,7 @@
 #version 410 core
 
+#define water_color vec3(0.19140625, 0.250980392, 0.701960784)
+
 in vec3 fPosition;
 out vec4 FragColor;
 
@@ -7,6 +9,7 @@ out vec4 FragColor;
 uniform float time;
 uniform vec3 sunPosition;
 uniform mat4 mvp;
+uniform bool underwater;
 
 uniform vec3 cameraPosition;
 
@@ -43,5 +46,9 @@ vec3 getSkyAndSun(vec3 skyBlockCoord, vec3 sunV)
 void main()
 {
     vec3 sky = getSkyAndSun(normalize(fPosition), sunPosition);
-    FragColor = vec4(sky, 1.0);
+
+    float a = 0.3;
+    vec3 color = underwater ? a * sky + (1 - a) * water_color : sky;
+
+    FragColor = vec4(color, 1.0);
 }

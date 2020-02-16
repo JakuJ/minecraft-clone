@@ -44,8 +44,8 @@ WindowView::WindowView(int width, int height) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // For now, only the front-facing side of a transparent block is rendered
-    glEnable(GL_CULL_FACE);
+    // No culling - both sides of transparent blocks rendered
+    // glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW);  // TODO: why is my winding order like this?
 
     // VSYNC
