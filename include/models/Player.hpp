@@ -12,11 +12,11 @@ class Player {
     int currentChunkID;
 
     double vertical_v;
-    bool jumping;
-    bool swimming;
+    bool jumping, swimming;
 
 public:
-    glm::vec3 position;  // Eye level position in the game world
+    /// Eye level position in the game world
+    glm::vec3 position;
 
     double headPitch, headYaw;
 

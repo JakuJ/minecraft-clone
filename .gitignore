@@ -1,7 +1,8 @@
 # macOS
 .DS_Store
-# VS Code
+# Editors
 .vscode/
+.idea
 # CMake
 CMakeFiles/
 cmake_install.cmake
@@ -12,6 +13,5 @@ cmake-build-*
 build/
 # The PSD file I use to edit the textures
 *.psd
-# A helper script for development
-install.sh
-.idea
+# PlantUML
+*.puml

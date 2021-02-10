@@ -14,12 +14,11 @@ void Renderer::render() {
     program.use();
 
     auto time = static_cast<float>(glfwGetTime()) / 5.0f;
-    time = 20;
 
     program.setUniform("time", time);
     program.setUniform("playerMVP", Game::getInstance().player.getFPMatrix());
     program.setUniform("cameraPosition", Game::getInstance().player.position);
-    program.setUniform("underwater", (int) Game::getInstance().player.isUnderwater);
+    program.setUniform("underwater", static_cast<int>(Game::getInstance().player.isUnderwater));
 
     auto rotMatrix = glm::rotate(glm::identity<glm::mat4>(), time, glm::vec3(0, 0, 1));
     program.setUniform("sunPosition", glm::xyz(rotMatrix * glm::vec4(1, 0, 0, 0)));

@@ -1,8 +1,8 @@
-# Minecraft clone
+# Yet another Minecraft clone
 
 ![](https://github.com/JakuJ/minecraft-clone/workflows/CMake%20CI/badge.svg)
 
-An attempt to recreate a subset of the popular game "Minecraft", delving deeper and deeper into OpenGL and modern C++ along the way.
+An attempt to recreate a (very limited) subset of the popular game "Minecraft", delving deeper and deeper into OpenGL and modern C++ along the way.
 
 ## What's working so far
 
@@ -19,8 +19,7 @@ An attempt to recreate a subset of the popular game "Minecraft", delving deeper 
 * Jumping and swimming
 
 ## Extra stuff
-* GitHub Actions pipeline for releases on Linux and MacOS (Windows in the future)
-* Up-to-date PlantUML class diagram in the `docs/` directory
+* GitHub Actions pipeline for Linux and MacOS
 
 ## Screenshots
 

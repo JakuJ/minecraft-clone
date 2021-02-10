@@ -1,5 +1,4 @@
 #include <models/Game.hpp>
-#include <glm/vec3.hpp>
 #include "controllers/InputController.hpp"
 
 InputController::InputController(GLFWwindow *window) : lastUpdate(0), window(window) {
@@ -18,13 +17,14 @@ void InputController::update() {
 
     double deltaTime = currentTime - lastUpdate;
 
-    // PROCESS KEY PRESSES
+    // Process key presses
     for (auto key : keys) {
         if (glfwGetKey(window, key) == GLFW_PRESS) {
             processKeyboard(key, deltaTime);
         }
     }
 
+    // TODO: Move this out of here
     Game::getInstance().player.applyGravity(deltaTime);
 
     lastUpdate = currentTime;

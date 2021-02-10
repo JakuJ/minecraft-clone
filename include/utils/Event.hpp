@@ -39,7 +39,7 @@ public:
         handlers.remove_if([&handle](const Handler<Args...> &h) { return h.handle == handle; });
     }
 
-    void raise(Args... targets) {
+    void raise(Args... targets) const {
         for (auto &handler : handlers) {
             handler.callback(targets...);
         }

@@ -3,17 +3,13 @@
 #include <vector>
 #include "buffers/BufferObject.hpp"
 
-class EBO : BufferObject<unsigned int> {
-private:
-    std::vector<unsigned int> indices;
-
+/// Element Buffer Object
+class EBO : public BufferObject<unsigned int> {
 public:
     EBO();
 
     [[nodiscard]] size_t size() const override;
 
-    void fill(const std::vector<unsigned int> &vec);
-
-    void bufferData();
+    void bufferData() override;
 };
 

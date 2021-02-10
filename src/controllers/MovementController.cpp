@@ -31,6 +31,7 @@ void MovementController::processKeyboard(int key, double deltaTime) {
             return;
     }
 
+    // TODO: Remove God-class
     Game::getInstance().player.move(vector);
 }
 

@@ -3,11 +3,10 @@
 #include <string>
 #include "glm/glm.hpp"
 
-// A simple context manager for the shader program
+/// A simple context manager a shader program
 class Program {
     static unsigned int loadShader(const std::string &path, int type);
 
-private:
     unsigned int Id;
     unsigned int vertexShader;
     unsigned int fragmentShader;
