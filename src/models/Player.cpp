@@ -1,4 +1,5 @@
 #include <models/Game.hpp>
+#include <GLFW/glfw3.h>
 #include "models/Player.hpp"
 #include "utils/Log.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
@@ -10,12 +11,26 @@ Player::Player(const glm::vec3 &position)
         : currentChunkID(-1), position(position), headPitch(0), headYaw(-90), vertical_v(0), jumping(true),
           swimming(false), isUnderwater(false) {}
 
+void Player::update() {
+    static double lastUpdate = 0;
+
+    const auto currentTime = glfwGetTime();
+    const auto deltaTime = currentTime - lastUpdate;
+
+    applyGravity(deltaTime);
+
+    lastUpdate = currentTime;
+}
+
 void Player::move(glm::vec3 vector) {
     glm::mat4 transform = glm::rotate(glm::mat4(1), glm::radians(-static_cast<float>(headYaw) - 90),
                                       glm::vec3(0, 1, 0));
+
     glm::vec3 trans = glm::xyz(transform * glm::vec4(vector, 0.0));
 
-    glm::vec3 nextPosition = position + trans * (swimming ? SWIMMING_SPEED : MOVEMENT_SPEED);
+    glm::vec3 direction = trans * (swimming ? SWIMMING_SPEED : MOVEMENT_SPEED);
+
+    glm::vec3 nextPosition = position + direction;
 
     // Block position of the bottom left corner of the feet
     glm::vec<3, int, glm::qualifier::defaultp> floored = glm::floor(nextPosition - glm::vec3(0.5, 1.6, 0.5));

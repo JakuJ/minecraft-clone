@@ -7,8 +7,6 @@
 
 /// An abstract class that can handle mouse and keyboard input.
 class InputController : public Controller {
-    double lastUpdate;
-
     void registerMouseHandler() const;
 
 protected:

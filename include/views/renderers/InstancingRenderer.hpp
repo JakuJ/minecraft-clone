@@ -1,6 +1,6 @@
 #pragma once
 
-#include "rendering/textures.hpp"
+#include "rendering/Texture2D.hpp"
 #include "views/renderers/AsyncRenderer.hpp"
 #include "buffers/VBO.hpp"
 

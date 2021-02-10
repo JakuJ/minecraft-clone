@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <utils/Log.hpp>
 #include <views/WindowView.hpp>
+#include <models/Game.hpp>
 
 #ifndef __unused
 #define __unused __attribute__((unused))
@@ -65,6 +66,7 @@ void WindowView::mainLoop(Controller *controller) {
     while (!glfwWindowShouldClose(window)) {
         // update player
         controller->update();
+        Game::getInstance().player.update();
 
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // NOLINT

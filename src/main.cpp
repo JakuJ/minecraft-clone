@@ -1,6 +1,7 @@
 #include <views/WindowView.hpp>
 #include <views/renderers/SkyBoxRenderer.hpp>
 #include <views/renderers/InstancingRenderer.hpp>
+#include <models/Game.hpp>
 #include "controllers/MovementController.hpp"
 #include "views/RenderingView.hpp"
 
@@ -20,7 +21,7 @@ int main() {
     windowView->addView(new RenderingView(new SkyBoxRenderer()));
     windowView->addView(new RenderingView(renderer));
 
-    MovementController controller(windowView->getWindow());
+    MovementController controller(Game::getInstance().player, windowView->getWindow());
 
     windowView->mainLoop(&controller);
 

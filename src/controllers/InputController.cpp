@@ -1,11 +1,12 @@
-#include <models/Game.hpp>
 #include "controllers/InputController.hpp"
 
-InputController::InputController(GLFWwindow *window) : lastUpdate(0), window(window) {
+InputController::InputController(GLFWwindow *window) : window(window) {
     registerMouseHandler();
 }
 
 void InputController::update() {
+    static double lastUpdate = 0;
+
     auto currentTime = glfwGetTime();
 
     const int keys[]{GLFW_KEY_ESCAPE,
@@ -23,9 +24,6 @@ void InputController::update() {
             processKeyboard(key, deltaTime);
         }
     }
-
-    // TODO: Move this out of here
-    Game::getInstance().player.applyGravity(deltaTime);
 
     lastUpdate = currentTime;
 }

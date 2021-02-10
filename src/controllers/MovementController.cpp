@@ -1,7 +1,8 @@
 #include "controllers/MovementController.hpp"
 #include "models/Game.hpp"
 
-MovementController::MovementController(GLFWwindow *window) : InputController(window) {}
+MovementController::MovementController(Player &player, GLFWwindow *window)
+        : InputController(window), player(player) {}
 
 void MovementController::processKeyboard(int key, double deltaTime) {
     if (key == GLFW_KEY_ESCAPE) {
@@ -30,20 +31,17 @@ void MovementController::processKeyboard(int key, double deltaTime) {
             vector *= glm::vec3(1, 0, 0);
             break;
         case GLFW_KEY_SPACE:
-            Game::getInstance().player.jump();
+            player.jump();
             return;
         default:
             return;
     }
 
-    // TODO: Remove God-class
-    Game::getInstance().player.move(vector);
+    player.move(vector);
 }
 
 void MovementController::processMouseMovement(double xOff, double yOff) {
     static const double mouseSensitivity = 0.2;
-
-    Player &player = Game::getInstance().player;
 
     player.headYaw += xOff * mouseSensitivity;
 
