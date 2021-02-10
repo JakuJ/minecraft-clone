@@ -3,7 +3,7 @@
 #include <string>
 #include "glm/glm.hpp"
 
-/// A simple context manager a shader program
+/// A simple context manager for a shader program
 class Program {
     static unsigned int loadShader(const std::string &path, int type);
 

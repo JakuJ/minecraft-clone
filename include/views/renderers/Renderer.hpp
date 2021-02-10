@@ -2,7 +2,7 @@
 
 #include <string>
 #include <memory>
-#include "rendering/program.hpp"
+#include "rendering/Program.hpp"
 
 class Renderer {
 protected:

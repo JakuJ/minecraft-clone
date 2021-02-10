@@ -3,9 +3,9 @@
 #include <functional>
 #include <glm/detail/type_vec3.hpp>
 #include <glm/vec3.hpp>
-#include "world/chunk.hpp"
-#include "world/chunk_sector.hpp"
-#include "utils/timing.hpp"
+#include "world/Chunk.hpp"
+#include "world/ChunkSector.hpp"
+#include "utils/timers.hpp"
 
 struct Node {
     int level;

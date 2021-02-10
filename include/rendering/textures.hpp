@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "rendering/program.hpp"
+#include "rendering/Program.hpp"
 
 struct Texture {
     unsigned int id{};

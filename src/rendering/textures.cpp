@@ -3,7 +3,7 @@
 #include <vector>
 #include "glad/glad.h"
 #include "utils/Log.hpp"
-#include "rendering/texture.hpp"
+#include "rendering/textures.hpp"
 #include "stb/stb_image.h"
 
 Texture::Texture(std::string name, int target) : name(std::move(name)), target(target) {}

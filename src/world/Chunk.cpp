@@ -1,7 +1,7 @@
 #include <cmath>
-#include "world/chunk.hpp"
+#include "world/Chunk.hpp"
 #include "FastNoiseSIMD/FastNoiseSIMD.h"
-#include "world/block.hpp"
+#include "world/Block.hpp"
 
 u_int Chunk::NEXT_ID = 0;
 

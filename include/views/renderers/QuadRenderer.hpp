@@ -3,7 +3,7 @@
 #include <buffers/VBO.hpp>
 #include <buffers/EBO.hpp>
 #include "views/renderers/AsyncRenderer.hpp"
-#include "rendering/texture.hpp"
+#include "rendering/textures.hpp"
 
 class QuadRenderer : public AsyncRenderer {
     Texture2D texture;

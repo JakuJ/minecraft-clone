@@ -1,7 +1,7 @@
 #include "utils/Log.hpp"
 #include "views/renderers/QuadRenderer.hpp"
 #include "models/Game.hpp"
-#include "rendering/mesh.hpp"
+#include "rendering/meshes.hpp"
 
 QuadRenderer::QuadRenderer()
         : AsyncRenderer("data/shaders/quad.vert", "data/shaders/quad.frag"),

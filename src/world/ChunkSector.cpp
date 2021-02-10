@@ -1,5 +1,5 @@
-#include "world/chunk_sector.hpp"
-#include "utils/timing.hpp"
+#include "world/ChunkSector.hpp"
+#include "utils/timers.hpp"
 
 ChunkSector::ChunkSector(std::vector<Chunk *> chunks, int side)
         : side(side), chunks(std::move(chunks)) {}

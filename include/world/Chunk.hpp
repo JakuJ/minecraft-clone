@@ -3,8 +3,8 @@
 #include <iostream>
 #include <functional>
 #include <vector>
-#include "world/block.hpp"
-#include "rendering/mesh.hpp"
+#include "world/Block.hpp"
+#include "rendering/meshes.hpp"
 
 class Chunk {
     static const int HEIGHT = 256;

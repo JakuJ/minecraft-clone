@@ -1,4 +1,4 @@
-#include "world/block.hpp"
+#include "world/Block.hpp"
 
 const bool Block::transparency_table[] = {false, false, false, false, false, true, true, false};
 const bool Block::solidity_table[] = {true, true, true, true, true, true, false, true};

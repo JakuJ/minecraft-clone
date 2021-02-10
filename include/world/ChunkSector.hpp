@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "world/chunk.hpp"
-#include "rendering/mesh.hpp"
+#include "world/Chunk.hpp"
+#include "rendering/meshes.hpp"
 
 class ChunkSector {
     const int side;

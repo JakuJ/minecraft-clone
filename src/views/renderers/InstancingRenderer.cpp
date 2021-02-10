@@ -1,7 +1,7 @@
 #include <utils/Log.hpp>
 #include "views/renderers/InstancingRenderer.hpp"
 #include "models/Game.hpp"
-#include "rendering/mesh.hpp"
+#include "rendering/meshes.hpp"
 
 InstancingRenderer::InstancingRenderer()
         : AsyncRenderer("data/shaders/instance.vert", "data/shaders/quad.frag"),

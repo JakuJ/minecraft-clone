@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "world/block.hpp"
+#include "world/Block.hpp"
 
 struct QuadMesh {
     std::vector<float> vertices;

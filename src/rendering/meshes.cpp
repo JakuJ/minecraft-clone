@@ -1,5 +1,5 @@
 #include <algorithm>
-#include "rendering/mesh.hpp"
+#include "rendering/meshes.hpp"
 
 void QuadMesh::addQuad(const std::vector<float> &vs,
                        const std::vector<float> &ns,

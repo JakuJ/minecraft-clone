@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "world/chunk.hpp"
+#include "world/Chunk.hpp"
 #include "world/quadtree.hpp"
 
 class World {
