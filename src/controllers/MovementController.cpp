@@ -11,6 +11,11 @@ void MovementController::processKeyboard(int key, double deltaTime) {
 
     auto vector = glm::vec3(deltaTime);
 
+    // Hold left shift to run
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        vector *= 2;
+    }
+
     switch (key) {
         case GLFW_KEY_W:
             vector *= glm::vec3(0, 0, -1);

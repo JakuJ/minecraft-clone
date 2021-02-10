@@ -22,7 +22,7 @@ include_directories("include")
 include_directories("external")
 
 # Main executable
-add_compile_options("-fexceptions" "-O3" "-flto")
+add_compile_options("-fexceptions" "-Ofast" "-march=native" "-flto")
 # Linux GitHub Actions environment hates casting to function pointers and my logs are full of warnings
 if (NOT LINUX)
     add_compile_options("-Wall" "-Wextra" "-Wpedantic")
