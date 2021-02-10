@@ -2,7 +2,7 @@
 
 #include "controllers/InputController.hpp"
 
-/// Input controller responsible for player movement
+/// Input controller responsible for player movement.
 class MovementController final : public InputController {
 public:
     explicit MovementController(GLFWwindow *);

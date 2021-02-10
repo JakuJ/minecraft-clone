@@ -15,7 +15,7 @@ class Player {
     bool jumping, swimming;
 
 public:
-    /// Eye level position in the game world
+    /// Eye level position in the game world.
     glm::vec3 position;
 
     double headPitch, headYaw;

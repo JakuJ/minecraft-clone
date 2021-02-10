@@ -4,7 +4,7 @@
 ChunkSector::ChunkSector(std::vector<Chunk *> chunks, int side)
         : side(side), chunks(std::move(chunks)) {}
 
-auto &ChunkSector::at(int x, int z) const {
+Chunk *ChunkSector::at(int x, int z) const {
     return chunks[x + side * z];
 }
 
@@ -50,7 +50,7 @@ QuadMesh ChunkSector::getQuadMesh() const {
                     for (auto face = (Block::Face) 0; face < Block::FACES; face++) {
                         if (!faces[face] ||
                             (faces[face]->type != block->type && faces[face]->isTransparent())) {
-                            auto[vectors, normals] = block->getFace(face);
+                            auto[vectors, normals] = Block::getFace(face);
 
                             for (int j = 0; j <= 9; j += 3) {
                                 vectors[j] += static_cast<float>(x + x0);

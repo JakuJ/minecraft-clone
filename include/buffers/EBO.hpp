@@ -3,7 +3,7 @@
 #include <vector>
 #include "buffers/BufferObject.hpp"
 
-/// Element Buffer Object
+/// Element Buffer Object.
 class EBO : public BufferObject<unsigned int> {
 public:
     EBO();

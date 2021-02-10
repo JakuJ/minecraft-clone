@@ -1,8 +1,8 @@
 #include <algorithm>
 #include "rendering/meshes.hpp"
 
-void QuadMesh::addQuad(const std::vector<float> &vs,
-                       const std::vector<float> &ns,
+void QuadMesh::addQuad(const arr_t &vs,
+                       const arr_t &ns,
                        Block::Type texId,
                        Block::Face faceId) {
     u_int offset = vertices.size() / 3;
@@ -14,8 +14,8 @@ void QuadMesh::addQuad(const std::vector<float> &vs,
         indices.push_back(k + offset);
     }
 
-    const float ds = 1.0 / 6.0;
-    const float dt = 1.0 / static_cast<float>(Block::TYPES);
+    constexpr float ds = 1.0 / 6.0;
+    constexpr float dt = 1.0 / static_cast<float>(Block::TYPES);
 
     float s0 = static_cast<float>(faceId) * ds;
     float t0 = static_cast<float>(texId) * dt;
@@ -45,11 +45,14 @@ void QuadMesh::operator+=(const QuadMesh &other) {
 
 void InstanceMesh::addCube(float x, float y, float z, Block::Type texId, Block::Face faceId) {
     const float offs[] = {x, y, z};
-    offsets.insert(offsets.end(), offs, std::end(offs));
+    offsets.insert(offsets.end(), offs, std::cend(offs));
 
-    const float infos[] = {static_cast<float>(faceId) / Block::FACES, static_cast<float>(texId) / Block::TYPES,
-                           static_cast<float>(faceId)};
-    typeInfos.insert(typeInfos.end(), infos, std::end(infos));
+    const float infos[] = {
+            static_cast<float>(faceId) / Block::FACES,
+            static_cast<float>(texId) / Block::TYPES,
+            static_cast<float>(faceId)
+    };
+    typeInfos.insert(typeInfos.end(), infos, std::cend(infos));
 }
 
 void InstanceMesh::operator+=(const InstanceMesh &other) {

@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include "Controller.hpp"
 
-/// An abstract class that can handle mouse and keyboard input
+/// An abstract class that can handle mouse and keyboard input.
 class InputController : public Controller {
     double lastUpdate;
 
@@ -17,12 +17,12 @@ protected:
 public:
     explicit InputController(GLFWwindow *);
 
-    /// Process keyboard input that might've happened since the last update
+    /// Process keyboard input that might've happened since the last update.
     void update() final;
 
-    /// Keyboard input handler
+    /// Keyboard input handler.
     virtual void processKeyboard(int keyCode, double deltaTime) = 0;
 
-    /// Mouse movement handler
+    /// Mouse movement handler.
     virtual void processMouseMovement(double xOff, double yOff) = 0;
 };

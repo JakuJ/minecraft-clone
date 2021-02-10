@@ -12,7 +12,7 @@ public:
         glGenBuffers(1, &(this->id));
     }
 
-    /// Gets the number of vertices in the internal vector (its size / vertex dimensions)
+    /// Gets the number of vertices in the internal vector (its size / vertex dimensions).
     [[nodiscard]] size_t size() const override {
         return this->data.size() / N;
     }

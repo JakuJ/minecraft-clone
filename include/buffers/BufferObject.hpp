@@ -4,7 +4,7 @@
 #include "glad/glad.h"
 #include "utils/Log.hpp"
 
-/// Used for compile-time mapping from C++ to OpenGL types
+/// Used for compile-time mapping from C++ to OpenGL types.
 template<typename T>
 struct BufferType {
     static const unsigned Type;
@@ -17,23 +17,23 @@ class BufferObject {
     size_t buffer_size{};
 
 protected:
-    /// Buffer ID
+    /// Buffer ID.
     unsigned int id;
 
-    /// A vector for storing data before writing it to the actual buffer
+    /// A vector for storing data before writing it to the actual buffer.
     std::vector<T> data{};
 
-    /// Write data to the buffer, reallocating if necessary
+    /// Write data to the buffer, reallocating if necessary.
     void bufferVector(const std::vector<T> &, GLenum);
 
-    /// Gets the size of the internal vector
+    /// Get the size of the internal vector.
     [[nodiscard]] virtual size_t size() const = 0;
 
 public:
-    /// Set data to be written to the buffer
+    /// Set data to be written to the buffer.
     void fill(const std::vector<T> &vec);
 
-    /// Write data to the buffer
+    /// Write data to the buffer.
     virtual void bufferData() = 0;
 };
 
